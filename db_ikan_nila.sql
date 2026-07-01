@@ -1,231 +1,390 @@
--- --------------------------------------------------------
--- Host:                         127.0.0.1
--- Server version:               8.0.30 - MySQL Community Server - GPL
--- Server OS:                    Win64
--- HeidiSQL Version:             12.8.0.6908
--- --------------------------------------------------------
+-- phpMyAdmin SQL Dump
+-- version 5.2.2
+-- https://www.phpmyadmin.net/
+--
+-- Host: localhost:3307
+-- Waktu pembuatan: 01 Jul 2026 pada 09.05
+-- Versi server: 8.0.30
+-- Versi PHP: 8.0.30
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET NAMES utf8 */;
-/*!50503 SET NAMES utf8mb4 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
 
+--
+-- Database: `db_ikan_nila`
+--
 
--- Dumping database structure for db_ikan_nila
-CREATE DATABASE IF NOT EXISTS `db_ikan_nila` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `db_ikan_nila`;
+-- --------------------------------------------------------
 
--- Dumping structure for table db_ikan_nila.tbl_admin
-CREATE TABLE IF NOT EXISTS `tbl_admin` (
-  `id_admin` int NOT NULL AUTO_INCREMENT,
+--
+-- Struktur dari tabel `tbl_admin`
+--
+
+CREATE TABLE `tbl_admin` (
+  `id_admin` int NOT NULL,
   `username` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
   `password` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
-  `nama_admin` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
-  PRIMARY KEY (`id_admin`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `nama_admin` varchar(100) COLLATE utf8mb4_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table db_ikan_nila.tbl_admin: ~2 rows (approximately)
+--
+-- Dumping data untuk tabel `tbl_admin`
+--
+
 INSERT INTO `tbl_admin` (`id_admin`, `username`, `password`, `nama_admin`) VALUES
-	(1, 'admin', '$2y$10$bVsvqz8.0cy2QMGJL.Q2jekjf9nAp94uqA4XhUN7ICgXKmBSZ1Gtq', 'Aditya Rahman'),
-	(2, 'abi', 'password', 'Abiyu');
+(1, 'abiyu', 'password', 'Abiyu Ramzi'),
+(2, 'adit', 'pass12345678', 'Aditya Rahman'),
+(3, 'esa', 'makassar', 'Mahesa'),
+(4, 'nopaall', 'nopall2480', 'Naufal Rafif');
 
--- Dumping structure for table db_ikan_nila.tbl_aturan
-CREATE TABLE IF NOT EXISTS `tbl_aturan` (
-  `id_aturan` int NOT NULL AUTO_INCREMENT,
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `tbl_aturan`
+--
+
+CREATE TABLE `tbl_aturan` (
+  `id_aturan` int NOT NULL,
   `kode_penyakit` varchar(10) COLLATE utf8mb4_general_ci NOT NULL,
   `kode_gejala` varchar(10) COLLATE utf8mb4_general_ci NOT NULL,
-  `cf_pakar` float DEFAULT NULL,
-  PRIMARY KEY (`id_aturan`),
-  KEY `kode_penyakit` (`kode_penyakit`),
-  KEY `kode_gejala` (`kode_gejala`),
-  CONSTRAINT `tbl_aturan_ibfk_1` FOREIGN KEY (`kode_penyakit`) REFERENCES `tbl_penyakit` (`kode_penyakit`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `tbl_aturan_ibfk_2` FOREIGN KEY (`kode_gejala`) REFERENCES `tbl_gejala` (`kode_gejala`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `nilai_mb` float DEFAULT NULL,
+  `nilai_md` float DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table db_ikan_nila.tbl_aturan: ~48 rows (approximately)
-INSERT INTO `tbl_aturan` (`id_aturan`, `kode_penyakit`, `kode_gejala`, `cf_pakar`) VALUES
-	(1, 'P01', 'G01', 0.4),
-	(2, 'P01', 'G02', 0.4),
-	(3, 'P01', 'G04', 0.8),
-	(4, 'P01', 'G05', 0.6),
-	(5, 'P01', 'G08', 0.6),
-	(6, 'P02', 'G01', 0.4),
-	(7, 'P02', 'G02', 0.6),
-	(8, 'P02', 'G05', 0.6),
-	(9, 'P02', 'G10', 0.4),
-	(10, 'P02', 'G21', 0.8),
-	(11, 'P03', 'G01', 0.4),
-	(12, 'P03', 'G04', 0.6),
-	(13, 'P03', 'G10', 0.4),
-	(14, 'P03', 'G16', 0.8),
-	(15, 'P04', 'G01', 0.4),
-	(16, 'P04', 'G04', 0.6),
-	(17, 'P04', 'G16', 0.6),
-	(18, 'P04', 'G19', 0.8),
-	(19, 'P05', 'G06', 0.6),
-	(20, 'P05', 'G09', 0.6),
-	(21, 'P05', 'G13', 0.8),
-	(22, 'P05', 'G20', 0.6),
-	(23, 'P05', 'G21', 0.6),
-	(24, 'P05', 'G27', 0.8),
-	(25, 'P06', 'G14', 1),
-	(26, 'P06', 'G15', 0.8),
-	(27, 'P06', 'G12', 0.6),
-	(28, 'P07', 'G04', 0.6),
-	(29, 'P07', 'G17', 1),
-	(30, 'P07', 'G16', 0.6),
-	(31, 'P08', 'G01', 0.4),
-	(32, 'P08', 'G09', 0.6),
-	(33, 'P08', 'G28', 0.8),
-	(34, 'P08', 'G30', 1),
-	(35, 'P09', 'G10', 0.4),
-	(36, 'P09', 'G13', 0.6),
-	(37, 'P09', 'G16', 0.8),
-	(38, 'P09', 'G29', 0.8),
-	(39, 'P10', 'G11', 1),
-	(40, 'P10', 'G04', 0.8),
-	(41, 'P10', 'G01', 0.4),
-	(42, 'P11', 'G01', 0.4),
-	(43, 'P11', 'G18', 0.8),
-	(44, 'P11', 'G25', 0.8),
-	(45, 'P12', 'G10', 0.6),
-	(46, 'P12', 'G13', 0.8),
-	(47, 'P12', 'G16', 0.6),
-	(48, 'P12', 'G20', 0.8);
+--
+-- Dumping data untuk tabel `tbl_aturan`
+--
 
--- Dumping structure for table db_ikan_nila.tbl_diagnosa
-CREATE TABLE IF NOT EXISTS `tbl_diagnosa` (
-  `id_diagnosa` int NOT NULL AUTO_INCREMENT,
+INSERT INTO `tbl_aturan` (`id_aturan`, `kode_penyakit`, `kode_gejala`, `nilai_mb`, `nilai_md`) VALUES
+(1, 'P01', 'G02', 0.7, 0.1),
+(2, 'P01', 'G04', 0.8, 0.1),
+(3, 'P01', 'G09', 0.6, 0.1),
+(4, 'P01', 'G21', 0.8, 0.1),
+(5, 'P01', 'G25', 0.7, 0.1),
+(6, 'P01', 'G26', 0.6, 0.1),
+(7, 'P02', 'G01', 0.6, 0.1),
+(8, 'P02', 'G02', 0.8, 0.1),
+(9, 'P02', 'G19', 0.8, 0.1),
+(10, 'P02', 'G20', 0.9, 0.1),
+(11, 'P02', 'G21', 0.7, 0.1),
+(12, 'P02', 'G24', 0.6, 0.1),
+(13, 'P03', 'G02', 0.8, 0.1),
+(14, 'P03', 'G04', 0.6, 0.1),
+(15, 'P03', 'G05', 0.7, 0.1),
+(16, 'P03', 'G20', 0.8, 0.1),
+(17, 'P03', 'G21', 0.9, 0.1),
+(18, 'P04', 'G04', 0.9, 0.1),
+(19, 'P04', 'G16', 0.9, 0.1),
+(20, 'P04', 'G25', 0.8, 0.1),
+(21, 'P04', 'G28', 0.7, 0.1),
+(22, 'P05', 'G07', 0.9, 0.1),
+(23, 'P05', 'G17', 1, 0.1),
+(24, 'P05', 'G22', 0.8, 0.1),
+(25, 'P05', 'G23', 0.8, 0.1),
+(26, 'P05', 'G24', 0.8, 0.1),
+(27, 'P05', 'G27', 0.9, 0.1),
+(28, 'P06', 'G13', 1, 0.1),
+(29, 'P06', 'G14', 0.9, 0.1),
+(30, 'P06', 'G18', 0.8, 0.1),
+(31, 'P06', 'G28', 0.6, 0.1),
+(32, 'P07', 'G04', 0.8, 0.1),
+(33, 'P07', 'G15', 0.8, 0.1),
+(34, 'P07', 'G16', 1, 0.1),
+(35, 'P07', 'G25', 0.7, 0.1),
+(36, 'P08', 'G01', 0.7, 0.1),
+(37, 'P08', 'G03', 0.8, 0.1),
+(38, 'P08', 'G06', 0.7, 0.1),
+(39, 'P08', 'G08', 0.8, 0.1),
+(40, 'P08', 'G24', 1, 0.1),
+(41, 'P08', 'G26', 0.7, 0.1),
+(42, 'P08', 'G27', 1, 0.1),
+(43, 'P09', 'G12', 0.7, 0.1),
+(44, 'P09', 'G15', 0.9, 0.1),
+(45, 'P09', 'G18', 0.8, 0.1),
+(46, 'P09', 'G30', 1, 0.1),
+(47, 'P09', 'G31', 0.9, 0.1),
+(48, 'P10', 'G04', 0.7, 0.1),
+(49, 'P10', 'G06', 0.6, 0.1),
+(50, 'P10', 'G08', 0.6, 0.1),
+(51, 'P10', 'G10', 1, 0.1),
+(52, 'P11', 'G11', 0.9, 0.1),
+(53, 'P11', 'G12', 0.9, 0.1),
+(54, 'P11', 'G17', 0.7, 0.1),
+(55, 'P11', 'G23', 0.8, 0.1),
+(56, 'P11', 'G24', 0.8, 0.1),
+(57, 'P11', 'G29', 1, 0.1),
+(58, 'P12', 'G08', 0.7, 0.1),
+(59, 'P12', 'G11', 0.8, 0.1),
+(60, 'P12', 'G12', 0.9, 0.1),
+(61, 'P12', 'G18', 0.9, 0.1),
+(62, 'P12', 'G29', 0.8, 0.1),
+(63, 'P04', 'G12', 0.8, 0.1),
+(64, 'P04', 'G13', 1, 0.3);
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `tbl_diagnosa`
+--
+
+CREATE TABLE `tbl_diagnosa` (
+  `id_diagnosa` int NOT NULL,
   `id_admin` int DEFAULT NULL,
-  `nama_pembudidaya` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `kode_sampel` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `tanggal_diagnosa` datetime NOT NULL DEFAULT (now()),
   `hasil_penyakit` varchar(10) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `confidence` float DEFAULT '0',
-  PRIMARY KEY (`id_diagnosa`),
-  KEY `hasil_penyakit` (`hasil_penyakit`),
-  CONSTRAINT `tbl_diagnosa_ibfk_2` FOREIGN KEY (`hasil_penyakit`) REFERENCES `tbl_penyakit` (`kode_penyakit`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `kemungkinan_lain` text COLLATE utf8mb4_general_ci
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table db_ikan_nila.tbl_diagnosa: ~9 rows (approximately)
-INSERT INTO `tbl_diagnosa` (`id_diagnosa`, `id_admin`, `nama_pembudidaya`, `tanggal_diagnosa`, `hasil_penyakit`, `confidence`) VALUES
-	(1, 1, 'Afif', '2026-05-18 00:00:00', 'P10', 100),
-	(2, 1, 'Nanda', '2026-05-18 00:00:00', 'P06', 89.06),
-	(3, 1, 'Adit', '2026-05-18 00:00:00', 'P05', 96.92),
-	(4, 1, 'ada', '2026-05-18 11:24:16', 'P12', 85.6),
-	(5, 1, 'Bagas', '2026-05-18 11:34:41', 'P12', 48),
-	(6, 1, 'ada', '2026-05-18 11:52:50', 'P12', 32),
-	(7, 1, 'gdfgr', '2026-05-18 11:53:27', 'P06', 100),
-	(8, 1, 'JJJJ', '2026-05-18 12:06:34', 'P06', 16),
-	(9, 1, 'LKLKNK', '2026-05-18 12:12:15', 'P02', 60);
+--
+-- Dumping data untuk tabel `tbl_diagnosa`
+--
 
--- Dumping structure for table db_ikan_nila.tbl_diagnosa_detail
-CREATE TABLE IF NOT EXISTS `tbl_diagnosa_detail` (
-  `id_detail` int NOT NULL AUTO_INCREMENT,
+INSERT INTO `tbl_diagnosa` (`id_diagnosa`, `id_admin`, `kode_sampel`, `tanggal_diagnosa`, `hasil_penyakit`, `confidence`, `kemungkinan_lain`) VALUES
+(1, 4, 'SPL-001', '2026-06-26 00:46:10', 'P01', 98.2, '- Cacing Kulit Gyrodactylosis (Skin Fluke Disease) (Akurasi: 94.00 %)\n- Cacing Insang Dactylogyriasis (Gill Fluke Disease) (Akurasi: 90.00 %)\n- Cacing Jangkar (Lerneosis) (Akurasi: 88.00 %)'),
+(2, 4, 'SPL-002', '2026-06-26 00:47:26', 'P05', 99.74, '- Luka Merah (Aeromoniasis) (Akurasi: 88.00 %)'),
+(3, 4, 'SPL-003', '2026-06-26 00:48:13', 'P11', 99.51, '- Penyakit Pseudomonas (Pseudomoniasis) (Akurasi: 97.36 %)\n- Virus Tilapia Lake (TiLV Disease) (Akurasi: 72.00 %)\n- Penyakit Columnaris (Columnariasis) (Akurasi: 60.00 %)'),
+(4, 4, 'SPL-004', '2026-06-26 00:49:02', 'P04', 97.92, '- Cacing Jangkar (Lerneosis) (Akurasi: 97.00 %)\n- Penyakit Trichodina (Trichodiniasis) (Akurasi: 70.00 %)\n- Bintik Putih (White Spot Disease / Ichthyophthiriasis) (Akurasi: 60.00 %)'),
+(5, 4, 'SPL-005', '2026-06-26 00:49:54', 'P06', 99.12, '- Penyakit Pseudomonas (Pseudomoniasis) (Akurasi: 64.00 %)\n- Penyakit Columnaris (Columnariasis) (Akurasi: 56.00 %)'),
+(6, 4, 'SPL-006', '2026-06-26 00:50:33', 'P10', 97.2, '- Cacing Kulit Gyrodactylosis (Skin Fluke Disease) (Akurasi: 80.00 %)\n- Penyakit Trichodina (Trichodiniasis) (Akurasi: 70.00 %)\n- Cacing Jangkar (Lerneosis) (Akurasi: 70.00 %)'),
+(7, 4, 'SPL-007', '2026-06-26 14:38:29', 'P11', 99.79, '- Penyakit Pseudomonas (Pseudomoniasis) (Akurasi: 98.20 %)\n- Penyakit Streptococcus (Streptococcal Disease) (Akurasi: 72.00 %)\n- Cacing Kulit Gyrodactylosis (Skin Fluke Disease) (Akurasi: 70.00 %)');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `tbl_diagnosa_detail`
+--
+
+CREATE TABLE `tbl_diagnosa_detail` (
+  `id_detail` int NOT NULL,
   `id_diagnosa` int NOT NULL,
   `kode_gejala` varchar(10) COLLATE utf8mb4_general_ci NOT NULL,
-  PRIMARY KEY (`id_detail`),
-  KEY `kode_gejala` (`kode_gejala`),
-  CONSTRAINT `tbl_diagnosa_detail_ibfk_2` FOREIGN KEY (`kode_gejala`) REFERENCES `tbl_gejala` (`kode_gejala`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- Dumping data for table db_ikan_nila.tbl_diagnosa_detail: ~23 rows (approximately)
-INSERT INTO `tbl_diagnosa_detail` (`id_detail`, `id_diagnosa`, `kode_gejala`) VALUES
-	(1, 1, 'G01'),
-	(2, 1, 'G04'),
-	(3, 1, 'G11'),
-	(4, 2, 'G12'),
-	(5, 2, 'G14'),
-	(6, 2, 'G15'),
-	(7, 3, 'G06'),
-	(8, 3, 'G09'),
-	(9, 3, 'G13'),
-	(10, 3, 'G20'),
-	(11, 3, 'G27'),
-	(12, 4, 'G10'),
-	(13, 4, 'G13'),
-	(14, 5, 'G10'),
-	(15, 5, 'G15'),
-	(16, 5, 'G23'),
-	(17, 6, 'G13'),
-	(18, 7, 'G03'),
-	(19, 7, 'G14'),
-	(20, 8, 'G15'),
-	(21, 9, 'G02'),
-	(22, 9, 'G18'),
-	(23, 9, 'G29');
-
--- Dumping structure for table db_ikan_nila.tbl_gejala
-CREATE TABLE IF NOT EXISTS `tbl_gejala` (
-  `kode_gejala` varchar(10) COLLATE utf8mb4_general_ci NOT NULL,
-  `nama_gejala` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  PRIMARY KEY (`kode_gejala`),
-  KEY `kode_gejala` (`kode_gejala`)
+  `kondisi_gejala` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table db_ikan_nila.tbl_gejala: ~30 rows (approximately)
-INSERT INTO `tbl_gejala` (`kode_gejala`, `nama_gejala`) VALUES
-	('G01', 'Ikan berenang lamban atau malas bergerak'),
-	('G02', 'Ikan sering mengap-mengap di permukaan air'),
-	('G03', 'Ikan sering melompat atau berenang tidak beraturan (abnormal)'),
-	('G04', 'Ikan menggosokkan badan ke dinding/dasar/benda (iritasi kulit)'),
-	('G05', 'Ikan berkumpul di area air masuk/daerah oksigen tinggi'),
-	('G06', 'Nafsu makan menurun drastis'),
-	('G07', 'Pergerakan tidak terarah/berputar/kejang-kejang'),
-	('G08', 'Ikan tampak gelisah/sering muncul di permukaan'),
-	('G09', 'Ikan terlihat lemah dan kesadarannya menurun'),
-	('G10', 'Warna tubuh pucat atau menjadi lebih gelap dari normal'),
-	('G11', 'Terdapat bercak putih pada tubuh, sirip, atau insang (indikasi Ich)'),
-	('G12', 'Luka pada kulit yang kemudian berkembang menjadi borok (ulcer)'),
-	('G13', 'Terdapat pendarahan (hemoragi) di kulit, sirip, atau tutup insang'),
-	('G14', 'Adanya benang halus menyerupai kapas (Saprolegnia)'),
-	('G15', 'Terlihat Hifa/miselia putih-kecoklatan di sekitar luka'),
-	('G16', 'Sirip rusak, geripis, atau menguncup'),
-	('G17', 'Warna kemerahan (inflamasi) di area penempelan parasit (Lernaea)'),
-	('G18', 'Mata menonjol (exophthalmus)'),
-	('G19', 'Permukaan kulit menunjukkan tanda nekrosis (jaringan mati)'),
-	('G20', 'Insang berwarna merah cerah (tanda awal infeksi)'),
-	('G21', 'Insang pucat atau membengkak (hipoksia/infeksi parasit)'),
-	('G22', 'Produksi mukus berlebih pada insang'),
-	('G23', 'Insang terinfeksi dan tampak berlendir tebal'),
-	('G24', 'Hilangnya lingkaran emas (golden ring) di sekitar mata'),
-	('G25', 'Terjadi infeksi di sekitar mata / kornea keruh (katarak)'),
-	('G26', 'Perut membengkak (dropsy), kadang berisi cairan'),
-	('G27', 'Hati, limpa, atau ginjal mengalami pembengkakan (swollen organs)'),
-	('G28', 'Kematian massal dalam waktu singkat (infeksi sistemik)'),
-	('G29', 'Produksi lendir bercampur darah di kulit (Aeromonas)'),
-	('G30', 'Mortalitas meningkat mendadak pada suhu air tinggi (indikasi TiLV)');
+--
+-- Dumping data untuk tabel `tbl_diagnosa_detail`
+--
 
--- Dumping structure for table db_ikan_nila.tbl_penyakit
-CREATE TABLE IF NOT EXISTS `tbl_penyakit` (
+INSERT INTO `tbl_diagnosa_detail` (`id_detail`, `id_diagnosa`, `kode_gejala`, `kondisi_gejala`) VALUES
+(1, 1, 'G04', 'Pasti (1.0)'),
+(2, 1, 'G09', 'Pasti (1.0)'),
+(3, 1, 'G21', 'Pasti (1.0)'),
+(4, 1, 'G25', 'Pasti (1.0)'),
+(5, 2, 'G07', 'Pasti (1.0)'),
+(6, 2, 'G17', 'Pasti (1.0)'),
+(7, 2, 'G22', 'Sangat Yakin (0.8)'),
+(8, 2, 'G23', 'Pasti (1.0)'),
+(9, 3, 'G11', 'Pasti (1.0)'),
+(10, 3, 'G12', 'Pasti (1.0)'),
+(11, 3, 'G24', 'Sangat Yakin (0.8)'),
+(12, 3, 'G29', 'Sangat Yakin (0.8)'),
+(13, 4, 'G04', 'Pasti (1.0)'),
+(14, 4, 'G16', 'Pasti (1.0)'),
+(15, 4, 'G28', 'Sangat Yakin (0.8)'),
+(16, 5, 'G13', 'Pasti (1.0)'),
+(17, 5, 'G14', 'Pasti (1.0)'),
+(18, 5, 'G18', 'Sangat Yakin (0.8)'),
+(19, 6, 'G04', 'Pasti (1.0)'),
+(20, 6, 'G06', 'Yakin (0.6)'),
+(21, 6, 'G10', 'Pasti (1.0)'),
+(22, 7, 'G11', 'Pasti (1.0)'),
+(23, 7, 'G12', 'Pasti (1.0)'),
+(24, 7, 'G17', 'Sangat Yakin (0.8)'),
+(25, 7, 'G29', 'Pasti (1.0)');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `tbl_gejala`
+--
+
+CREATE TABLE `tbl_gejala` (
+  `kode_gejala` varchar(10) COLLATE utf8mb4_general_ci NOT NULL,
+  `nama_gejala` varchar(255) COLLATE utf8mb4_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data untuk tabel `tbl_gejala`
+--
+
+INSERT INTO `tbl_gejala` (`kode_gejala`, `nama_gejala`) VALUES
+('G01', 'Aktivitas berenang ikan menurun dan gerakannya terlihat lebih lambat dari kondisi normal'),
+('G02', 'Ikan sering muncul ke permukaan sambil membuka mulut seperti kekurangan oksigen'),
+('G03', 'Pola renang ikan tidak normal, sering meloncat atau bergerak secara tidak beraturan'),
+('G04', 'Ikan sering menggesekkan atau menabrakkan tubuhnya pada dinding kolam, dasar kolam, maupun benda di sekitarnya akibat iritasi.'),
+('G05', 'Ikan cenderung berkumpul di sekitar saluran masuk air atau area dengan kandungan oksigen lebih tinggi'),
+('G06', 'Nafsu makan ikan mengalami penurunan secara signifikan'),
+('G07', 'Ikan berenang berputar, kehilangan arah, atau mengalami gangguan koordinasi gerak'),
+('G08', 'Kondisi tubuh ikan terlihat lemah dan respons terhadap lingkungan menurun'),
+('G09', 'Warna tubuh ikan berubah menjadi lebih pucat atau lebih gelap dari biasanya'),
+('G10', 'Muncul bintik-bintik putih pada tubuh, sirip, atau insang ikan'),
+('G11', 'Terdapat luka pada kulit yang berkembang menjadi borok atau ulser'),
+('G12', 'Muncul pendarahan pada kulit, sirip, atau bagian tutup insang'),
+('G13', 'Terlihat benang-benang halus berwarna putih menyerupai kapas pada permukaan tubuh ikan'),
+('G14', 'Terdapat pertumbuhan hifa atau miselium berwarna putih hingga kecokelatan di sekitar luka'),
+('G15', 'Sirip tampak rusak, geripis, menguncup, atau mengalami pembusukan'),
+('G16', 'Area tempat menempelnya parasit menunjukkan warna kemerahan atau peradangan'),
+('G17', 'Salah satu atau kedua mata ikan tampak menonjol'),
+('G18', 'Permukaan kulit mengalami kerusakan jaringan atau nekrosis'),
+('G19', 'Insang tampak kemerahan atau mengalami peradangan'),
+('G20', 'Insang terlihat pucat atau membengkak sehingga mengganggu pernapasan'),
+('G21', 'Produksi lendir pada insang meningkat secara berlebihan sehingga sebagian permukaan insang tampak tertutup lendir'),
+('G22', 'Kornea mata mengalami kekeruhan atau terdapat infeksi di sekitar mata'),
+('G23', 'Perut ikan membesar secara tidak normal dan pada beberapa kasus disertai penumpukan cairan (dropsy).'),
+('G24', 'Terjadi peningkatan jumlah kematian ikan dalam waktu relatif singkat'),
+('G25', 'Produksi lendir pada permukaan tubuh meningkat secara berlebihan'),
+('G26', 'Ikan cenderung memisahkan diri dari kelompok dan lebih sering diam di dasar kolam'),
+('G27', 'Ikan mengalami kehilangan keseimbangan saat berenang'),
+('G28', 'Permukaan kulit tampak kasar, kusam, atau kehilangan kilap alaminya'),
+('G29', 'Terjadi pendarahan pada pangkal sirip atau di sekitar anus'),
+('G30', 'Mulut ikan tampak memutih atau mengalami pembusukan'),
+('G31', 'Sirip atau bagian tubuh tampak ditutupi lapisan putih keabu-abuan'),
+('G32', 'Tubuh tampak kusam, kehilangan warna cerah alaminya, dan sering disertai lapisan lendir berlebih'),
+('G33', 'Terdapat bercak putih keabu-abuan pada kulit atau insang'),
+('G34', 'organ dalam hati');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `tbl_penyakit`
+--
+
+CREATE TABLE `tbl_penyakit` (
   `kode_penyakit` varchar(10) COLLATE utf8mb4_general_ci NOT NULL,
   `nama_penyakit` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `Deskripsi` text COLLATE utf8mb4_general_ci NOT NULL,
   `solusi` text COLLATE utf8mb4_general_ci,
-  `pencegahan` text COLLATE utf8mb4_general_ci,
-  PRIMARY KEY (`kode_penyakit`),
-  KEY `kode_penyakit` (`kode_penyakit`)
+  `pencegahan` text COLLATE utf8mb4_general_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table db_ikan_nila.tbl_penyakit: ~12 rows (approximately)
-INSERT INTO `tbl_penyakit` (`kode_penyakit`, `nama_penyakit`, `solusi`, `pencegahan`) VALUES
-	('P01', 'Penyakit Trichodiniasis', 'Perendaman formalin 25 ppm 30 menit atau garam 5-10 g/L selama 10-15 menit. Ganti air kolam secara berkala dan kurangi kepadatan tebar.', 'Jaga kualitas air tetap bersih, kurangi kepadatan ikan.'),
-	('P02', 'Penyakit Jamur Insang', 'Bersihkan kolam, ganti air, rendam ikan dengan fungisida ringan (malachite green / KMnO4).', 'Hindari pemberian pakan berlebih yang memicu jamur.'),
-	('P03', 'Penyakit Cacing Insang', 'Gunakan larutan formalin 25 ppm atau NaCl 2% selama 10-15 menit. Keringkan kolam dan kurangi lumpur.', 'Keringkan dan kapur dasar kolam sebelum tebar benih.'),
-	('P04', 'Penyakit Cacing Kulit', 'Lakukan perendaman ikan dengan formalin 25-50 ppm atau air garam 2-5%. Jaga kualitas air tetap jernih dan oksigen cukup.', 'Karantina ikan baru sebelum dimasukkan ke kolam utama.'),
-	('P05', 'Penyakit Streptococcosis', 'Berikan antibiotik seperti oksitetrasiklin 50-75 mg/kg pakan selama 5-7 hari. Isolasi ikan sakit dan jaga suhu air di bawah 30°C.', 'Hindari kepadatan tinggi, jangan memberi pakan berlebih.'),
-	('P06', 'Penyakit Jamur Kapas', 'Bersihkan kolam, hilangkan ikan mati, dan rendam ikan dalam larutan NaCl 2% selama 10 menit. Gunakan fungisida malachite green 0,1 ppm bila perlu.', 'Hindari penanganan ikan yang kasar agar tubuh ikan tidak luka.'),
-	('P07', 'Penyakit Cacing Jangkar', 'Angkat parasit secara manual dengan pinset lalu rendam ikan dalam larutan KMnO4 2 ppm selama 30 menit. Tambahkan garam 5 g/liter untuk desinfeksi.', 'Pasang filter pada saluran masuk air untuk mencegah masuknya parasit.'),
-	('P08', 'Penyakit Tilapia Lake Virus (TiLV)', 'Belum ada obat spesifik, lakukan karantina ikan sakit, buang ikan mati segera, dan tingkatkan biosekuriti kolam. Hindari stres dan perubahan suhu mendadak.', 'Gunakan benih bersertifikat bebas TiLV (SPF), batasi lalu lintas orang/alat.'),
-	('P09', 'Penyakit Busuk Sirip', 'Lakukan perendaman dengan antibiotik oksitetrasiklin 10 mg/l atau KMnO4 2 ppm. Kurangi kepadatan tebar dan perbaiki aerasi kolam.', 'Perbaiki manajemen kualitas air dan hindari penumpukan bahan organik.'),
-	('P10', 'Penyakit Bintik Putih', 'Gunakan larutan formalin 25 ppm atau malachite green 0,1 ppm. Jaga suhu air pada 30-32°C untuk mempercepat siklus hidup parasit.', 'Jaga kestabilan suhu air (gunakan heater jika perlu).'),
-	('P11', 'Penyakit Mata Menonjol', 'Lakukan perendaman ikan dalam larutan formalin 25 ppm selama 30 menit dan ganti air secara berkala.', 'Jaga kebersihan lingkungan budidaya dan berikan pakan bernutrisi.'),
-	('P12', 'Penyakit Luka Merah', 'Berikan antibiotik oksitetrasiklin 75 mg/kg pakan selama 5 hari dan jaga kebersihan air. Lakukan pergantian air 50% setiap 2 hari.', 'Lakukan vaksinasi anti-Aeromonas dan sanitasi kolam rutin.');
+--
+-- Dumping data untuk tabel `tbl_penyakit`
+--
 
-/*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
-/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
-/*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
+INSERT INTO `tbl_penyakit` (`kode_penyakit`, `nama_penyakit`, `Deskripsi`, `solusi`, `pencegahan`) VALUES
+('P01', 'Penyakit Trichodina (Trichodiniasis)', 'Infeksi protozoa Trichodina sp. pada insang dan permukaan tubuh ikan nila yang menyebabkan iritasi kulit, peningkatan produksi lendir, dan gangguan pernapasan.', 'Lakukan pergantian air secara berkala, kurangi kepadatan tebar, serta lakukan perendaman menggunakan larutan garam atau formalin sesuai dosis dan anjuran pakar.', 'Menjaga kualitas air kolam, melakukan pergantian air secara berkala, mengurangi kepadatan tebar, serta menghindari penumpukan bahan organik pada dasar kolam.'),
+('P02', 'Branchiomycosis (Busuk Insang)', 'Infeksi jamur Branchiomyces sp. pada jaringan insang yang menyebabkan kerusakan insang, gangguan pernapasan, dan penurunan kondisi ikan secara umum.', 'Perbaiki kualitas air kolam, tingkatkan aerasi, dan lakukan penanganan menggunakan bahan antijamur sesuai dosis dan rekomendasi pakar.', 'Memastikan sirkulasi dan aerasi air berjalan baik, menjaga kebersihan kolam, serta menghindari penurunan kadar oksigen terlarut.'),
+('P03', 'Cacing Insang Dactylogyriasis (Gill Fluke Disease)', 'Infestasi cacing monogenea Dactylogyrus sp. pada insang yang menyebabkan kerusakan jaringan insang, produksi lendir berlebih, gangguan pernapasan, dan penurunan kondisi ikan secara umum.', 'Lakukan perendaman menggunakan larutan garam atau formalin sesuai dosis yang dianjurkan, serta kurangi penumpukan lumpur dan bahan organik pada kolam.', 'Menjaga kebersihan kolam, mengurangi kepadatan ikan, dan melakukan karantina terhadap benih baru sebelum ditebar.'),
+('P04', 'Cacing Kulit Gyrodactylosis (Skin Fluke Disease)', 'Infestasi parasit Gyrodactylus sp. pada permukaan kulit ikan yang menyebabkan iritasi, peningkatan produksi lendir, luka, dan peradangan pada kulit.', 'Tingkatkan kualitas air dan kadar oksigen terlarut, serta lakukan perendaman menggunakan larutan garam atau bahan antiparasit sesuai anjuran pakar.', 'Menjaga kualitas air dan kadar oksigen terlarut, menghindari kepadatan tebar berlebihan, serta melakukan pemeriksaan kesehatan ikan secara berkala.'),
+('P05', 'Penyakit Streptococcus (Streptococcal Disease)', 'Infeksi bakteri Streptococcus sp. yang menyerang sistem saraf dan organ dalam ikan nila sehingga dapat menyebabkan gangguan keseimbangan berenang dan tingkat mortalitas yang tinggi.', 'Pisahkan ikan yang sakit, jaga kualitas air dan suhu kolam tetap stabil, serta lakukan pengobatan menggunakan antibiotik sesuai rekomendasi tenaga ahli atau pakar perikanan.', 'Menjaga kualitas air dan kadar oksigen terlarut tetap stabil, menghindari stres pada ikan, memberikan pakan berkualitas, serta meminimalkan fluktuasi suhu yang ekstrem.'),
+('P06', 'Jamur Kapas (Saprolegniasis)', 'Infeksi jamur Saprolegnia sp. pada luka terbuka atau jaringan yang mengalami stres, ditandai dengan pertumbuhan miselium menyerupai kapas pada tubuh ikan.', 'Buang ikan yang mati, bersihkan kolam secara rutin, dan lakukan perendaman menggunakan larutan garam atau bahan antijamur sesuai dosis yang dianjurkan.', 'Menghindari luka pada tubuh ikan, segera memisahkan ikan yang sakit, menjaga kebersihan kolam dan peralatan budidaya, serta menerapkan biosekuriti.'),
+('P07', 'Cacing Jangkar (Lerneosis)', 'Infestasi parasit Lernaea cyprinacea yang menancapkan diri pada permukaan tubuh ikan sehingga menimbulkan luka, peradangan, dan infeksi sekunder.', 'Parasit yang menempel dapat diangkat secara hati-hati, kemudian dilakukan perendaman menggunakan bahan desinfektan atau larutan garam sesuai rekomendasi pakar.', 'Melakukan karantina ikan baru, menjaga kualitas air, serta membersihkan kolam dan peralatan secara rutin.'),
+('P08', 'Virus Tilapia Lake (TiLV Disease)', 'Infeksi Tilapia Lake Virus (TiLV) yang menyebabkan penurunan kondisi tubuh, gangguan pertumbuhan, dan kematian massal pada ikan nila, serta hingga saat ini belum tersedia pengobatan spesifik.', 'Hingga saat ini belum tersedia pengobatan spesifik. Penanganan dilakukan melalui karantina ikan sakit, peningkatan biosekuriti kolam, pengurangan stres, dan pembuangan ikan mati secara cepat untuk mencegah penyebaran penyakit.', 'Menerapkan biosekuriti, menggunakan benih sehat, menghindari perpindahan ikan tanpa karantina, serta segera membuang ikan yang mati.'),
+('P09', 'Penyakit Columnaris (Columnariasis)', 'Infeksi bakteri Flavobacterium columnare yang menyerang kulit, insang, dan sirip ikan serta dapat menyebabkan erosi jaringan dan kerusakan progresif pada tubuh ikan.', 'Tingkatkan kualitas air, kurangi kepadatan tebar, dan lakukan pengobatan sesuai anjuran pakar untuk menghambat perkembangan infeksi bakteri.', 'Menjaga kualitas air dan kadar oksigen terlarut, mencegah luka fisik pada ikan, serta menghindari kepadatan tebar yang terlalu tinggi.'),
+('P10', 'Bintik Putih (White Spot Disease / Ichthyophthiriasis)', 'Infeksi protozoa Ichthyophthirius multifiliis yang sangat menular dan ditandai dengan munculnya bintik-bintik putih pada tubuh, sirip, dan insang ikan.', 'Lakukan perendaman menggunakan formalin atau bahan antiparasit sesuai dosis yang dianjurkan serta jaga kualitas air dan suhu kolam agar tetap stabil.', 'Menjaga kualitas air dan suhu kolam tetap stabil, menghindari stres, serta melakukan karantina ikan baru.'),
+('P11', 'Luka Merah (Aeromoniasis)', 'Infeksi bakteri Aeromonas hydrophila yang menyebabkan pendarahan, peradangan, dan terbentuknya luka borok pada permukaan tubuh ikan nila.', 'Jaga kebersihan kolam, lakukan pergantian air secara rutin, serta lakukan pengobatan menggunakan antibiotik sesuai rekomendasi pakar dan ketentuan yang berlaku.', 'Menjaga kebersihan kolam, menghindari penumpukan sisa pakan, melakukan pergantian air secara rutin, serta meminimalkan stres pada ikan.'),
+('P12', 'Penyakit Pseudomonas (Pseudomoniasis)', 'Infeksi bakteri Pseudomonas sp. yang dapat menyebabkan nekrosis jaringan, pendarahan pada tubuh, serta penurunan kondisi kesehatan ikan secara umum.', 'Pisahkan ikan yang terinfeksi, perbaiki kualitas air, dan lakukan pengobatan sesuai rekomendasi pakar atau tenaga kesehatan perikanan.', 'Menjaga kualitas air tetap baik, menghindari luka pada tubuh ikan, serta melakukan sanitasi kolam dan peralatan budidaya secara rutin.'),
+('P13', 'Epistylosis', 'penyakit', 'PH air', 'Hati-hati');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indeks untuk tabel `tbl_admin`
+--
+ALTER TABLE `tbl_admin`
+  ADD PRIMARY KEY (`id_admin`);
+
+--
+-- Indeks untuk tabel `tbl_aturan`
+--
+ALTER TABLE `tbl_aturan`
+  ADD PRIMARY KEY (`id_aturan`),
+  ADD KEY `kode_penyakit` (`kode_penyakit`),
+  ADD KEY `kode_gejala` (`kode_gejala`);
+
+--
+-- Indeks untuk tabel `tbl_diagnosa`
+--
+ALTER TABLE `tbl_diagnosa`
+  ADD PRIMARY KEY (`id_diagnosa`),
+  ADD KEY `hasil_penyakit` (`hasil_penyakit`),
+  ADD KEY `fk_diagnosa_admin` (`id_admin`);
+
+--
+-- Indeks untuk tabel `tbl_diagnosa_detail`
+--
+ALTER TABLE `tbl_diagnosa_detail`
+  ADD PRIMARY KEY (`id_detail`),
+  ADD KEY `kode_gejala` (`kode_gejala`);
+
+--
+-- Indeks untuk tabel `tbl_gejala`
+--
+ALTER TABLE `tbl_gejala`
+  ADD PRIMARY KEY (`kode_gejala`),
+  ADD KEY `kode_gejala` (`kode_gejala`);
+
+--
+-- Indeks untuk tabel `tbl_penyakit`
+--
+ALTER TABLE `tbl_penyakit`
+  ADD PRIMARY KEY (`kode_penyakit`),
+  ADD KEY `kode_penyakit` (`kode_penyakit`);
+
+--
+-- AUTO_INCREMENT untuk tabel yang dibuang
+--
+
+--
+-- AUTO_INCREMENT untuk tabel `tbl_admin`
+--
+ALTER TABLE `tbl_admin`
+  MODIFY `id_admin` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT untuk tabel `tbl_aturan`
+--
+ALTER TABLE `tbl_aturan`
+  MODIFY `id_aturan` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
+
+--
+-- AUTO_INCREMENT untuk tabel `tbl_diagnosa`
+--
+ALTER TABLE `tbl_diagnosa`
+  MODIFY `id_diagnosa` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT untuk tabel `tbl_diagnosa_detail`
+--
+ALTER TABLE `tbl_diagnosa_detail`
+  MODIFY `id_detail` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+
+--
+-- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
+--
+
+--
+-- Ketidakleluasaan untuk tabel `tbl_aturan`
+--
+ALTER TABLE `tbl_aturan`
+  ADD CONSTRAINT `tbl_aturan_ibfk_1` FOREIGN KEY (`kode_penyakit`) REFERENCES `tbl_penyakit` (`kode_penyakit`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `tbl_aturan_ibfk_2` FOREIGN KEY (`kode_gejala`) REFERENCES `tbl_gejala` (`kode_gejala`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Ketidakleluasaan untuk tabel `tbl_diagnosa`
+--
+ALTER TABLE `tbl_diagnosa`
+  ADD CONSTRAINT `fk_diagnosa_admin` FOREIGN KEY (`id_admin`) REFERENCES `tbl_admin` (`id_admin`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `tbl_diagnosa_ibfk_2` FOREIGN KEY (`hasil_penyakit`) REFERENCES `tbl_penyakit` (`kode_penyakit`) ON UPDATE CASCADE;
+
+--
+-- Ketidakleluasaan untuk tabel `tbl_diagnosa_detail`
+--
+ALTER TABLE `tbl_diagnosa_detail`
+  ADD CONSTRAINT `tbl_diagnosa_detail_ibfk_2` FOREIGN KEY (`kode_gejala`) REFERENCES `tbl_gejala` (`kode_gejala`) ON DELETE CASCADE ON UPDATE CASCADE;
+COMMIT;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40111 SET SQL_NOTES=IFNULL(@OLD_SQL_NOTES, 1) */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
