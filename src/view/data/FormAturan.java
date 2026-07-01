@@ -33,6 +33,13 @@ public class FormAturan extends javax.swing.JFrame {
     
     public FormAturan() {
         initComponents();
+        try {
+            java.awt.Image icon = javax.imageio.ImageIO.read(getClass().getResource("/icon/logo2.png"));
+            setIconImage(icon);
+        } catch (Exception e) {
+            System.out.println("Gagal load icon: " + e.getMessage());
+        }
+        
         aturFormatTabel();
         
         if (koneksi.Session.namaAdmin == null || koneksi.Session.namaAdmin.equals("")) {
@@ -61,43 +68,31 @@ public class FormAturan extends javax.swing.JFrame {
     
     private void aturFormatTabel() {
         tblAturan.setRowHeight(70); 
-        
-        // ========================================================
-        // KODINGAN PEMAKSA MUNCULIN GARIS VERTIKAL (ANTAR KOLOM)
-        // ========================================================
         tblAturan.setShowGrid(true); 
         tblAturan.setShowVerticalLines(true);   
         tblAturan.setShowHorizontalLines(true); 
         tblAturan.setGridColor(new java.awt.Color(153, 153, 153)); 
         tblAturan.setIntercellSpacing(new java.awt.Dimension(1, 1)); 
-        // ========================================================
 
-        if (tblAturan.getColumnCount() == 5) {
+        if (tblAturan.getColumnCount() == 6) {
             javax.swing.table.TableColumnModel cm = tblAturan.getColumnModel();
             
-            // 1. Atur Lebar Kolom
-            cm.getColumn(0).setPreferredWidth(40);  // No
-            cm.getColumn(1).setPreferredWidth(80);  // Kode Rule
-            cm.getColumn(2).setPreferredWidth(200); // Penyakit
-            cm.getColumn(3).setPreferredWidth(400); // Gejala (Paling Lebar)
-            cm.getColumn(4).setPreferredWidth(100); // Bobot CF
+            cm.getColumn(0).setPreferredWidth(40); 
+            cm.getColumn(1).setPreferredWidth(80); 
+            cm.getColumn(2).setPreferredWidth(200);
+            cm.getColumn(3).setPreferredWidth(300);
+            cm.getColumn(4).setPreferredWidth(80);
+            cm.getColumn(5).setPreferredWidth(80);
             
-            // ====================================================
-            // 2. YANG KURANG: PASANG SIHIR WORD WRAP (TURUN KE BAWAH)
-            // ====================================================
-            // Terapin ke kolom Penyakit dan Gejala
             cm.getColumn(2).setCellRenderer(new MultiLineCellRenderer()); 
             cm.getColumn(3).setCellRenderer(new MultiLineCellRenderer()); 
-            
-            // ====================================================
-            // 3. YANG KURANG: PASANG SIHIR RATA TENGAH (CENTER)
-            // ====================================================
-            // Terapin ke kolom No, Kode Rule, dan Bobot CF
+
             javax.swing.table.DefaultTableCellRenderer centerRenderer = new javax.swing.table.DefaultTableCellRenderer();
             centerRenderer.setHorizontalAlignment(javax.swing.JLabel.CENTER);
             cm.getColumn(0).setCellRenderer(centerRenderer);
             cm.getColumn(1).setCellRenderer(centerRenderer);
             cm.getColumn(4).setCellRenderer(centerRenderer);
+            cm.getColumn(5).setCellRenderer(centerRenderer);
         }
     }
     
@@ -109,6 +104,7 @@ public class FormAturan extends javax.swing.JFrame {
         btnDiagnosa.setBackground(colorNormal);
         btnRiwayat.setBackground(colorNormal);
         btnLaporan.setBackground(colorNormal);
+        btnDataAdmin.setBackground(colorNormal);
         activePanel.setBackground(colorActive);
     }
     
@@ -147,7 +143,8 @@ public class FormAturan extends javax.swing.JFrame {
                     rs.getString("id_aturan"),   
                     rs.getString("kode_penyakit"), 
                     rs.getString("kode_gejala"),   
-                    rs.getString("cf_pakar")
+                    rs.getString("nilai_mb"),
+                    rs.getString("nilai_md")
                 });
             }
         } catch (Exception e) {
@@ -166,11 +163,7 @@ public class FormAturan extends javax.swing.JFrame {
 
         sidebar = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        jLabel13 = new javax.swing.JLabel();
-        jLabel12 = new javax.swing.JLabel();
-        jLabel14 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
+        jLabel19 = new javax.swing.JLabel();
         jPanel9 = new javax.swing.JPanel();
         btnDashboard = new javax.swing.JPanel();
         lblDashboard = new javax.swing.JLabel();
@@ -190,6 +183,8 @@ public class FormAturan extends javax.swing.JFrame {
         btnLaporan = new javax.swing.JPanel();
         lblCetak = new javax.swing.JLabel();
         jPanel13 = new javax.swing.JPanel();
+        btnDataAdmin = new javax.swing.JPanel();
+        lblKeluar3 = new javax.swing.JLabel();
         btnLogout = new javax.swing.JPanel();
         lblKeluar = new javax.swing.JLabel();
         pn_kanan = new javax.swing.JPanel();
@@ -207,6 +202,7 @@ public class FormAturan extends javax.swing.JFrame {
         btnTambah = new javax.swing.JButton();
         btnHapus = new javax.swing.JButton();
         btnEdit = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -217,52 +213,20 @@ public class FormAturan extends javax.swing.JFrame {
         jPanel2.setBackground(new java.awt.Color(81, 226, 245));
         jPanel2.setPreferredSize(new java.awt.Dimension(250, 130));
 
-        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/fish.png"))); // NOI18N
-
-        jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/farmer.png"))); // NOI18N
-
-        jLabel14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/kolam.png"))); // NOI18N
-
-        jLabel2.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
-        jLabel2.setText("SISTEM PAKAR");
-
-        jLabel1.setFont(new java.awt.Font("SansSerif", 1, 20)); // NOI18N
-        jLabel1.setText("IKAN NILA");
+        jLabel19.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/LogoDua.png"))); // NOI18N
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel13)
-                .addGap(36, 36, 36)
-                .addComponent(jLabel12)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel14)
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel2)
-                .addGap(34, 34, 34))
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(75, 75, 75)
-                .addComponent(jLabel1)
+                .addGap(51, 51, 51)
+                .addComponent(jLabel19)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(7, 7, 7)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel14)
-                    .addComponent(jLabel12)
-                    .addComponent(jLabel13))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jLabel19, javax.swing.GroupLayout.Alignment.TRAILING)
         );
 
         jPanel9.setBackground(new java.awt.Color(81, 226, 245));
@@ -591,6 +555,40 @@ public class FormAturan extends javax.swing.JFrame {
         jPanel13.setBackground(new java.awt.Color(81, 226, 245));
         jPanel13.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "SISTEM", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
 
+        btnDataAdmin.setBackground(new java.awt.Color(255, 255, 255));
+        btnDataAdmin.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnDataAdmin.setPreferredSize(new java.awt.Dimension(130, 50));
+        btnDataAdmin.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnDataAdminMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnDataAdminMouseExited(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                btnDataAdminMousePressed(evt);
+            }
+        });
+
+        lblKeluar3.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        lblKeluar3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblKeluar3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/farmer.png"))); // NOI18N
+        lblKeluar3.setText("ADMIN");
+
+        javax.swing.GroupLayout btnDataAdminLayout = new javax.swing.GroupLayout(btnDataAdmin);
+        btnDataAdmin.setLayout(btnDataAdminLayout);
+        btnDataAdminLayout.setHorizontalGroup(
+            btnDataAdminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(btnDataAdminLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblKeluar3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        btnDataAdminLayout.setVerticalGroup(
+            btnDataAdminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(lblKeluar3, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
+        );
+
         btnLogout.setBackground(new java.awt.Color(255, 255, 255));
         btnLogout.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnLogout.setPreferredSize(new java.awt.Dimension(130, 50));
@@ -621,21 +619,23 @@ public class FormAturan extends javax.swing.JFrame {
         );
         btnLogoutLayout.setVerticalGroup(
             btnLogoutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(btnLogoutLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblKeluar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(lblKeluar, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
         jPanel13.setLayout(jPanel13Layout);
         jPanel13Layout.setHorizontalGroup(
             jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(btnDataAdmin, javax.swing.GroupLayout.DEFAULT_SIZE, 218, Short.MAX_VALUE)
             .addComponent(btnLogout, javax.swing.GroupLayout.DEFAULT_SIZE, 218, Short.MAX_VALUE)
         );
         jPanel13Layout.setVerticalGroup(
             jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(btnLogout, javax.swing.GroupLayout.DEFAULT_SIZE, 58, Short.MAX_VALUE)
+            .addGroup(jPanel13Layout.createSequentialGroup()
+                .addComponent(btnDataAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 4, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout sidebarLayout = new javax.swing.GroupLayout(sidebar);
@@ -643,12 +643,10 @@ public class FormAturan extends javax.swing.JFrame {
         sidebarLayout.setHorizontalGroup(
             sidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 254, Short.MAX_VALUE)
-            .addGroup(sidebarLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, sidebarLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(sidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, sidebarLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel9, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -658,7 +656,7 @@ public class FormAturan extends javax.swing.JFrame {
         sidebarLayout.setVerticalGroup(
             sidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(sidebarLayout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -669,7 +667,7 @@ public class FormAturan extends javax.swing.JFrame {
                 .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         getContentPane().add(sidebar, java.awt.BorderLayout.LINE_START);
@@ -684,6 +682,12 @@ public class FormAturan extends javax.swing.JFrame {
 
         lblAdmin.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         lblAdmin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/user.png"))); // NOI18N
+        lblAdmin.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblAdmin.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblAdminMouseClicked(evt);
+            }
+        });
 
         jLabel11.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
         jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -697,7 +701,7 @@ public class FormAturan extends javax.swing.JFrame {
                 .addGap(21, 21, 21)
                 .addComponent(lblJam, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, 776, Short.MAX_VALUE)
+                .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, 950, Short.MAX_VALUE)
                 .addGap(91, 91, 91)
                 .addComponent(lblAdmin)
                 .addGap(21, 21, 21))
@@ -716,28 +720,28 @@ public class FormAturan extends javax.swing.JFrame {
 
         pn_kanan.add(jPanel1, java.awt.BorderLayout.PAGE_START);
 
-        pn_dasar.setBackground(new java.awt.Color(255, 153, 200));
+        pn_dasar.setBackground(new java.awt.Color(253, 252, 220));
 
-        jPanel4.setBackground(new java.awt.Color(251, 248, 204));
+        jPanel4.setBackground(new java.awt.Color(202, 240, 248));
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createMatteBorder(2, 1, 2, 1, new java.awt.Color(0, 0, 0)), "TABEL DATA ATURAN", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 3, 18))); // NOI18N
 
         tblAturan.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         tblAturan.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "No", "ID Aturan", "Data Penyakit", "Gejala Terkait", "Nilai CF Pakar"
+                "No", "ID Aturan", "Data Penyakit", "Gejala Terkait", "Nilai MB", "Nilai MD"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, true
+                false, false, false, false, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -843,9 +847,9 @@ public class FormAturan extends javax.swing.JFrame {
                         .addGap(89, 89, 89)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addComponent(btnHapus, javax.swing.GroupLayout.DEFAULT_SIZE, 194, Short.MAX_VALUE)
+                                .addComponent(btnHapus, javax.swing.GroupLayout.DEFAULT_SIZE, 281, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnEdit, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE))
+                                .addComponent(btnEdit, javax.swing.GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE))
                             .addComponent(btnTambah, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addGap(20, 20, 20))
         );
@@ -862,9 +866,13 @@ public class FormAturan extends javax.swing.JFrame {
                     .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnCetak, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 475, Short.MAX_VALUE)
-                .addGap(20, 20, 20))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 529, Short.MAX_VALUE)
+                .addContainerGap())
         );
+
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
+        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel6.setText("copyright © Skripsi Teknik Informatika | Naufal Rafif (202243501684)");
 
         javax.swing.GroupLayout pn_dasarLayout = new javax.swing.GroupLayout(pn_dasar);
         pn_dasar.setLayout(pn_dasarLayout);
@@ -872,15 +880,21 @@ public class FormAturan extends javax.swing.JFrame {
             pn_dasarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pn_dasarLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(15, 15, 15))
+                .addGroup(pn_dasarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pn_dasarLayout.createSequentialGroup()
+                        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(15, 15, 15))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pn_dasarLayout.createSequentialGroup()
+                        .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())))
         );
         pn_dasarLayout.setVerticalGroup(
             pn_dasarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pn_dasarLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(20, 20, 20))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel6))
         );
 
         pn_kanan.add(pn_dasar, java.awt.BorderLayout.CENTER);
@@ -942,6 +956,9 @@ public class FormAturan extends javax.swing.JFrame {
 
     private void btnPenyakitMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPenyakitMousePressed
         switchWarna(btnPenyakit);
+        FormPenyakit formP = new FormPenyakit();
+        formP.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnPenyakitMousePressed
 
     private void btnAturanMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAturanMouseEntered
@@ -1132,15 +1149,14 @@ public class FormAturan extends javax.swing.JFrame {
             return;
         }
 
-        // Ambil data dari tabel
         String id_aturan = tblAturan.getValueAt(baris, 1).toString();
         String penyakit = tblAturan.getValueAt(baris, 2).toString();
         String gejala = tblAturan.getValueAt(baris, 3).toString();
-        String nilai_cf = tblAturan.getValueAt(baris, 4).toString();
+        String nilai_mb = tblAturan.getValueAt(baris, 4).toString();
+        String nilai_md = tblAturan.getValueAt(baris, 5).toString();
 
-        // Panggil Dialog Aturan
         view.dialog.DialogAturan popUp = new view.dialog.DialogAturan(this, true);
-        popUp.modeEdit(id_aturan, penyakit, gejala, nilai_cf);
+        popUp.modeEdit(id_aturan, penyakit, gejala, nilai_mb, nilai_md);
         popUp.setVisible(true);
         tampilData("");
     }//GEN-LAST:event_btnEditActionPerformed
@@ -1152,9 +1168,48 @@ public class FormAturan extends javax.swing.JFrame {
             this.dispose(); 
             return; 
         }
-        
-        // TODO add your handling code here:
+        try {
+            String path = "src/report/laporanaturan.jasper"; 
+            java.io.File file = new java.io.File(path);
+
+            java.util.HashMap<String, Object> parameter = new java.util.HashMap<>();
+            parameter.put("ADMIN", koneksi.Session.namaAdmin); 
+            net.sf.jasperreports.engine.JasperPrint print = net.sf.jasperreports.engine.JasperFillManager.fillReport(
+                file.getPath(), 
+                parameter, 
+                koneksi.KoneksiDB.getKoneksi()
+            );
+            net.sf.jasperreports.view.JasperViewer.viewReport(print, false);
+
+        } catch (Exception e) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Gagal mencetak Laporan Basis Aturan: " + e.getMessage());
+        }
     }//GEN-LAST:event_btnCetakActionPerformed
+
+    private void btnDataAdminMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDataAdminMouseEntered
+        if (btnDataAdmin.getBackground().equals(colorNormal)) {
+            btnDataAdmin.setBackground(colorHover);
+        }
+    }//GEN-LAST:event_btnDataAdminMouseEntered
+
+    private void btnDataAdminMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDataAdminMouseExited
+        if (btnDataAdmin.getBackground().equals(colorHover)) {
+            btnDataAdmin.setBackground(colorNormal);
+        }
+    }//GEN-LAST:event_btnDataAdminMouseExited
+
+    private void btnDataAdminMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDataAdminMousePressed
+        switchWarna(btnDataAdmin);
+        view.main.FormAdmin formA = new view.main.FormAdmin();
+        formA.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnDataAdminMousePressed
+
+    private void lblAdminMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAdminMouseClicked
+        view.main.FormAdmin formA = new view.main.FormAdmin();
+        formA.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_lblAdminMouseClicked
 
     /**
      * @param args the command line arguments
@@ -1221,6 +1276,7 @@ public class FormAturan extends javax.swing.JFrame {
     private javax.swing.JButton btnCari;
     private javax.swing.JButton btnCetak;
     private javax.swing.JPanel btnDashboard;
+    private javax.swing.JPanel btnDataAdmin;
     private javax.swing.JPanel btnDiagnosa;
     private javax.swing.JButton btnEdit;
     private javax.swing.JPanel btnGejala;
@@ -1230,12 +1286,9 @@ public class FormAturan extends javax.swing.JFrame {
     private javax.swing.JPanel btnPenyakit;
     private javax.swing.JPanel btnRiwayat;
     private javax.swing.JButton btnTambah;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel19;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
@@ -1253,6 +1306,7 @@ public class FormAturan extends javax.swing.JFrame {
     private javax.swing.JLabel lblGejala;
     private javax.swing.JLabel lblJam;
     private javax.swing.JLabel lblKeluar;
+    private javax.swing.JLabel lblKeluar3;
     private javax.swing.JLabel lblPenyakit;
     private javax.swing.JLabel lblRiwayat;
     private javax.swing.JPanel pn_dasar;

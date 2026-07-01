@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import koneksi.KoneksiDB;
 
 /**
@@ -27,9 +28,18 @@ public class DialogAturan extends javax.swing.JDialog {
     public DialogAturan(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        try {
+            java.awt.Image icon = javax.imageio.ImageIO.read(getClass().getResource("/icon/logo2.png"));
+            setIconImage(icon);
+        } catch (Exception e) {
+            System.out.println("Gagal load icon: " + e.getMessage());
+        }
         this.setLocationRelativeTo(parent);
+        
         tampilCmbPenyakit();
-        tampilCmbGejala();
+        tampilTabelGejala();
+        setupComboBoxDiTabel();
+        rapihkanTabel();
     }
     
     private void tampilCmbPenyakit() {
@@ -47,34 +57,81 @@ public class DialogAturan extends javax.swing.JDialog {
         }
     }
 
-    private void tampilCmbGejala() {
+    private void tampilTabelGejala() {
+        DefaultTableModel model = (DefaultTableModel) tabelGejala.getModel();
+        model.setRowCount(0);
         try {
-            cmbGejala.removeAllItems();
-            cmbGejala.addItem("-- Pilih Gejala Terkait --");
             Connection con = KoneksiDB.getKoneksi();
             Statement st = con.createStatement();
             ResultSet rs = st.executeQuery("SELECT * FROM tbl_gejala ORDER BY kode_gejala ASC");
             while (rs.next()) {
-                cmbGejala.addItem("[" + rs.getString("kode_gejala") + "] " + rs.getString("nama_gejala")); 
+                model.addRow(new Object[]{
+                    false, 
+                    rs.getString("kode_gejala"), 
+                    rs.getString("nama_gejala"), 
+                    "0.0",
+                    "0.0"
+                }); 
             }
         } catch (Exception e) {
-            System.out.println("Error Load Cmb Gejala: " + e.getMessage());
+            System.out.println("Error Load Tabel Gejala: " + e.getMessage());
         }
     }
 
     public void modeTambah() {
         this.isEdit = false;
         cmbPenyakit.setSelectedIndex(0);
-        cmbGejala.setSelectedIndex(0);
-        txtCF.setText("");
+        tampilCmbPenyakit();
+        tampilTabelGejala();
+        setupComboBoxDiTabel();
+    }
+    
+    private void setupComboBoxDiTabel() {
+        javax.swing.JComboBox<String> cmbNilaiCF = new javax.swing.JComboBox<>();
+        cmbNilaiCF.addItem("0.0");
+        cmbNilaiCF.addItem("0.1");
+        cmbNilaiCF.addItem("0.2");
+        cmbNilaiCF.addItem("0.3");
+        cmbNilaiCF.addItem("0.4");
+        cmbNilaiCF.addItem("0.5");
+        cmbNilaiCF.addItem("0.6");
+        cmbNilaiCF.addItem("0.7");
+        cmbNilaiCF.addItem("0.8");
+        cmbNilaiCF.addItem("0.9");
+        cmbNilaiCF.addItem("1.0");
+
+        javax.swing.table.TableColumn kolomMB = tabelGejala.getColumnModel().getColumn(3);
+        kolomMB.setCellEditor(new javax.swing.DefaultCellEditor(cmbNilaiCF));
+        javax.swing.table.TableColumn kolomMD = tabelGejala.getColumnModel().getColumn(4);
+        kolomMD.setCellEditor(new javax.swing.DefaultCellEditor(cmbNilaiCF));
+    }
+    
+    private void rapihkanTabel() {
+        tabelGejala.setRowHeight(30);
+        javax.swing.table.TableColumnModel kolomModel = tabelGejala.getColumnModel();
+        kolomModel.getColumn(0).setPreferredWidth(50);
+        kolomModel.getColumn(0).setMaxWidth(50);
+        kolomModel.getColumn(1).setPreferredWidth(80);
+        kolomModel.getColumn(1).setMaxWidth(80);
+        kolomModel.getColumn(2).setPreferredWidth(450);
+        kolomModel.getColumn(3).setPreferredWidth(80);
+        kolomModel.getColumn(3).setMaxWidth(80);
+        kolomModel.getColumn(4).setPreferredWidth(80);
+        kolomModel.getColumn(4).setMaxWidth(80);
     }
 
-    public void modeEdit(String id_aturan, String penyakit, String gejala, String cf) {
+    public void modeEdit(String id_aturan, String penyakit, String kodeGejala, String mb, String md) {
         this.isEdit = true;
         this.idAturanEdit = id_aturan;
         cmbPenyakit.setSelectedItem(penyakit);
-        cmbGejala.setSelectedItem(gejala);
-        txtCF.setText(cf);
+        for(int i=0; i<tabelGejala.getRowCount(); i++) {
+            if(tabelGejala.getValueAt(i, 1).toString().equals(kodeGejala)) {
+                tabelGejala.setValueAt(true, i, 0);
+                tabelGejala.setValueAt(mb, i, 3);
+                tabelGejala.setValueAt(md, i, 4);
+                break;
+            }
+        }
     }
 
     /**
@@ -91,13 +148,12 @@ public class DialogAturan extends javax.swing.JDialog {
         jLabel3 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
         cmbPenyakit = new javax.swing.JComboBox<>();
-        cmbGejala = new javax.swing.JComboBox<>();
-        jLabel2 = new javax.swing.JLabel();
-        txtCF = new javax.swing.JTextField();
         btnSimpan = new javax.swing.JButton();
         btnBatal = new javax.swing.JButton();
+        jPanel4 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tabelGejala = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -115,7 +171,7 @@ public class DialogAturan extends javax.swing.JDialog {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 1210, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -131,31 +187,10 @@ public class DialogAturan extends javax.swing.JDialog {
         jLabel5.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jLabel5.setText("Pilih Penyakit");
 
-        jLabel6.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jLabel6.setText("Pilih Gejala Terkait");
-
         cmbPenyakit.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         cmbPenyakit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmbPenyakitActionPerformed(evt);
-            }
-        });
-
-        cmbGejala.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        cmbGejala.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmbGejalaActionPerformed(evt);
-            }
-        });
-
-        jLabel2.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jLabel2.setText("Nilai CF Pakar (0.0 - 1.0)");
-
-        txtCF.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        txtCF.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
-        txtCF.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtCFActionPerformed(evt);
             }
         });
 
@@ -181,27 +216,66 @@ public class DialogAturan extends javax.swing.JDialog {
             }
         });
 
+        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "DAFTAR GEJALA", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 16))); // NOI18N
+
+        tabelGejala.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "Pilih", "Kode Gejala", "Nama Gejala", "Nilai MB", "Nilai MD"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Boolean.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                true, false, false, true, true
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tabelGejala);
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1)
+                .addContainerGap())
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 365, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+            .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnSimpan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(cmbPenyakit, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 226, Short.MAX_VALUE)
-                        .addGap(271, 271, 271))
-                    .addComponent(cmbGejala, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(238, 238, 238))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(cmbPenyakit, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel5)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(txtCF, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnBatal, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnSimpan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnBatal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -209,16 +283,10 @@ public class DialogAturan extends javax.swing.JDialog {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cmbPenyakit, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cmbPenyakit, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cmbGejala, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel2)
+                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtCF, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
                 .addComponent(btnSimpan, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnBatal, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -262,14 +330,6 @@ public class DialogAturan extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_cmbPenyakitActionPerformed
 
-    private void cmbGejalaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbGejalaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cmbGejalaActionPerformed
-
-    private void txtCFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCFActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtCFActionPerformed
-
     private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
         if (koneksi.Session.namaAdmin == null || koneksi.Session.namaAdmin.isEmpty()) {
             javax.swing.JOptionPane.showMessageDialog(this, "Akses Ditolak! Anda harus Login terlebih dahulu.", "Peringatan", javax.swing.JOptionPane.WARNING_MESSAGE);
@@ -277,44 +337,60 @@ public class DialogAturan extends javax.swing.JDialog {
             this.dispose(); 
             return; 
         }
-
-        // 1. Validasi Inputan
-        if (cmbPenyakit.getSelectedIndex() == 0 || cmbGejala.getSelectedIndex() == 0) {
-            JOptionPane.showMessageDialog(this, "Silakan pilih Penyakit dan Gejala terlebih dahulu!", "Validasi", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        String nilaiCF = txtCF.getText().trim();
-        if (nilaiCF.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Nilai CF Pakar wajib diisi! Contoh: 0.8", "Validasi", JOptionPane.WARNING_MESSAGE);
+        if (cmbPenyakit.getSelectedIndex() == 0) {
+            JOptionPane.showMessageDialog(this, "Silakan pilih Penyakit terlebih dahulu!", "Validasi", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
         try {
             String getPenyakit = cmbPenyakit.getSelectedItem().toString();
             String kodeP = getPenyakit.substring(1, 4); 
-            String getGejala = cmbGejala.getSelectedItem().toString();
-            String kodeG = getGejala.substring(1, 4);
+            
             Connection con = KoneksiDB.getKoneksi();
-            PreparedStatement pst;
-            if (isEdit == false) {
-                String sql = "INSERT INTO tbl_aturan (kode_penyakit, kode_gejala, nilai_cf) VALUES (?, ?, ?)";
-                pst = con.prepareStatement(sql);
-                pst.setString(1, kodeP);
-                pst.setString(2, kodeG);
-                pst.setString(3, nilaiCF);
-            } else {
-                String sql = "UPDATE tbl_aturan SET kode_penyakit=?, kode_gejala=?, nilai_cf=? WHERE id_aturan=?";
-                pst = con.prepareStatement(sql);
-                pst.setString(1, kodeP);
-                pst.setString(2, kodeG);
-                pst.setString(3, nilaiCF);
-                pst.setString(4, idAturanEdit);
+            boolean adaYgDisimpan = false;
+            for (int i = 0; i < tabelGejala.getRowCount(); i++) {
+                Boolean isChecked = (Boolean) tabelGejala.getValueAt(i, 0);
+                if (isChecked != null && isChecked == true) {
+                    String kodeG = tabelGejala.getValueAt(i, 1).toString();
+                    String nilaiMB = tabelGejala.getValueAt(i, 3).toString();
+                    String nilaiMD = tabelGejala.getValueAt(i, 4).toString();
+                    
+                    double mb = Double.parseDouble(nilaiMB);
+                    double md = Double.parseDouble(nilaiMD);
+                    if (mb < md) {
+                        JOptionPane.showMessageDialog(this, "Gejala " + kodeG + ": Nilai MB harus lebih besar atau sama dengan MD!", "Validasi CF", JOptionPane.WARNING_MESSAGE);
+                        continue; 
+                    }
+                    
+                    PreparedStatement pst;
+                    if (isEdit == false) {
+                        String sql = "INSERT INTO tbl_aturan (kode_penyakit, kode_gejala, nilai_mb, nilai_md) VALUES (?, ?, ?, ?)";
+                        pst = con.prepareStatement(sql);
+                        pst.setString(1, kodeP);
+                        pst.setString(2, kodeG);
+                        pst.setString(3, nilaiMB);
+                        pst.setString(4, nilaiMD);
+                        pst.execute();
+                    } else {
+                        String sql = "UPDATE tbl_aturan SET kode_penyakit=?, kode_gejala=?, nilai_mb=?, nilai_md=? WHERE id_aturan=?";
+                        pst = con.prepareStatement(sql);
+                        pst.setString(1, kodeP);
+                        pst.setString(2, kodeG);
+                        pst.setString(3, nilaiMB);
+                        pst.setString(4, nilaiMD);
+                        pst.setString(5, idAturanEdit);
+                        pst.execute();
+                    }
+                    adaYgDisimpan = true;
+                }
             }
-
-            pst.execute();
-            JOptionPane.showMessageDialog(this, "Basis aturan berhasil disimpan!", "Sukses", JOptionPane.INFORMATION_MESSAGE);
-            this.dispose(); 
+            
+            if(adaYgDisimpan) {
+                JOptionPane.showMessageDialog(this, "Basis aturan Certainty Factor berhasil disimpan!", "Sukses", JOptionPane.INFORMATION_MESSAGE);
+                this.dispose(); 
+            } else {
+                JOptionPane.showMessageDialog(this, "Pilih minimal 1 gejala untuk disimpan!", "Peringatan", JOptionPane.WARNING_MESSAGE);
+            }
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Gagal simpan: " + e.getMessage(), "Error Database", JOptionPane.ERROR_MESSAGE);
@@ -370,15 +446,14 @@ public class DialogAturan extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBatal;
     private javax.swing.JButton btnSimpan;
-    private javax.swing.JComboBox<String> cmbGejala;
     private javax.swing.JComboBox<String> cmbPenyakit;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JTextField txtCF;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tabelGejala;
     // End of variables declaration//GEN-END:variables
 }

@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="963c9301-3efc-4890-a8a7-6c84a4f3f01d">
+	<property name="ireport.zoom" value="1.2100000000000033"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
+	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
+	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
+	<style name="Detail" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman"/>
+	<style name="Row" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style mode="Opaque" backcolor="#F0EFEF"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="ADMIN" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT 
+    a.id_aturan, 
+    a.kode_penyakit, 
+    p.nama_penyakit, 
+    a.kode_gejala, 
+    g.nama_gejala, 
+    a.nilai_mb, 
+    a.nilai_md 
+FROM tbl_aturan a 
+JOIN tbl_penyakit p ON a.kode_penyakit = p.kode_penyakit 
+JOIN tbl_gejala g ON a.kode_gejala = g.kode_gejala]]>
+	</queryString>
+	<field name="id_aturan" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="kode_penyakit" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nama_penyakit" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="kode_gejala" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nama_gejala" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nilai_mb" class="java.lang.Float">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nilai_md" class="java.lang.Float">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="130" splitType="Stretch">
+			<staticText>
+				<reportElement x="100" y="82" width="602" height="44" uuid="6e3001ac-3746-446b-95b3-7cd47c01895a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="15" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Jl. H. Sena, Ragajaya Citayam, Kecamatan Bojonggede, Kabupaten Bogor, Jawa Barat 16920 | Telp: 0852-1010-0139]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Title" x="100" y="2" width="602" height="42" forecolor="#000000" uuid="2056531b-d799-4d16-885e-0d9b43f3be06"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="30" isBold="true"/>
+				</textElement>
+				<text><![CDATA[LAPORAN BASIS ATURAN IKAN NILA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Title" x="100" y="44" width="602" height="38" forecolor="#000000" uuid="4782fa0d-3596-47b9-ad15-49892903feae"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="24" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DZAWIL GARDEN OFFICE FARM]]></text>
+			</staticText>
+			<image>
+				<reportElement x="702" y="0" width="100" height="100" uuid="0c3804a9-f854-4bc5-84ae-de6dff220e6a"/>
+				<imageExpression><![CDATA["C:\\Users\\NAUFAL\\OneDrive\\Dokumen\\NetBeansProjects\\SistemPakarIkanNila\\src/icon/Logo3.png"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="0" y="0" width="100" height="100" uuid="e82012a1-2640-480d-bd17-15652ebdcc16"/>
+				<imageExpression><![CDATA["C:\\Users\\NAUFAL\\OneDrive\\Dokumen\\NetBeansProjects\\SistemPakarIkanNila\\src\\icon\\logo2.png"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="26" splitType="Stretch">
+			<staticText>
+				<reportElement style="Column header" x="0" y="5" width="111" height="18" forecolor="#000000" uuid="c686ec72-d1e7-4bb4-9596-1d3421b0b13c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ID Aturan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="111" y="5" width="181" height="18" forecolor="#000000" uuid="ec28de62-6c0a-4280-a06c-ee0956f7a154"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Penyakit]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="328" y="5" width="251" height="18" forecolor="#000000" uuid="f0887a47-dc4e-47dc-a4a4-f733b46ced37"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Gejala]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="578" y="5" width="111" height="18" forecolor="#000000" uuid="793b5c59-f06c-4e83-8659-e3496d6ce1df"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nilai MB]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="689" y="5" width="111" height="18" forecolor="#000000" uuid="aa97c44d-82a1-440f-af36-38bd1a064ea5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nilai MD]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="2" width="802" height="1" uuid="97ed8995-5d5a-4024-8c39-035a776245d4"/>
+				<graphicElement>
+					<pen lineWidth="2.0" lineStyle="Double"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="0" y="23" width="802" height="1" uuid="b7f9d7f7-5553-4132-93fa-6d242e6159e1"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<frame>
+				<reportElement style="Row" mode="Opaque" x="0" y="0" width="800" height="18" uuid="615b7e19-eb25-44f1-9bc5-3a591f2db629"/>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="111" y="0" width="181" height="18" uuid="ca11f586-2361-412b-9401-2d860783bc43"/>
+					<textElement textAlignment="Justified" verticalAlignment="Middle">
+						<font size="14"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{kode_penyakit} + " - " + $F{nama_penyakit}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="328" y="0" width="251" height="18" uuid="65b38641-5dca-4d3b-80a3-9c57db9a88c7"/>
+					<textElement textAlignment="Justified" verticalAlignment="Middle">
+						<font size="14"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{kode_gejala} + " - " + $F{nama_gejala}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="0" y="0" width="111" height="18" uuid="a4953069-30b3-4431-8c10-085e501f5bac"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="14"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{id_aturan}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="578" y="0" width="111" height="18" uuid="005ba5c1-a042-4cec-bee3-be3c4196ecc0"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="14"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{nilai_mb}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="689" y="0" width="111" height="18" uuid="d0b1362b-91ba-4487-b771-b83c48809d4e"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="14"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{nilai_md}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="25" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="2" width="802" height="1" uuid="d861b8db-d82d-43a2-849b-37c26c533f29"/>
+				<graphicElement>
+					<pen lineWidth="2.0" lineStyle="Double"/>
+				</graphicElement>
+			</line>
+			<textField evaluationTime="Report">
+				<reportElement x="760" y="3" width="40" height="20" uuid="c25eee2f-e9c9-4809-be15-73e46cbc3ded"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="680" y="3" width="80" height="20" uuid="aa744880-8326-4a58-9cb4-083bf0fd0730"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER} + " / "]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="132" splitType="Stretch">
+			<line>
+				<reportElement x="630" y="112" width="172" height="1" uuid="c6076382-5a9c-4e61-8898-d2a87b230481"/>
+			</line>
+			<staticText>
+				<reportElement x="631" y="111" width="171" height="20" uuid="00680148-076c-4952-9dad-f5648ca8df3f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Admin Dzawil Farm]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="631" y="27" width="171" height="20" uuid="b3affb8f-6a80-42d7-bf63-1a549bc39a35"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Dikeluarkan Oleh,]]></text>
+			</staticText>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement style="Column header" x="631" y="3" width="171" height="20" forecolor="#000000" uuid="f9562457-6bd8-43fb-9a61-9cb91b5f10c5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Bojong Gede, " + new java.text.SimpleDateFormat("EEEE, dd MMMM yyyy", new java.util.Locale("id", "ID")).format(new java.util.Date())]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="631" y="91" width="171" height="20" uuid="b9992049-9eea-4f74-996f-1f5ebb746500"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{ADMIN}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="2" width="802" height="1" uuid="c245aef2-6299-4121-8dbd-36359c006883"/>
+				<graphicElement>
+					<pen lineWidth="2.0" lineStyle="Double"/>
+				</graphicElement>
+			</line>
+		</band>
+	</summary>
+</jasperReport>

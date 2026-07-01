@@ -26,6 +26,9 @@ public class FormHasilDiagnosa extends javax.swing.JFrame {
     Color colorNormal = new Color(255, 243, 236);
     Color colorHover = new Color(255, 220, 230);
     Color colorActive = new Color(173, 216, 255);
+    public int idDiagnosaSaatIni;
+    public String kemungkinanLainSaatIni = "-";
+    private String idDiagnosaCetak;
     
     /**
      * Creates new form FormHasilDiagnosa
@@ -33,6 +36,13 @@ public class FormHasilDiagnosa extends javax.swing.JFrame {
     
     public FormHasilDiagnosa() {
         initComponents();
+        try {
+            java.awt.Image icon = javax.imageio.ImageIO.read(getClass().getResource("/icon/logo2.png"));
+            setIconImage(icon);
+        } catch (Exception e) {
+            System.out.println("Gagal load icon: " + e.getMessage());
+        }
+        
         aturFormatTabel();
         if (koneksi.Session.namaAdmin == null || koneksi.Session.namaAdmin.equals("")) {
             javax.swing.JOptionPane.showMessageDialog(this, "Akses Ditolak! Hayo, Anda harus Login terlebih dahulu.", "Peringatan", javax.swing.JOptionPane.WARNING_MESSAGE);
@@ -51,12 +61,46 @@ public class FormHasilDiagnosa extends javax.swing.JFrame {
         }
         String nama = koneksi.Session.namaAdmin;
         String role = koneksi.Session.role;
-        txtNama.setEditable(false);
+        txtKodeSampel.setEditable(false);
         txtPenyakit.setEditable(false);
     }
     
+    public void setGejalaTerpilih(java.util.HashMap<String, Double> inputUser) {
+        javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) tblDetailGejala.getModel();
+        model.setRowCount(0);
+        int no = 1;
+        try {
+            java.sql.Connection con = koneksi.KoneksiDB.getKoneksi();
+            
+            for (String kodeGejala : inputUser.keySet()) {
+                double nilaiCF = inputUser.get(kodeGejala);
+                String teksKondisi = "";
+                
+                if (nilaiCF == 1.0) teksKondisi = "Pasti (1.0)";
+                else if (nilaiCF == 0.8) teksKondisi = "Sangat Yakin (0.8)";
+                else if (nilaiCF == 0.6) teksKondisi = "Yakin (0.6)";
+                else if (nilaiCF == 0.4) teksKondisi = "Cukup Yakin (0.4)";
+                else if (nilaiCF == 0.2) teksKondisi = "Kurang Yakin (0.2)";
+                
+                java.sql.PreparedStatement pst = con.prepareStatement("SELECT nama_gejala FROM tbl_gejala WHERE kode_gejala = ?");
+                pst.setString(1, kodeGejala);
+                java.sql.ResultSet rs = pst.executeQuery();
+                
+                if (rs.next()) {
+                    String namaGejala = rs.getString("nama_gejala");
+                    
+                    String gejalaLengkap = namaGejala + "  [Kondisi: " + teksKondisi + "]";
+                    
+                    model.addRow(new Object[]{no++, kodeGejala, gejalaLengkap});
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error load gejala: " + e.getMessage());
+        }
+    }
+    
    private void aturFormatTabel() {
-        tblDetailGejala.setRowHeight(45); 
+        tblDetailGejala.setRowHeight(60); 
         tblDetailGejala.setShowGrid(true); 
         tblDetailGejala.setShowVerticalLines(true);   
         tblDetailGejala.setShowHorizontalLines(true); 
@@ -78,8 +122,10 @@ public class FormHasilDiagnosa extends javax.swing.JFrame {
         }
     }
     
-    public void tampilkanDetail(String idDiagnosa, String namaPem, String namaPen, String akurasi) {
-        txtNama.setText(namaPem);
+    public void tampilkanDetail(String idDiagnosa, String kodeSampel, String namaPen, String akurasi) {
+        this.idDiagnosaSaatIni = Integer.parseInt(idDiagnosa);
+        this.idDiagnosaCetak = idDiagnosa;
+        txtKodeSampel.setText(kodeSampel); 
         txtPenyakit.setText(namaPen);
  
         String cleanAkurasi = akurasi.replace(" %", "").replace(",", ".");
@@ -100,21 +146,40 @@ public class FormHasilDiagnosa extends javax.swing.JFrame {
         try {
             java.sql.Connection con = koneksi.KoneksiDB.getKoneksi();
 
-            String sqlGejala = "SELECT d.kode_gejala, g.nama_gejala "
-                       + "FROM tbl_diagnosa_detail d "
-                       + "JOIN tbl_gejala g ON d.kode_gejala = g.kode_gejala "
-                       + "WHERE d.id_diagnosa = ?";
-                       
+            String sqlKemungkinan = "SELECT kemungkinan_lain FROM tbl_diagnosa WHERE id_diagnosa = ?";
+            java.sql.PreparedStatement pstKemungkinan = con.prepareStatement(sqlKemungkinan);
+            pstKemungkinan.setString(1, idDiagnosa);
+            java.sql.ResultSet rsKemungkinan = pstKemungkinan.executeQuery();
+            
+            if (rsKemungkinan.next()) {
+                this.kemungkinanLainSaatIni = rsKemungkinan.getString("kemungkinan_lain");
+                if (this.kemungkinanLainSaatIni == null || this.kemungkinanLainSaatIni.isEmpty()) {
+                    this.kemungkinanLainSaatIni = "-";
+                }
+            } else {
+                this.kemungkinanLainSaatIni = "-";
+            }
+
+            String sqlGejala = "SELECT d.kode_gejala, g.nama_gejala, d.kondisi_gejala " 
+                             + "FROM tbl_diagnosa_detail d "
+                             + "JOIN tbl_gejala g ON d.kode_gejala = g.kode_gejala "
+                             + "WHERE d.id_diagnosa = ?";
+                             
             java.sql.PreparedStatement pstGejala = con.prepareStatement(sqlGejala);
             pstGejala.setString(1, idDiagnosa);
             java.sql.ResultSet rsGejala = pstGejala.executeQuery();
             
             int no = 1;
             while(rsGejala.next()) {
+                String kondisiDariDB = rsGejala.getString("kondisi_gejala");
+                if (kondisiDariDB == null) kondisiDariDB = "";
+                
+                String gejalaLengkap = rsGejala.getString("nama_gejala") + "  [Kondisi: " + kondisiDariDB + "]";
+
                 model.addRow(new Object[]{
                     no++,
                     rsGejala.getString("kode_gejala"),
-                    rsGejala.getString("nama_gejala")
+                    gejalaLengkap
                 });
             }
  
@@ -132,6 +197,8 @@ public class FormHasilDiagnosa extends javax.swing.JFrame {
                 txtSolusi.setText("Data solusi tidak ditemukan.");
                 txtPencegahan.setText("Data pencegahan tidak ditemukan.");
             }
+
+            txtKemungkinanLain.setText(kemungkinanLainSaatIni);
             
             aturFormatTabel(); 
             
@@ -148,6 +215,7 @@ public class FormHasilDiagnosa extends javax.swing.JFrame {
         btnDiagnosa.setBackground(colorNormal);
         btnRiwayat.setBackground(colorNormal);
         btnLaporan.setBackground(colorNormal);
+        btnDataAdmin.setBackground(colorNormal);
         activePanel.setBackground(colorActive);
     }
     
@@ -174,11 +242,7 @@ public class FormHasilDiagnosa extends javax.swing.JFrame {
 
         sidebar = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        jLabel13 = new javax.swing.JLabel();
-        jLabel12 = new javax.swing.JLabel();
-        jLabel14 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
+        jLabel19 = new javax.swing.JLabel();
         jPanel9 = new javax.swing.JPanel();
         btnDashboard = new javax.swing.JPanel();
         lblDashboard = new javax.swing.JLabel();
@@ -198,6 +262,8 @@ public class FormHasilDiagnosa extends javax.swing.JFrame {
         btnLaporan = new javax.swing.JPanel();
         lblCetak = new javax.swing.JLabel();
         jPanel13 = new javax.swing.JPanel();
+        btnDataAdmin = new javax.swing.JPanel();
+        lblKeluar2 = new javax.swing.JLabel();
         btnLogout = new javax.swing.JPanel();
         lblKeluar = new javax.swing.JLabel();
         pn_kanan = new javax.swing.JPanel();
@@ -213,7 +279,7 @@ public class FormHasilDiagnosa extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        txtNama = new javax.swing.JTextField();
+        txtKodeSampel = new javax.swing.JTextField();
         txtPenyakit = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         lblAngkaAkurasi = new javax.swing.JLabel();
@@ -228,6 +294,10 @@ public class FormHasilDiagnosa extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        txtKemungkinanLain = new javax.swing.JTextArea();
+        jLabel15 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -238,52 +308,20 @@ public class FormHasilDiagnosa extends javax.swing.JFrame {
         jPanel2.setBackground(new java.awt.Color(202, 240, 248));
         jPanel2.setPreferredSize(new java.awt.Dimension(250, 130));
 
-        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/fish.png"))); // NOI18N
-
-        jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/farmer.png"))); // NOI18N
-
-        jLabel14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/kolam.png"))); // NOI18N
-
-        jLabel2.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
-        jLabel2.setText("SISTEM PAKAR");
-
-        jLabel1.setFont(new java.awt.Font("SansSerif", 1, 20)); // NOI18N
-        jLabel1.setText("IKAN NILA");
+        jLabel19.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/LogoDua.png"))); // NOI18N
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel13)
-                .addGap(36, 36, 36)
-                .addComponent(jLabel12)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel14)
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel2)
-                .addGap(34, 34, 34))
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(75, 75, 75)
-                .addComponent(jLabel1)
+                .addGap(46, 46, 46)
+                .addComponent(jLabel19)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(7, 7, 7)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel14)
-                    .addComponent(jLabel12)
-                    .addComponent(jLabel13))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jLabel19)
         );
 
         jPanel9.setBackground(new java.awt.Color(253, 252, 220));
@@ -612,6 +650,40 @@ public class FormHasilDiagnosa extends javax.swing.JFrame {
         jPanel13.setBackground(new java.awt.Color(253, 252, 220));
         jPanel13.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "SISTEM", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
 
+        btnDataAdmin.setBackground(new java.awt.Color(255, 255, 255));
+        btnDataAdmin.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnDataAdmin.setPreferredSize(new java.awt.Dimension(130, 50));
+        btnDataAdmin.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnDataAdminMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnDataAdminMouseExited(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                btnDataAdminMousePressed(evt);
+            }
+        });
+
+        lblKeluar2.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        lblKeluar2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblKeluar2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/farmer.png"))); // NOI18N
+        lblKeluar2.setText("ADMIN");
+
+        javax.swing.GroupLayout btnDataAdminLayout = new javax.swing.GroupLayout(btnDataAdmin);
+        btnDataAdmin.setLayout(btnDataAdminLayout);
+        btnDataAdminLayout.setHorizontalGroup(
+            btnDataAdminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(btnDataAdminLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblKeluar2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        btnDataAdminLayout.setVerticalGroup(
+            btnDataAdminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(lblKeluar2, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
+        );
+
         btnLogout.setBackground(new java.awt.Color(255, 255, 255));
         btnLogout.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnLogout.setPreferredSize(new java.awt.Dimension(130, 50));
@@ -642,21 +714,22 @@ public class FormHasilDiagnosa extends javax.swing.JFrame {
         );
         btnLogoutLayout.setVerticalGroup(
             btnLogoutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(btnLogoutLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblKeluar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(lblKeluar, javax.swing.GroupLayout.DEFAULT_SIZE, 42, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
         jPanel13.setLayout(jPanel13Layout);
         jPanel13Layout.setHorizontalGroup(
             jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(btnDataAdmin, javax.swing.GroupLayout.DEFAULT_SIZE, 218, Short.MAX_VALUE)
             .addComponent(btnLogout, javax.swing.GroupLayout.DEFAULT_SIZE, 218, Short.MAX_VALUE)
         );
         jPanel13Layout.setVerticalGroup(
             jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(btnLogout, javax.swing.GroupLayout.DEFAULT_SIZE, 58, Short.MAX_VALUE)
+            .addGroup(jPanel13Layout.createSequentialGroup()
+                .addComponent(btnDataAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnLogout, javax.swing.GroupLayout.DEFAULT_SIZE, 42, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout sidebarLayout = new javax.swing.GroupLayout(sidebar);
@@ -664,12 +737,10 @@ public class FormHasilDiagnosa extends javax.swing.JFrame {
         sidebarLayout.setHorizontalGroup(
             sidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 254, Short.MAX_VALUE)
-            .addGroup(sidebarLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, sidebarLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(sidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, sidebarLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel9, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -679,7 +750,7 @@ public class FormHasilDiagnosa extends javax.swing.JFrame {
         sidebarLayout.setVerticalGroup(
             sidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(sidebarLayout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -690,7 +761,7 @@ public class FormHasilDiagnosa extends javax.swing.JFrame {
                 .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(119, Short.MAX_VALUE))
+                .addContainerGap(72, Short.MAX_VALUE))
         );
 
         getContentPane().add(sidebar, java.awt.BorderLayout.LINE_START);
@@ -706,6 +777,12 @@ public class FormHasilDiagnosa extends javax.swing.JFrame {
 
         lblAdmin.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         lblAdmin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/user.png"))); // NOI18N
+        lblAdmin.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblAdmin.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblAdminMouseClicked(evt);
+            }
+        });
 
         jLabel11.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
         jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -719,7 +796,7 @@ public class FormHasilDiagnosa extends javax.swing.JFrame {
                 .addGap(21, 21, 21)
                 .addComponent(lblJam)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, 690, Short.MAX_VALUE)
+                .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, 1038, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(lblAdmin)
                 .addGap(22, 22, 22))
@@ -789,16 +866,16 @@ public class FormHasilDiagnosa extends javax.swing.JFrame {
         jPanel3.setBackground(new java.awt.Color(253, 252, 220));
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel3.setText("Nama Pembudidaya: ");
+        jLabel3.setText("Kode Sampel:");
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel4.setText("Hasil Penyakit:");
 
-        txtNama.setEditable(false);
-        txtNama.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        txtNama.addActionListener(new java.awt.event.ActionListener() {
+        txtKodeSampel.setEditable(false);
+        txtKodeSampel.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        txtKodeSampel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNamaActionPerformed(evt);
+                txtKodeSampelActionPerformed(evt);
             }
         });
 
@@ -814,9 +891,11 @@ public class FormHasilDiagnosa extends javax.swing.JFrame {
         jLabel5.setText("Tingkat Akurasi (CF):");
 
         lblAngkaAkurasi.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        lblAngkaAkurasi.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblAngkaAkurasi.setText("jLabel6");
 
         pbAkurasiDetail.setBackground(new java.awt.Color(204, 255, 204));
+        pbAkurasiDetail.setForeground(new java.awt.Color(204, 255, 204));
         pbAkurasiDetail.setStringPainted(true);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -826,14 +905,13 @@ public class FormHasilDiagnosa extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtNama))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtPenyakit)))
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtKodeSampel, javax.swing.GroupLayout.DEFAULT_SIZE, 301, Short.MAX_VALUE)
+                    .addComponent(txtPenyakit))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addGap(79, 79, 79)
@@ -843,7 +921,7 @@ public class FormHasilDiagnosa extends javax.swing.JFrame {
                         .addGap(42, 42, 42)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(pbAkurasiDetail, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(pbAkurasiDetail, javax.swing.GroupLayout.DEFAULT_SIZE, 603, Short.MAX_VALUE))
                         .addContainerGap())))
         );
         jPanel3Layout.setVerticalGroup(
@@ -853,7 +931,7 @@ public class FormHasilDiagnosa extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtNama, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtKodeSampel, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel3))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -873,9 +951,15 @@ public class FormHasilDiagnosa extends javax.swing.JFrame {
         btnCetak.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/cetak.png"))); // NOI18N
         btnCetak.setText("CETAK HASIL");
         btnCetak.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnCetak.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCetakActionPerformed(evt);
+            }
+        });
 
         txtDeskripsi.setEditable(false);
         txtDeskripsi.setColumns(20);
+        txtDeskripsi.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         txtDeskripsi.setLineWrap(true);
         txtDeskripsi.setRows(5);
         txtDeskripsi.setWrapStyleWord(true);
@@ -883,17 +967,22 @@ public class FormHasilDiagnosa extends javax.swing.JFrame {
 
         txtSolusi.setEditable(false);
         txtSolusi.setColumns(20);
+        txtSolusi.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         txtSolusi.setLineWrap(true);
         txtSolusi.setRows(5);
         txtSolusi.setWrapStyleWord(true);
+        txtSolusi.setPreferredSize(new java.awt.Dimension(280, 114));
         jScrollPane3.setViewportView(txtSolusi);
+        txtSolusi.getAccessibleContext().setAccessibleName("");
 
         txtPencegahan.setEditable(false);
         txtPencegahan.setColumns(20);
+        txtPencegahan.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         txtPencegahan.setLineWrap(true);
         txtPencegahan.setRows(5);
         txtPencegahan.setWrapStyleWord(true);
         jScrollPane4.setViewportView(txtPencegahan);
+        txtPencegahan.getAccessibleContext().setAccessibleDescription("");
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         jLabel6.setText("Deskripsi");
@@ -904,6 +993,14 @@ public class FormHasilDiagnosa extends javax.swing.JFrame {
         jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         jLabel8.setText("Pencegahan");
 
+        jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        jLabel9.setText("Kemungkinan Penyakit Lainnya");
+
+        txtKemungkinanLain.setColumns(20);
+        txtKemungkinanLain.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        txtKemungkinanLain.setRows(5);
+        jScrollPane5.setViewportView(txtKemungkinanLain);
+
         javax.swing.GroupLayout mainContentLayout = new javax.swing.GroupLayout(mainContent);
         mainContent.setLayout(mainContentLayout);
         mainContentLayout.setHorizontalGroup(
@@ -911,51 +1008,61 @@ public class FormHasilDiagnosa extends javax.swing.JFrame {
             .addGroup(mainContentLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(mainContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(mainContentLayout.createSequentialGroup()
                         .addGroup(mainContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
-                            .addComponent(jLabel6))
-                        .addGap(52, 52, 52)
-                        .addGroup(mainContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
-                            .addComponent(jLabel7))
-                        .addGap(43, 43, 43)
-                        .addGroup(mainContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
-                            .addComponent(jLabel8)))
-                    .addComponent(btnCetak, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnTutup, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                            .addGroup(mainContentLayout.createSequentialGroup()
+                                .addGroup(mainContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel6)
+                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 270, Short.MAX_VALUE))
+                                .addGap(13, 13, 13)
+                                .addGroup(mainContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 269, Short.MAX_VALUE)
+                                    .addComponent(jLabel7))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(mainContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel8)
+                                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 270, Short.MAX_VALUE))
+                                .addGap(13, 13, 13)
+                                .addGroup(mainContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jScrollPane5)
+                                    .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(jScrollPane1)
+                            .addComponent(btnCetak, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnTutup, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap())))
         );
         mainContentLayout.setVerticalGroup(
             mainContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainContentLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(mainContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(mainContentLayout.createSequentialGroup()
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 182, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(mainContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(mainContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jLabel6))
+                    .addGroup(mainContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel8)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane4))
-                    .addGroup(mainContentLayout.createSequentialGroup()
-                        .addComponent(jLabel7)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane3))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainContentLayout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
+                        .addComponent(jLabel9)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(mainContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(28, 28, 28)
                 .addComponent(btnTutup, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnCetak, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20))
         );
+
+        jLabel15.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
+        jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel15.setText("copyright © Skripsi Teknik Informatika | Naufal Rafif (202243501684)");
 
         javax.swing.GroupLayout pn_dasarLayout = new javax.swing.GroupLayout(pn_dasar);
         pn_dasar.setLayout(pn_dasarLayout);
@@ -963,7 +1070,9 @@ public class FormHasilDiagnosa extends javax.swing.JFrame {
             pn_dasarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pn_dasarLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(mainContent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(pn_dasarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(mainContent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel15, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         pn_dasarLayout.setVerticalGroup(
@@ -971,7 +1080,8 @@ public class FormHasilDiagnosa extends javax.swing.JFrame {
             .addGroup(pn_dasarLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(mainContent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel15))
         );
 
         pn_kanan.add(pn_dasar, java.awt.BorderLayout.CENTER);
@@ -985,9 +1095,9 @@ public class FormHasilDiagnosa extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_tblDetailGejalaKeyReleased
 
-    private void txtNamaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNamaActionPerformed
+    private void txtKodeSampelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtKodeSampelActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtNamaActionPerformed
+    }//GEN-LAST:event_txtKodeSampelActionPerformed
 
     private void txtPenyakitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPenyakitActionPerformed
         // TODO add your handling code here:
@@ -1163,6 +1273,67 @@ public class FormHasilDiagnosa extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnLogoutMousePressed
 
+    private void btnCetakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCetakActionPerformed
+        if (koneksi.Session.namaAdmin == null || koneksi.Session.namaAdmin.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Akses Ditolak! Anda harus Login terlebih dahulu.");
+            return; 
+        }
+
+        try {
+            javax.swing.JOptionPane.showMessageDialog(this, "Angka ID yang mau dicetak adalah: " + idDiagnosaSaatIni);
+            if (idDiagnosaSaatIni == 0) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Gagal! ID Diagnosa tidak ditemukan.");
+                return;
+            }
+
+            String path = "src/report/LaporanHasilDiagnosa.jasper"; 
+            java.io.File file = new java.io.File(path);
+
+            java.util.HashMap<String, Object> parameter = new java.util.HashMap<>();
+
+            parameter.put("ID_DIAGNOSA", idDiagnosaSaatIni);
+            parameter.put("ID_DIAGNOSA", Integer.parseInt(this.idDiagnosaCetak));
+            
+            parameter.put("ADMIN", koneksi.Session.namaAdmin);
+
+            parameter.put("KEMUNGKINAN_LAIN", kemungkinanLainSaatIni);
+
+            net.sf.jasperreports.engine.JasperPrint print = net.sf.jasperreports.engine.JasperFillManager.fillReport(
+                file.getPath(), parameter, koneksi.KoneksiDB.getKoneksi()
+            );
+
+            net.sf.jasperreports.view.JasperViewer.viewReport(print, false);
+
+        } catch (Exception e) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Gagal mencetak Hasil Diagnosa: " + e.getMessage());
+        }
+    }//GEN-LAST:event_btnCetakActionPerformed
+
+    private void btnDataAdminMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDataAdminMouseEntered
+        if (btnDataAdmin.getBackground().equals(colorNormal)) {
+            btnDataAdmin.setBackground(colorHover);
+        }
+    }//GEN-LAST:event_btnDataAdminMouseEntered
+
+    private void btnDataAdminMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDataAdminMouseExited
+        if (btnDataAdmin.getBackground().equals(colorHover)) {
+            btnDataAdmin.setBackground(colorNormal);
+        }
+    }//GEN-LAST:event_btnDataAdminMouseExited
+
+    private void btnDataAdminMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDataAdminMousePressed
+        switchWarna(btnDataAdmin);
+        view.main.FormAdmin formA = new view.main.FormAdmin();
+        formA.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnDataAdminMousePressed
+
+    private void lblAdminMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAdminMouseClicked
+        view.main.FormAdmin formA = new view.main.FormAdmin();
+        formA.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_lblAdminMouseClicked
+
         class MultiLineCellRenderer extends javax.swing.JTextArea implements javax.swing.table.TableCellRenderer {
         public MultiLineCellRenderer() {
             setLineWrap(true);
@@ -1226,6 +1397,7 @@ public class FormHasilDiagnosa extends javax.swing.JFrame {
     private javax.swing.JPanel btnAturan;
     private javax.swing.JButton btnCetak;
     private javax.swing.JPanel btnDashboard;
+    private javax.swing.JPanel btnDataAdmin;
     private javax.swing.JPanel btnDiagnosa;
     private javax.swing.JPanel btnGejala;
     private javax.swing.JPanel btnLaporan;
@@ -1233,18 +1405,16 @@ public class FormHasilDiagnosa extends javax.swing.JFrame {
     private javax.swing.JPanel btnPenyakit;
     private javax.swing.JPanel btnRiwayat;
     private javax.swing.JButton btnTutup;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
@@ -1257,6 +1427,7 @@ public class FormHasilDiagnosa extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JLabel lblAdmin;
     private javax.swing.JLabel lblAngkaAkurasi;
     private javax.swing.JLabel lblAturan;
@@ -1266,6 +1437,7 @@ public class FormHasilDiagnosa extends javax.swing.JFrame {
     private javax.swing.JLabel lblGejala;
     private javax.swing.JLabel lblJam;
     private javax.swing.JLabel lblKeluar;
+    private javax.swing.JLabel lblKeluar2;
     private javax.swing.JLabel lblPenyakit;
     private javax.swing.JLabel lblRiwayat;
     private javax.swing.JPanel mainContent;
@@ -1275,7 +1447,8 @@ public class FormHasilDiagnosa extends javax.swing.JFrame {
     private javax.swing.JPanel sidebar;
     private javax.swing.JTable tblDetailGejala;
     private javax.swing.JTextArea txtDeskripsi;
-    private javax.swing.JTextField txtNama;
+    private javax.swing.JTextArea txtKemungkinanLain;
+    private javax.swing.JTextField txtKodeSampel;
     private javax.swing.JTextArea txtPencegahan;
     private javax.swing.JTextField txtPenyakit;
     private javax.swing.JTextArea txtSolusi;

@@ -28,6 +28,12 @@ public class DialogPenyakit extends javax.swing.JDialog {
     public DialogPenyakit(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        try {
+            java.awt.Image icon = javax.imageio.ImageIO.read(getClass().getResource("/icon/logo2.png"));
+            setIconImage(icon);
+        } catch (Exception e) {
+            System.out.println("Gagal load icon: " + e.getMessage());
+        }
         this.setLocationRelativeTo(parent);
     }
     
@@ -151,7 +157,9 @@ public class DialogPenyakit extends javax.swing.JDialog {
         txtNama.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
 
         txtSolusi.setColumns(20);
+        txtSolusi.setLineWrap(true);
         txtSolusi.setRows(5);
+        txtSolusi.setWrapStyleWord(true);
         jScrollPane2.setViewportView(txtSolusi);
 
         txtPencegahan.setColumns(20);
@@ -189,7 +197,9 @@ public class DialogPenyakit extends javax.swing.JDialog {
         jLabel5.setText("Deskripsi Penyakit");
 
         txtDeskripsi.setColumns(20);
+        txtDeskripsi.setLineWrap(true);
         txtDeskripsi.setRows(5);
+        txtDeskripsi.setWrapStyleWord(true);
         jScrollPane4.setViewportView(txtDeskripsi);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);

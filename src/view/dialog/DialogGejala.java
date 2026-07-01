@@ -26,6 +26,12 @@ public class DialogGejala extends javax.swing.JDialog {
     public DialogGejala(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        try {
+            java.awt.Image icon = javax.imageio.ImageIO.read(getClass().getResource("/icon/logo2.png"));
+            setIconImage(icon);
+        } catch (Exception e) {
+            System.out.println("Gagal load icon: " + e.getMessage());
+        }
         this.setLocationRelativeTo(parent);
     }
     
@@ -181,12 +187,12 @@ public class DialogGejala extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(34, 34, 34)
                 .addComponent(btnSimpan, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnBatal, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(39, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -204,8 +210,8 @@ public class DialogGejala extends javax.swing.JDialog {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -240,12 +246,12 @@ public class DialogGejala extends javax.swing.JDialog {
             PreparedStatement pst;
 
             if (isEdit == false) {
-                String sql = "INSERT INTO tbl_gejala (kode_gejala, deskripsi_gejala) VALUES (?, ?)";
+                String sql = "INSERT INTO tbl_gejala (kode_gejala, nama_gejala) VALUES (?, ?)";
                 pst = con.prepareStatement(sql);
                 pst.setString(1, txtKode.getText());
                 pst.setString(2, txtGejala.getText());
             } else {
-                String sql = "UPDATE tbl_gejala SET deskripsi_gejala=? WHERE kode_gejala=?";
+                String sql = "UPDATE tbl_gejala SET nama_gejala=? WHERE kode_gejala=?";
                 pst = con.prepareStatement(sql);
                 pst.setString(1, txtGejala.getText());
                 pst.setString(2, txtKode.getText()); 

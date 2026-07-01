@@ -18,6 +18,12 @@ public class DialogInformasi extends javax.swing.JDialog {
     public DialogInformasi(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        try {
+            java.awt.Image icon = javax.imageio.ImageIO.read(getClass().getResource("/icon/logo2.png"));
+            setIconImage(icon);
+        } catch (Exception e) {
+            System.out.println("Gagal load icon: " + e.getMessage());
+        }
         this.setTitle("Informasi & Panduan Sistem");
         if (koneksi.Session.namaAdmin == null) {
             javax.swing.JOptionPane.showMessageDialog(this, "Hayo, Anda belum login! Silakan login terlebih dahulu.", "Akses Ditolak", javax.swing.JOptionPane.ERROR_MESSAGE);

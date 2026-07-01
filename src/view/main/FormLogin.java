@@ -26,6 +26,13 @@ public class FormLogin extends javax.swing.JFrame {
      */
     public FormLogin() {
         initComponents();
+
+        try {
+            java.awt.Image icon = javax.imageio.ImageIO.read(getClass().getResource("/icon/logo2.png"));
+            setIconImage(icon);
+        } catch (Exception e) {
+            System.out.println("Gagal load icon: " + e.getMessage());
+        }
         this.setLocationRelativeTo(null);
         this.getRootPane().setDefaultButton(btnLogin);
         txtUsername.setText("Masukkan username...");
@@ -64,6 +71,7 @@ public class FormLogin extends javax.swing.JFrame {
         jLabel13 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -89,7 +97,7 @@ public class FormLogin extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         jLabel4.setText("Belum memiliki akun akses?");
 
-        txtUsername.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        txtUsername.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         txtUsername.setForeground(new java.awt.Color(102, 102, 102));
         txtUsername.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -100,7 +108,7 @@ public class FormLogin extends javax.swing.JFrame {
             }
         });
 
-        txtPassword.setFont(new java.awt.Font("Times New Roman", 0, 16)); // NOI18N
+        txtPassword.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         txtPassword.setForeground(new java.awt.Color(102, 102, 102));
         txtPassword.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -230,6 +238,9 @@ public class FormLogin extends javax.swing.JFrame {
         jLabel12.setForeground(new java.awt.Color(51, 51, 51));
         jLabel12.setText("copyright © Skripsi Teknik Informatika | Naufal Rafif (202243501684)");
 
+        jLabel16.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel16.setText("Studi Kasus: Dzawil Garden Office Farm");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -237,36 +248,42 @@ public class FormLogin extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(27, 27, 27)
-                        .addComponent(jLabel12))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(59, 59, 59)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel13, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(38, 38, 38)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel14)
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addGap(41, 41, 41)
-                                        .addComponent(jLabel11)))))))
-                .addContainerGap(26, Short.MAX_VALUE))
+                        .addComponent(jLabel13))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(128, 128, 128)
+                        .addComponent(jLabel11)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(27, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel12)
+                        .addGap(26, 26, 26))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel14)
+                        .addGap(90, 90, 90))))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(49, 49, 49)
+                .addComponent(jLabel16)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(jLabel13)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel11)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel14)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel16)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
                 .addComponent(jLabel12)
-                .addContainerGap(59, Short.MAX_VALUE))
+                .addGap(26, 26, 26))
         );
 
-        jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/Logo_(UNINDRA).png"))); // NOI18N
+        jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/LogoDua.png"))); // NOI18N
 
         javax.swing.GroupLayout RightLayout = new javax.swing.GroupLayout(Right);
         Right.setLayout(RightLayout);
@@ -288,7 +305,7 @@ public class FormLogin extends javax.swing.JFrame {
             .addGroup(RightLayout.createSequentialGroup()
                 .addGap(101, 101, 101)
                 .addComponent(jLabel10)
-                .addGap(18, 18, 18)
+                .addGap(29, 29, 29)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel9)
@@ -360,14 +377,18 @@ public class FormLogin extends javax.swing.JFrame {
             java.sql.ResultSet rs = pst.executeQuery();
 
             if (rs.next()) {
-                String namaAsli = rs.getString("nama_admin");
-                javax.swing.JOptionPane.showMessageDialog(this, "Berhasil Login!\nSelamat Datang, " + namaAsli);
 
-                koneksi.Session.namaAdmin = namaAsli;
-                koneksi.Session.role = "Administrator";
+            int idAdmin = rs.getInt("id_admin");
+            String namaAsli = rs.getString("nama_admin");
 
-                new MenuUtama().setVisible(true); 
-                this.dispose(); 
+            javax.swing.JOptionPane.showMessageDialog( this, "Berhasil Login!\nSelamat Datang, " + namaAsli, "Login Berhasil", javax.swing.JOptionPane.INFORMATION_MESSAGE );
+
+            koneksi.Session.idAdmin = idAdmin;
+            koneksi.Session.namaAdmin = namaAsli;
+            koneksi.Session.role = "Administrator";
+
+            new MenuUtama().setVisible(true);
+            this.dispose();
 
             } else {
                 javax.swing.JOptionPane.showMessageDialog(this, "Username atau Password salah!");
@@ -457,6 +478,7 @@ public class FormLogin extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

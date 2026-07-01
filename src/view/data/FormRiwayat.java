@@ -33,6 +33,13 @@ public class FormRiwayat extends javax.swing.JFrame {
     
     public FormRiwayat() {
         initComponents();
+        try {
+            java.awt.Image icon = javax.imageio.ImageIO.read(getClass().getResource("/icon/logo2.png"));
+            setIconImage(icon);
+        } catch (Exception e) {
+            System.out.println("Gagal load icon: " + e.getMessage());
+        }
+        
         aturFormatTabel();
         if (koneksi.Session.namaAdmin == null || koneksi.Session.namaAdmin.equals("")) {
             javax.swing.JOptionPane.showMessageDialog(this, "Akses Ditolak! Hayo, Anda harus Login terlebih dahulu.", "Peringatan", javax.swing.JOptionPane.WARNING_MESSAGE);
@@ -62,36 +69,25 @@ public class FormRiwayat extends javax.swing.JFrame {
     }
     
     private void aturFormatTabel() {
-        // Kasih ruang napas biar teks panjang bisa turun ke bawah
         tblRiwayat.setRowHeight(45); 
-        
-        // ========================================================
-        // KODINGAN PEMAKSA MUNCULIN GARIS VERTIKAL (ANTAR KOLOM)
-        // ========================================================
         tblRiwayat.setShowGrid(true); 
         tblRiwayat.setShowVerticalLines(true);   
         tblRiwayat.setShowHorizontalLines(true); 
         tblRiwayat.setGridColor(new java.awt.Color(153, 153, 153)); 
         tblRiwayat.setIntercellSpacing(new java.awt.Dimension(1, 1)); 
-        // ========================================================
 
-        // Pastikan jumlah kolomnya minimal 6 karena index-nya sampai 5
         if (tblRiwayat.getColumnCount() >= 6) { 
             javax.swing.table.TableColumnModel cm = tblRiwayat.getColumnModel();
             
-            // 1. Atur Lebar Kolom
-            cm.getColumn(0).setPreferredWidth(45);   // No
-            cm.getColumn(1).setPreferredWidth(60);   // ID Diagnosa
-            cm.getColumn(2).setPreferredWidth(140);  // Tanggal
-            cm.getColumn(3).setPreferredWidth(200);  // Nama Pembudidaya
-            cm.getColumn(4).setPreferredWidth(280);  // Penyakit Terdeteksi
-            cm.getColumn(5).setPreferredWidth(100);  // Akurasi (%)
-            
-            // 2. Pasang Word Wrap (Turun ke bawah) untuk kolom Nama & Penyakit
+            cm.getColumn(0).setPreferredWidth(45);
+            cm.getColumn(1).setPreferredWidth(60);
+            cm.getColumn(2).setPreferredWidth(140);
+            cm.getColumn(3).setPreferredWidth(200); 
+            cm.getColumn(4).setPreferredWidth(280);
+            cm.getColumn(5).setPreferredWidth(100);
             cm.getColumn(3).setCellRenderer(new MultiLineCellRenderer()); 
             cm.getColumn(4).setCellRenderer(new MultiLineCellRenderer()); 
             
-            // 3. Bikin Rata Tengah (Center) untuk No, ID, Tanggal, dan Akurasi
             javax.swing.table.DefaultTableCellRenderer centerRenderer = new javax.swing.table.DefaultTableCellRenderer();
             centerRenderer.setHorizontalAlignment(javax.swing.JLabel.CENTER);
             cm.getColumn(0).setCellRenderer(centerRenderer);
@@ -109,6 +105,7 @@ public class FormRiwayat extends javax.swing.JFrame {
         btnDiagnosa.setBackground(colorNormal);
         btnRiwayat.setBackground(colorNormal);
         btnLaporan.setBackground(colorNormal);
+        btnDataAdmin.setBackground(colorNormal);
         activePanel.setBackground(colorActive);
     }
     
@@ -131,12 +128,12 @@ public class FormRiwayat extends javax.swing.JFrame {
         try {
             Connection con = KoneksiDB.getKoneksi();
             Statement st = con.createStatement();
-            String sql = "SELECT d.id_diagnosa, d.tanggal_diagnosa, d.nama_pembudidaya, p.nama_penyakit, d.confidence "
+            String sql = "SELECT d.id_diagnosa, d.tanggal_diagnosa, d.kode_sampel, p.nama_penyakit, d.confidence "
                        + "FROM tbl_diagnosa d "
                        + "JOIN tbl_penyakit p ON d.hasil_penyakit = p.kode_penyakit ";
             
             if (!keyword.isEmpty()) {
-                sql += "WHERE d.nama_pembudidaya LIKE '%" + keyword + "%' OR p.nama_penyakit LIKE '%" + keyword + "%' ";
+                sql += "WHERE d.kode_sampel LIKE '%" + keyword + "%' OR p.nama_penyakit LIKE '%" + keyword + "%' ";
             }
             sql += "ORDER BY d.id_diagnosa DESC";
             
@@ -157,7 +154,7 @@ public class FormRiwayat extends javax.swing.JFrame {
                     no++,
                     rs.getString("id_diagnosa"),
                     tglTampil,
-                    rs.getString("nama_pembudidaya"),
+                    rs.getString("kode_sampel"),
                     rs.getString("nama_penyakit"),
                     rs.getString("confidence") + " %"
                 });
@@ -166,7 +163,7 @@ public class FormRiwayat extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Error load riwayat: " + e.getMessage());
         }
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -178,11 +175,7 @@ public class FormRiwayat extends javax.swing.JFrame {
 
         sidebar = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        jLabel13 = new javax.swing.JLabel();
-        jLabel12 = new javax.swing.JLabel();
-        jLabel14 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
+        jLabel19 = new javax.swing.JLabel();
         jPanel9 = new javax.swing.JPanel();
         btnDashboard = new javax.swing.JPanel();
         lblDashboard = new javax.swing.JLabel();
@@ -202,6 +195,8 @@ public class FormRiwayat extends javax.swing.JFrame {
         btnLaporan = new javax.swing.JPanel();
         lblCetak = new javax.swing.JLabel();
         jPanel13 = new javax.swing.JPanel();
+        btnDataAdmin = new javax.swing.JPanel();
+        lblKeluar1 = new javax.swing.JLabel();
         btnLogout = new javax.swing.JPanel();
         lblKeluar = new javax.swing.JLabel();
         pn_kanan = new javax.swing.JPanel();
@@ -221,6 +216,8 @@ public class FormRiwayat extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         tblRiwayat = new javax.swing.JTable();
         cbKategoriCari = new javax.swing.JComboBox<>();
+        jButton1 = new javax.swing.JButton();
+        jLabel15 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -231,52 +228,20 @@ public class FormRiwayat extends javax.swing.JFrame {
         jPanel2.setBackground(new java.awt.Color(81, 226, 245));
         jPanel2.setPreferredSize(new java.awt.Dimension(250, 130));
 
-        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/fish.png"))); // NOI18N
-
-        jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/farmer.png"))); // NOI18N
-
-        jLabel14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/kolam.png"))); // NOI18N
-
-        jLabel2.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
-        jLabel2.setText("SISTEM PAKAR");
-
-        jLabel1.setFont(new java.awt.Font("SansSerif", 1, 20)); // NOI18N
-        jLabel1.setText("IKAN NILA");
+        jLabel19.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/LogoDua.png"))); // NOI18N
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel13)
-                .addGap(36, 36, 36)
-                .addComponent(jLabel12)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel14)
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel2)
-                .addGap(34, 34, 34))
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(75, 75, 75)
-                .addComponent(jLabel1)
+                .addGap(46, 46, 46)
+                .addComponent(jLabel19)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(7, 7, 7)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel14)
-                    .addComponent(jLabel12)
-                    .addComponent(jLabel13))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jLabel19, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         jPanel9.setBackground(new java.awt.Color(81, 226, 245));
@@ -605,6 +570,40 @@ public class FormRiwayat extends javax.swing.JFrame {
         jPanel13.setBackground(new java.awt.Color(81, 226, 245));
         jPanel13.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "SISTEM", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
 
+        btnDataAdmin.setBackground(new java.awt.Color(255, 255, 255));
+        btnDataAdmin.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnDataAdmin.setPreferredSize(new java.awt.Dimension(130, 50));
+        btnDataAdmin.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnDataAdminMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnDataAdminMouseExited(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                btnDataAdminMousePressed(evt);
+            }
+        });
+
+        lblKeluar1.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        lblKeluar1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblKeluar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/farmer.png"))); // NOI18N
+        lblKeluar1.setText("ADMIN");
+
+        javax.swing.GroupLayout btnDataAdminLayout = new javax.swing.GroupLayout(btnDataAdmin);
+        btnDataAdmin.setLayout(btnDataAdminLayout);
+        btnDataAdminLayout.setHorizontalGroup(
+            btnDataAdminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, btnDataAdminLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblKeluar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        btnDataAdminLayout.setVerticalGroup(
+            btnDataAdminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(lblKeluar1, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
+        );
+
         btnLogout.setBackground(new java.awt.Color(255, 255, 255));
         btnLogout.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnLogout.setPreferredSize(new java.awt.Dimension(130, 50));
@@ -635,21 +634,23 @@ public class FormRiwayat extends javax.swing.JFrame {
         );
         btnLogoutLayout.setVerticalGroup(
             btnLogoutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(btnLogoutLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblKeluar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(lblKeluar, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
         jPanel13.setLayout(jPanel13Layout);
         jPanel13Layout.setHorizontalGroup(
             jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(btnDataAdmin, javax.swing.GroupLayout.DEFAULT_SIZE, 218, Short.MAX_VALUE)
             .addComponent(btnLogout, javax.swing.GroupLayout.DEFAULT_SIZE, 218, Short.MAX_VALUE)
         );
         jPanel13Layout.setVerticalGroup(
             jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(btnLogout, javax.swing.GroupLayout.DEFAULT_SIZE, 58, Short.MAX_VALUE)
+            .addGroup(jPanel13Layout.createSequentialGroup()
+                .addComponent(btnDataAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout sidebarLayout = new javax.swing.GroupLayout(sidebar);
@@ -672,7 +673,7 @@ public class FormRiwayat extends javax.swing.JFrame {
         sidebarLayout.setVerticalGroup(
             sidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(sidebarLayout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -682,8 +683,8 @@ public class FormRiwayat extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(6, Short.MAX_VALUE))
         );
 
         getContentPane().add(sidebar, java.awt.BorderLayout.LINE_START);
@@ -701,6 +702,12 @@ public class FormRiwayat extends javax.swing.JFrame {
 
         lblAdmin.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         lblAdmin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/user.png"))); // NOI18N
+        lblAdmin.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblAdmin.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblAdminMouseClicked(evt);
+            }
+        });
 
         jLabel11.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
         jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -714,7 +721,7 @@ public class FormRiwayat extends javax.swing.JFrame {
                 .addGap(21, 21, 21)
                 .addComponent(lblJam)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, 727, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(lblAdmin)
                 .addGap(23, 23, 23))
@@ -731,10 +738,10 @@ public class FormRiwayat extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel4.setBackground(new java.awt.Color(255, 153, 200));
+        jPanel4.setBackground(new java.awt.Color(224, 251, 252));
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createMatteBorder(2, 1, 2, 1, new java.awt.Color(0, 0, 0)), "TABEL DATA RIWAYAT", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 3, 18))); // NOI18N
 
-        pnInputCari.setBackground(new java.awt.Color(255, 153, 200));
+        pnInputCari.setBackground(new java.awt.Color(224, 251, 252));
         pnInputCari.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         pnInputCari.add(dtCari, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 13, 200, 40));
         pnInputCari.add(txtCari, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 13, 200, 40));
@@ -777,6 +784,11 @@ public class FormRiwayat extends javax.swing.JFrame {
         btnCetak.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/cetak.png"))); // NOI18N
         btnCetak.setText("CETAK");
         btnCetak.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnCetak.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCetakActionPerformed(evt);
+            }
+        });
 
         tblRiwayat.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         tblRiwayat.setModel(new javax.swing.table.DefaultTableModel(
@@ -787,7 +799,7 @@ public class FormRiwayat extends javax.swing.JFrame {
                 {null, null, null, null, null, null}
             },
             new String [] {
-                "No", "ID Diagnosa", "Tanggal", "Nama Pembudidaya", "Penyakit Terdeteksi", "Akurasi (%)"
+                "No", "ID Diagnosa", "Tanggal", "Kode Sampel", "Penyakit Terdeteksi", "Akurasi (%)"
             }
         ) {
             Class[] types = new Class [] {
@@ -813,11 +825,21 @@ public class FormRiwayat extends javax.swing.JFrame {
         jScrollPane2.setViewportView(tblRiwayat);
 
         cbKategoriCari.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
-        cbKategoriCari.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nama Pembudidaya", "Tanggal Diagnosa" }));
+        cbKategoriCari.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Kode Sampel", "Tanggal Diagnosa" }));
         cbKategoriCari.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         cbKategoriCari.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbKategoriCariActionPerformed(evt);
+            }
+        });
+
+        jButton1.setBackground(new java.awt.Color(253, 252, 220));
+        jButton1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/printer.png"))); // NOI18N
+        jButton1.setText("CETAK STRUK DETAIL");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
             }
         });
 
@@ -827,21 +849,25 @@ public class FormRiwayat extends javax.swing.JFrame {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(cbKategoriCari, 0, 215, Short.MAX_VALUE)
+                    .addComponent(pnInputCari, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(cbKategoriCari, 0, 215, Short.MAX_VALUE)
-                            .addComponent(pnInputCari, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                         .addComponent(btnCari)
-                        .addGap(69, 69, 69)
-                        .addComponent(btnCetak)
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnDetail, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnHapus, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jScrollPane2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1))
+                    .addComponent(btnCetak))
+                .addGap(12, 12, 12)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnDetail, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnHapus, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(20, 20, 20))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2)
+                .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -851,36 +877,49 @@ public class FormRiwayat extends javax.swing.JFrame {
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(cbKategoriCari, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnCari, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnCetak))
+                            .addComponent(btnCari, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(pnInputCari, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(btnDetail, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnHapus, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(37, Short.MAX_VALUE))
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnDetail, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
+                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(btnHapus, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addGap(9, 9, 9)
+                                .addComponent(btnCetak)))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 506, Short.MAX_VALUE)
+                .addContainerGap())
         );
+
+        jLabel15.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
+        jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel15.setText("copyright © Skripsi Teknik Informatika | Naufal Rafif (202243501684)");
 
         javax.swing.GroupLayout mainContentLayout = new javax.swing.GroupLayout(mainContent);
         mainContent.setLayout(mainContentLayout);
         mainContentLayout.setHorizontalGroup(
             mainContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 858, Short.MAX_VALUE)
-            .addGroup(mainContentLayout.createSequentialGroup()
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 871, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainContentLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(mainContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(20, 20, 20))
         );
         mainContentLayout.setVerticalGroup(
             mainContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainContentLayout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20)
+                .addGap(11, 11, 11)
                 .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(20, 20, 20))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel15))
         );
 
         pn_kanan.add(mainContent, java.awt.BorderLayout.CENTER);
@@ -896,21 +935,21 @@ public class FormRiwayat extends javax.swing.JFrame {
         model.addColumn("No");
         model.addColumn("ID Diagnosa");
         model.addColumn("Tanggal");
-        model.addColumn("Nama Pembudidaya");
+        model.addColumn("Kode Sampel");
         model.addColumn("Penyakit Terdeteksi");
         model.addColumn("Akurasi (%)");
 
         try {
             String kategori = cbKategoriCari.getSelectedItem().toString().trim();
             String sql = "";
-            String baseQuery = "SELECT d.id_diagnosa, d.tanggal_diagnosa, d.nama_pembudidaya, "
+            String baseQuery = "SELECT d.id_diagnosa, d.tanggal_diagnosa, d.kode_sampel, "
                  + "p.nama_penyakit, d.confidence "
                  + "FROM tbl_diagnosa d "
                  + "LEFT JOIN tbl_penyakit p ON d.hasil_penyakit = p.kode_penyakit ";
 
-            if (kategori.equals("Nama Pembudidaya")) {
+            if (kategori.equals("Kode Sampel")) {
                 String cari = txtCari.getText();
-                sql = baseQuery + "WHERE d.nama_pembudidaya LIKE '%" + cari + "%' ORDER BY d.id_diagnosa DESC";
+                sql = baseQuery + "WHERE d.kode_sampel LIKE '%" + cari + "%' ORDER BY d.id_diagnosa DESC";
                 
             } else if (kategori.equals("Tanggal Diagnosa")) {
                 if (dtCari.getDate() == null) {
@@ -937,7 +976,7 @@ public class FormRiwayat extends javax.swing.JFrame {
                     no++,
                     res.getString("id_diagnosa"),
                     tglDiagnosa,
-                    res.getString("nama_pembudidaya"),
+                    res.getString("kode_sampel"),
                     res.getString("nama_penyakit") == null ? "Belum Terdeteksi" : res.getString("nama_penyakit"),
                     String.format("%.2f", persentase) + " %" 
                 });
@@ -1176,7 +1215,7 @@ public class FormRiwayat extends javax.swing.JFrame {
     private void cbKategoriCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbKategoriCariActionPerformed
         String kategori = cbKategoriCari.getSelectedItem().toString().trim();
         
-        if (kategori.equals("Nama Pembudidaya")) {
+        if (kategori.equals("Kode Sampel")) {
             txtCari.setVisible(true);
             dtCari.setVisible(false);
             txtCari.setText(""); 
@@ -1186,11 +1225,110 @@ public class FormRiwayat extends javax.swing.JFrame {
             dtCari.setVisible(true);
             dtCari.setDate(new java.util.Date()); 
         }
-        
-        // Refresh layar
         pnInputCari.revalidate();
         pnInputCari.repaint();
     }//GEN-LAST:event_cbKategoriCariActionPerformed
+
+    private void btnCetakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCetakActionPerformed
+        if (koneksi.Session.namaAdmin == null || koneksi.Session.namaAdmin.isEmpty()) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Akses Ditolak! Anda harus Login terlebih dahulu.", "Peringatan", javax.swing.JOptionPane.WARNING_MESSAGE);
+        new view.main.FormLogin().setVisible(true);
+        this.dispose(); 
+        return; 
+    }
+
+        try {
+            String path = "src/report/LaporanRiwayat.jasper"; 
+            java.io.File file = new java.io.File(path);
+
+            java.util.HashMap<String, Object> parameter = new java.util.HashMap<>();
+            parameter.put("ADMIN", koneksi.Session.namaAdmin); 
+
+            net.sf.jasperreports.engine.JasperPrint print = net.sf.jasperreports.engine.JasperFillManager.fillReport(
+                file.getPath(), 
+                parameter, 
+                koneksi.KoneksiDB.getKoneksi()
+            );
+
+            net.sf.jasperreports.view.JasperViewer.viewReport(print, false);
+
+        } catch (Exception e) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Gagal mencetak Laporan Riwayat: " + e.getMessage());
+        }
+    }//GEN-LAST:event_btnCetakActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        if (koneksi.Session.namaAdmin == null || koneksi.Session.namaAdmin.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Akses Ditolak! Anda harus Login terlebih dahulu.", "Peringatan", javax.swing.JOptionPane.WARNING_MESSAGE);
+            return; 
+        }
+        int baris = tblRiwayat.getSelectedRow();
+        if (baris == -1) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Pilih salah satu data ikan di tabel terlebih dahulu yang mau dicetak struknya!", "Peringatan", javax.swing.JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        try {
+            String idDiagnosaStr = tblRiwayat.getValueAt(baris, 1).toString();
+            int idDiagnosa = Integer.parseInt(idDiagnosaStr);
+            String kemungkinanLain = "Tidak ada kemungkinan penyakit lain.";
+            java.sql.Connection con = koneksi.KoneksiDB.getKoneksi();
+            java.sql.PreparedStatement pst = con.prepareStatement("SELECT kemungkinan_lain FROM tbl_diagnosa WHERE id_diagnosa = ?");
+            pst.setInt(1, idDiagnosa);
+            java.sql.ResultSet rs = pst.executeQuery();
+            
+            if (rs.next()) {
+                String hasilDB = rs.getString("kemungkinan_lain");
+                if (hasilDB != null && !hasilDB.trim().isEmpty()) {
+                    kemungkinanLain = hasilDB;
+                }
+            }
+            String path = "src/report/LaporanHasilDiagnosa.jasper"; 
+            java.io.File file = new java.io.File(path);
+
+            java.util.HashMap<String, Object> parameter = new java.util.HashMap<>();
+            parameter.put("ID_DIAGNOSA", idDiagnosa);
+            parameter.put("KEMUNGKINAN_LAIN", kemungkinanLain);
+            parameter.put("ADMIN", koneksi.Session.namaAdmin); 
+
+            net.sf.jasperreports.engine.JasperPrint print = net.sf.jasperreports.engine.JasperFillManager.fillReport(
+                file.getPath(), 
+                parameter, 
+                con
+            );
+
+            net.sf.jasperreports.view.JasperViewer.viewReport(print, false);
+
+        } catch (Exception e) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Gagal mencetak Laporan Hasil Diagnosa: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void btnDataAdminMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDataAdminMouseEntered
+        if (btnDataAdmin.getBackground().equals(colorNormal)) {
+            btnDataAdmin.setBackground(colorHover);
+        }
+    }//GEN-LAST:event_btnDataAdminMouseEntered
+
+    private void btnDataAdminMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDataAdminMouseExited
+        if (btnDataAdmin.getBackground().equals(colorHover)) {
+            btnDataAdmin.setBackground(colorNormal);
+        }
+    }//GEN-LAST:event_btnDataAdminMouseExited
+
+    private void btnDataAdminMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDataAdminMousePressed
+        switchWarna(btnDataAdmin);
+        view.main.FormAdmin formA = new view.main.FormAdmin();
+        formA.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnDataAdminMousePressed
+
+    private void lblAdminMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAdminMouseClicked
+        view.main.FormAdmin formA = new view.main.FormAdmin();
+        formA.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_lblAdminMouseClicked
 
         class MultiLineCellRenderer extends javax.swing.JTextArea implements javax.swing.table.TableCellRenderer {
         public MultiLineCellRenderer() {
@@ -1256,6 +1394,7 @@ public class FormRiwayat extends javax.swing.JFrame {
     private javax.swing.JButton btnCari;
     private javax.swing.JButton btnCetak;
     private javax.swing.JPanel btnDashboard;
+    private javax.swing.JPanel btnDataAdmin;
     private javax.swing.JButton btnDetail;
     private javax.swing.JPanel btnDiagnosa;
     private javax.swing.JPanel btnGejala;
@@ -1266,12 +1405,10 @@ public class FormRiwayat extends javax.swing.JFrame {
     private javax.swing.JPanel btnRiwayat;
     private javax.swing.JComboBox<String> cbKategoriCari;
     private com.toedter.calendar.JDateChooser dtCari;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
@@ -1289,6 +1426,7 @@ public class FormRiwayat extends javax.swing.JFrame {
     private javax.swing.JLabel lblGejala;
     private javax.swing.JLabel lblJam;
     private javax.swing.JLabel lblKeluar;
+    private javax.swing.JLabel lblKeluar1;
     private javax.swing.JLabel lblPenyakit;
     private javax.swing.JLabel lblRiwayat;
     private javax.swing.JPanel mainContent;

@@ -23,7 +23,8 @@ public class KoneksiDB {
             String user = "root";
             String pass = "";
 
-            DriverManager.registerDriver(new com.mysql.jdbc.Driver());
+            DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
+            
             mysqlconfig = DriverManager.getConnection(url, user, pass);
 
         } catch (Exception e) {

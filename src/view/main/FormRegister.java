@@ -25,6 +25,13 @@ public class FormRegister extends javax.swing.JFrame {
      */
     public FormRegister() {
         initComponents();
+        getRootPane().setDefaultButton(btnDaftar);
+        try {
+            java.awt.Image icon = javax.imageio.ImageIO.read(getClass().getResource("/icon/logo2.png"));
+            setIconImage(icon);
+        } catch (Exception e) {
+            System.out.println("Gagal load icon: " + e.getMessage());
+        }
         autonumber();
         this.setLocationRelativeTo(null); 
         txtIdAdmin.setEditable(false);
@@ -68,12 +75,13 @@ public class FormRegister extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         Right = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel14 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -83,7 +91,6 @@ public class FormRegister extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         txtPassword = new javax.swing.JPasswordField();
         jLabel8 = new javax.swing.JLabel();
-        btnDaftar = new javax.swing.JButton();
         btnLogin = new javax.swing.JButton();
         jLabel10 = new javax.swing.JLabel();
         txtUsername = new javax.swing.JTextField();
@@ -92,6 +99,7 @@ public class FormRegister extends javax.swing.JFrame {
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
         lblShowPassword = new javax.swing.JLabel();
+        btnDaftar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -102,6 +110,8 @@ public class FormRegister extends javax.swing.JFrame {
         Right.setBackground(new java.awt.Color(128, 255, 219));
         Right.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         Right.setPreferredSize(new java.awt.Dimension(400, 500));
+
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/LogoDua.png"))); // NOI18N
 
         jPanel2.setBackground(new java.awt.Color(128, 255, 219));
 
@@ -118,48 +128,55 @@ public class FormRegister extends javax.swing.JFrame {
         jLabel12.setForeground(new java.awt.Color(51, 51, 51));
         jLabel12.setText("copyright © Skripsi Teknik Informatika | Naufal Rafif (202243501684)");
 
+        jLabel17.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel17.setText("Studi Kasus: Dzawil Garden Office Farm");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(30, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel12)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(32, 32, 32)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel13, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(38, 38, 38)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel14)
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addGap(41, 41, 41)
-                                        .addComponent(jLabel11)))))))
-                .addGap(23, 23, 23))
+                        .addGap(59, 59, 59)
+                        .addComponent(jLabel13))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(128, 128, 128)
+                        .addComponent(jLabel11)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel12)
+                        .addGap(26, 26, 26))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel14)
+                        .addGap(90, 90, 90))))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(49, 49, 49)
+                .addComponent(jLabel17)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(jLabel13)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel11)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel14)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel17)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
                 .addComponent(jLabel12)
-                .addContainerGap(59, Short.MAX_VALUE))
+                .addGap(26, 26, 26))
         );
-
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/Logo_(UNINDRA).png"))); // NOI18N
 
         javax.swing.GroupLayout RightLayout = new javax.swing.GroupLayout(Right);
         Right.setLayout(RightLayout);
         RightLayout.setHorizontalGroup(
             RightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(RightLayout.createSequentialGroup()
                 .addGroup(RightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(RightLayout.createSequentialGroup()
@@ -168,14 +185,15 @@ public class FormRegister extends javax.swing.JFrame {
                     .addGroup(RightLayout.createSequentialGroup()
                         .addGap(182, 182, 182)
                         .addComponent(jLabel2)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(186, Short.MAX_VALUE))
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         RightLayout.setVerticalGroup(
             RightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(RightLayout.createSequentialGroup()
                 .addGap(101, 101, 101)
                 .addComponent(jLabel2)
-                .addGap(18, 18, 18)
+                .addGap(29, 29, 29)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel9)
@@ -240,17 +258,6 @@ public class FormRegister extends javax.swing.JFrame {
 
         jLabel8.setText("Saya punya akun?");
 
-        btnDaftar.setBackground(new java.awt.Color(255, 105, 235));
-        btnDaftar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnDaftar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/partnership.png"))); // NOI18N
-        btnDaftar.setText("DAFTAR ADMIN BARU");
-        btnDaftar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnDaftar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDaftarActionPerformed(evt);
-            }
-        });
-
         btnLogin.setBackground(new java.awt.Color(191, 255, 64));
         btnLogin.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnLogin.setForeground(new java.awt.Color(255, 51, 51));
@@ -297,6 +304,17 @@ public class FormRegister extends javax.swing.JFrame {
             }
         });
 
+        btnDaftar.setBackground(new java.awt.Color(255, 105, 235));
+        btnDaftar.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnDaftar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/partnership.png"))); // NOI18N
+        btnDaftar.setText("DAFTAR ADMIN BARU");
+        btnDaftar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnDaftar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDaftarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -307,36 +325,41 @@ public class FormRegister extends javax.swing.JFrame {
                 .addGap(108, 108, 108))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel16)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel7)
-                            .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 410, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnDaftar)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                                .addGap(145, 145, 145)
                                 .addComponent(jLabel8)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(btnLogin)
-                                .addGap(10, 10, 10))))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel7)
+                                    .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 410, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnDaftar)))))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel5)
-                            .addComponent(txtIdAdmin, javax.swing.GroupLayout.DEFAULT_SIZE, 410, Short.MAX_VALUE)
-                            .addComponent(txtNama)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel15)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel10)
-                            .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 410, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel6)
+                                    .addComponent(jLabel5)
+                                    .addComponent(txtIdAdmin, javax.swing.GroupLayout.DEFAULT_SIZE, 410, Short.MAX_VALUE)
+                                    .addComponent(txtNama)))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(jLabel15)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel10)
+                                    .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 410, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addComponent(lblShowPassword)
                 .addGap(15, 15, 15))
         );
@@ -373,9 +396,9 @@ public class FormRegister extends javax.swing.JFrame {
                     .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel16)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
-                .addComponent(btnDaftar)
                 .addGap(18, 18, 18)
+                .addComponent(btnDaftar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
                     .addComponent(btnLogin))
@@ -404,31 +427,6 @@ public class FormRegister extends javax.swing.JFrame {
         login.setVisible(true);
         this.dispose(); 
     }//GEN-LAST:event_btnLoginActionPerformed
-
-    private void btnDaftarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDaftarActionPerformed
-        if (txtNama.getText().isEmpty() || txtUsername.getText().isEmpty() || String.valueOf(txtPassword.getPassword()).isEmpty()) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Semua kolom wajib diisi, Bro!", "Peringatan", javax.swing.JOptionPane.WARNING_MESSAGE);
-            return; 
-        }
-
-        try {
-            java.sql.Connection con = koneksi.KoneksiDB.getKoneksi();
-            String sql = "INSERT INTO tbl_admin (nama_admin, username, password) VALUES (?, ?, ?)";
-            java.sql.PreparedStatement pst = con.prepareStatement(sql);
-            
-            pst.setString(1, txtNama.getText());
-            pst.setString(2, txtUsername.getText());
-            pst.setString(3, new String(txtPassword.getPassword())); 
-            pst.executeUpdate();
-            javax.swing.JOptionPane.showMessageDialog(this, "Pendaftaran Admin Berhasil! Silakan masuk dengan akun baru Anda.", "Sukses", javax.swing.JOptionPane.INFORMATION_MESSAGE);
-           view.main.FormLogin login = new view.main.FormLogin();
-            login.setVisible(true);
-            this.dispose();
-
-        } catch (Exception e) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Gagal Mendaftar: " + e.getMessage(), "Error Database", javax.swing.JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_btnDaftarActionPerformed
 
     private void txtPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPasswordActionPerformed
         // TODO add your handling code here:
@@ -466,8 +464,8 @@ public class FormRegister extends javax.swing.JFrame {
     }//GEN-LAST:event_txtPasswordFocusLost
 
     private void txtUsernameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtUsernameFocusGained
-        if (txtUsername.getText().equals("")) {
-            txtUsername.setText("Masukkan username...");
+        if (txtUsername.getText().equals("Masukkan username...")) {
+            txtUsername.setText("");
         }
     }//GEN-LAST:event_txtUsernameFocusGained
 
@@ -478,8 +476,8 @@ public class FormRegister extends javax.swing.JFrame {
     }//GEN-LAST:event_txtUsernameFocusLost
 
     private void txtNamaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtNamaFocusGained
-        if (txtNama.getText().equals("")) {
-            txtNama.setText("Masukkan Nama...");
+        if (txtNama.getText().equals("Masukkan Nama...")) {
+            txtNama.setText("");
         }
     }//GEN-LAST:event_txtNamaFocusGained
 
@@ -488,6 +486,39 @@ public class FormRegister extends javax.swing.JFrame {
             txtNama.setText("Masukkan Nama...");
         }
     }//GEN-LAST:event_txtNamaFocusLost
+
+    private void btnDaftarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDaftarActionPerformed
+        String nama = txtNama.getText().trim();
+        String username = txtUsername.getText().trim();
+        String password = new String(txtPassword.getPassword()).trim();
+
+        if (nama.isEmpty() || nama.equals("Masukkan Nama...") || 
+            username.isEmpty() || username.equals("Masukkan username...") || 
+            password.isEmpty()) {
+            
+            javax.swing.JOptionPane.showMessageDialog(this, "Hayo, semua kolom wajib diisi dengan benar sebelum mendaftar!", "Peringatan", javax.swing.JOptionPane.WARNING_MESSAGE);
+            return; 
+        }
+
+        try {
+            java.sql.Connection con = koneksi.KoneksiDB.getKoneksi();
+            String sql = "INSERT INTO tbl_admin (nama_admin, username, password) VALUES (?, ?, ?)";
+            java.sql.PreparedStatement pst = con.prepareStatement(sql);
+            
+            pst.setString(1, nama);
+            pst.setString(2, username);
+            pst.setString(3, password); 
+            pst.executeUpdate();
+            
+            javax.swing.JOptionPane.showMessageDialog(this, "Pendaftaran Admin Berhasil! Silakan masuk dengan akun baru Anda.", "Sukses", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+            view.main.FormLogin login = new view.main.FormLogin();
+            login.setVisible(true);
+            this.dispose();
+            
+        } catch (Exception e) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Gagal Mendaftar: " + e.getMessage(), "Error Database", javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnDaftarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -537,6 +568,7 @@ public class FormRegister extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
