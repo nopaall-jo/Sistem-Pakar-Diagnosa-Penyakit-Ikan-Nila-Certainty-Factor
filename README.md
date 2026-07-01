@@ -1,4 +1,4 @@
 BUKA LOGIN
 
-isi = ABIYU
-isi = PASSWORD
+ISI = abiyu
+ISI = password
