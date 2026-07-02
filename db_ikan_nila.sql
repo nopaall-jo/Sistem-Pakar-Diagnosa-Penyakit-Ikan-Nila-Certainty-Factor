@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3307
--- Waktu pembuatan: 01 Jul 2026 pada 09.28
+-- Waktu pembuatan: 02 Jul 2026 pada 11.46
 -- Versi server: 8.0.30
 -- Versi PHP: 8.0.30
 
@@ -125,8 +125,11 @@ INSERT INTO `tbl_aturan` (`id_aturan`, `kode_penyakit`, `kode_gejala`, `nilai_mb
 (60, 'P12', 'G12', 0.9, 0.1),
 (61, 'P12', 'G18', 0.9, 0.1),
 (62, 'P12', 'G29', 0.8, 0.1),
-(63, 'P04', 'G12', 0.8, 0.1),
-(64, 'P04', 'G13', 1, 0.3);
+(63, 'P12', 'G34', 1, 0.1),
+(64, 'P13', 'G25', 0.9, 0.1),
+(65, 'P13', 'G28', 0.8, 0.1),
+(66, 'P13', 'G32', 1, 0.1),
+(67, 'P13', 'G33', 0.8, 0.1);
 
 -- --------------------------------------------------------
 
@@ -149,13 +152,12 @@ CREATE TABLE `tbl_diagnosa` (
 --
 
 INSERT INTO `tbl_diagnosa` (`id_diagnosa`, `id_admin`, `kode_sampel`, `tanggal_diagnosa`, `hasil_penyakit`, `confidence`, `kemungkinan_lain`) VALUES
-(1, 4, 'SPL-001', '2026-06-26 00:46:10', 'P01', 98.2, '- Cacing Kulit Gyrodactylosis (Skin Fluke Disease) (Akurasi: 94.00 %)\n- Cacing Insang Dactylogyriasis (Gill Fluke Disease) (Akurasi: 90.00 %)\n- Cacing Jangkar (Lerneosis) (Akurasi: 88.00 %)'),
-(2, 4, 'SPL-002', '2026-06-26 00:47:26', 'P05', 99.74, '- Luka Merah (Aeromoniasis) (Akurasi: 88.00 %)'),
-(3, 4, 'SPL-003', '2026-06-26 00:48:13', 'P11', 99.51, '- Penyakit Pseudomonas (Pseudomoniasis) (Akurasi: 97.36 %)\n- Virus Tilapia Lake (TiLV Disease) (Akurasi: 72.00 %)\n- Penyakit Columnaris (Columnariasis) (Akurasi: 60.00 %)'),
-(4, 4, 'SPL-004', '2026-06-26 00:49:02', 'P04', 97.92, '- Cacing Jangkar (Lerneosis) (Akurasi: 97.00 %)\n- Penyakit Trichodina (Trichodiniasis) (Akurasi: 70.00 %)\n- Bintik Putih (White Spot Disease / Ichthyophthiriasis) (Akurasi: 60.00 %)'),
-(5, 4, 'SPL-005', '2026-06-26 00:49:54', 'P06', 99.12, '- Penyakit Pseudomonas (Pseudomoniasis) (Akurasi: 64.00 %)\n- Penyakit Columnaris (Columnariasis) (Akurasi: 56.00 %)'),
-(6, 4, 'SPL-006', '2026-06-26 00:50:33', 'P10', 97.2, '- Cacing Kulit Gyrodactylosis (Skin Fluke Disease) (Akurasi: 80.00 %)\n- Penyakit Trichodina (Trichodiniasis) (Akurasi: 70.00 %)\n- Cacing Jangkar (Lerneosis) (Akurasi: 70.00 %)'),
-(7, 4, 'SPL-007', '2026-06-26 14:38:29', 'P11', 99.79, '- Penyakit Pseudomonas (Pseudomoniasis) (Akurasi: 98.20 %)\n- Penyakit Streptococcus (Streptococcal Disease) (Akurasi: 72.00 %)\n- Cacing Kulit Gyrodactylosis (Skin Fluke Disease) (Akurasi: 70.00 %)');
+(1, 4, 'SPL-001', '2026-07-02 17:47:52', 'P01', 98.2, '- Cacing Kulit Gyrodactylosis (Skin Fluke Disease) (Akurasi: 94.00 %)\n- Cacing Insang Dactylogyriasis (Gill Fluke Disease) (Akurasi: 90.00 %)\n- Cacing Jangkar (Lerneosis) (Akurasi: 88.00 %)'),
+(2, 4, 'SPL-002', '2026-07-02 17:48:59', 'P05', 99.74, '- Luka Merah (Aeromoniasis) (Akurasi: 88.00 %)'),
+(3, 4, 'SPL-003', '2026-07-02 17:49:39', 'P11', 99.82, '- Penyakit Pseudomonas (Pseudomoniasis) (Akurasi: 98.20 %)\n- Virus Tilapia Lake (TiLV Disease) (Akurasi: 72.00 %)\n- Penyakit Columnaris (Columnariasis) (Akurasi: 60.00 %)'),
+(4, 4, 'SPL-004', '2026-07-02 17:50:07', 'P04', 97.92, '- Cacing Jangkar (Lerneosis) (Akurasi: 97.00 %)\n- Penyakit Trichodina (Trichodiniasis) (Akurasi: 70.00 %)\n- Bintik Putih (White Spot Disease / Ichthyophthiriasis) (Akurasi: 60.00 %)'),
+(5, 4, 'SPL-005', '2026-07-02 17:50:45', 'P06', 99.12, '- Penyakit Pseudomonas (Pseudomoniasis) (Akurasi: 64.00 %)\n- Penyakit Columnaris (Columnariasis) (Akurasi: 56.00 %)'),
+(6, 4, 'SPL-006', '2026-07-02 17:51:36', 'P08', 99.97, '- Penyakit Streptococcus (Streptococcal Disease) (Akurasi: 94.00 %)\n- Branchiomycosis (Busuk Insang) (Akurasi: 75.00 %)\n- Luka Merah (Aeromoniasis) (Akurasi: 70.00 %)');
 
 -- --------------------------------------------------------
 
@@ -186,20 +188,20 @@ INSERT INTO `tbl_diagnosa_detail` (`id_detail`, `id_diagnosa`, `kode_gejala`, `k
 (9, 3, 'G11', 'Pasti (1.0)'),
 (10, 3, 'G12', 'Pasti (1.0)'),
 (11, 3, 'G24', 'Sangat Yakin (0.8)'),
-(12, 3, 'G29', 'Sangat Yakin (0.8)'),
+(12, 3, 'G29', 'Pasti (1.0)'),
 (13, 4, 'G04', 'Pasti (1.0)'),
 (14, 4, 'G16', 'Pasti (1.0)'),
 (15, 4, 'G28', 'Sangat Yakin (0.8)'),
 (16, 5, 'G13', 'Pasti (1.0)'),
 (17, 5, 'G14', 'Pasti (1.0)'),
 (18, 5, 'G18', 'Sangat Yakin (0.8)'),
-(19, 6, 'G04', 'Pasti (1.0)'),
-(20, 6, 'G06', 'Yakin (0.6)'),
-(21, 6, 'G10', 'Pasti (1.0)'),
-(22, 7, 'G11', 'Pasti (1.0)'),
-(23, 7, 'G12', 'Pasti (1.0)'),
-(24, 7, 'G17', 'Sangat Yakin (0.8)'),
-(25, 7, 'G29', 'Pasti (1.0)');
+(19, 6, 'G01', 'Pasti (1.0)'),
+(20, 6, 'G03', 'Sangat Yakin (0.8)'),
+(21, 6, 'G06', 'Yakin (0.6)'),
+(22, 6, 'G08', 'Sangat Yakin (0.8)'),
+(23, 6, 'G24', 'Pasti (1.0)'),
+(24, 6, 'G26', 'Yakin (0.6)'),
+(25, 6, 'G27', 'Pasti (1.0)');
 
 -- --------------------------------------------------------
 
@@ -250,7 +252,7 @@ INSERT INTO `tbl_gejala` (`kode_gejala`, `nama_gejala`) VALUES
 ('G31', 'Sirip atau bagian tubuh tampak ditutupi lapisan putih keabu-abuan'),
 ('G32', 'Tubuh tampak kusam, kehilangan warna cerah alaminya, dan sering disertai lapisan lendir berlebih'),
 ('G33', 'Terdapat bercak putih keabu-abuan pada kulit atau insang'),
-('G34', 'organ dalam hati');
+('G34', 'Organ dalam (hati atau limpa) mengalami pembengkakan');
 
 -- --------------------------------------------------------
 
@@ -283,7 +285,7 @@ INSERT INTO `tbl_penyakit` (`kode_penyakit`, `nama_penyakit`, `Deskripsi`, `solu
 ('P10', 'Bintik Putih (White Spot Disease / Ichthyophthiriasis)', 'Infeksi protozoa Ichthyophthirius multifiliis yang sangat menular dan ditandai dengan munculnya bintik-bintik putih pada tubuh, sirip, dan insang ikan.', 'Lakukan perendaman menggunakan formalin atau bahan antiparasit sesuai dosis yang dianjurkan serta jaga kualitas air dan suhu kolam agar tetap stabil.', 'Menjaga kualitas air dan suhu kolam tetap stabil, menghindari stres, serta melakukan karantina ikan baru.'),
 ('P11', 'Luka Merah (Aeromoniasis)', 'Infeksi bakteri Aeromonas hydrophila yang menyebabkan pendarahan, peradangan, dan terbentuknya luka borok pada permukaan tubuh ikan nila.', 'Jaga kebersihan kolam, lakukan pergantian air secara rutin, serta lakukan pengobatan menggunakan antibiotik sesuai rekomendasi pakar dan ketentuan yang berlaku.', 'Menjaga kebersihan kolam, menghindari penumpukan sisa pakan, melakukan pergantian air secara rutin, serta meminimalkan stres pada ikan.'),
 ('P12', 'Penyakit Pseudomonas (Pseudomoniasis)', 'Infeksi bakteri Pseudomonas sp. yang dapat menyebabkan nekrosis jaringan, pendarahan pada tubuh, serta penurunan kondisi kesehatan ikan secara umum.', 'Pisahkan ikan yang terinfeksi, perbaiki kualitas air, dan lakukan pengobatan sesuai rekomendasi pakar atau tenaga kesehatan perikanan.', 'Menjaga kualitas air tetap baik, menghindari luka pada tubuh ikan, serta melakukan sanitasi kolam dan peralatan budidaya secara rutin.'),
-('P13', 'Epistylosis', 'penyakit', 'PH air', 'Hati-hati');
+('P13', 'Penyakit Epistylis (Epistylosis)', 'Infestasi protozoa Epistylis sp. yang menyerang permukaan tubuh ikan dan ditandai dengan peningkatan produksi lendir, iritasi kulit, serta warna tubuh yang tampak kusam.', 'Lakukan pergantian air, kurangi bahan organik yang berlebihan, dan lakukan perendaman menggunakan bahan antiparasit sesuai rekomendasi pakar.', 'Menjaga kebersihan kolam, mengurangi kepadatan tebar, serta menjaga kualitas air agar tetap stabil dan tidak tercemar bahan organik berlebih.');
 
 --
 -- Indexes for dumped tables
@@ -346,13 +348,13 @@ ALTER TABLE `tbl_admin`
 -- AUTO_INCREMENT untuk tabel `tbl_aturan`
 --
 ALTER TABLE `tbl_aturan`
-  MODIFY `id_aturan` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
+  MODIFY `id_aturan` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
 
 --
 -- AUTO_INCREMENT untuk tabel `tbl_diagnosa`
 --
 ALTER TABLE `tbl_diagnosa`
-  MODIFY `id_diagnosa` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_diagnosa` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT untuk tabel `tbl_diagnosa_detail`
