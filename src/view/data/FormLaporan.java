@@ -34,12 +34,12 @@ public class FormLaporan extends javax.swing.JFrame {
             System.out.println("Gagal load icon: " + e.getMessage());
         }
         
-//        if (koneksi.Session.namaAdmin == null || koneksi.Session.namaAdmin.equals("")) {
-//            javax.swing.JOptionPane.showMessageDialog(this, "Akses Ditolak! Hayo, Anda harus Login terlebih dahulu.", "Peringatan", javax.swing.JOptionPane.WARNING_MESSAGE);
-//            new view.main.FormLogin().setVisible(true);
-//            this.dispose(); 
-//            return;  
-//        }
+        if (koneksi.Session.namaAdmin == null || koneksi.Session.namaAdmin.equals("")) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Akses Ditolak! Hayo, Anda harus Login terlebih dahulu.", "Peringatan", javax.swing.JOptionPane.WARNING_MESSAGE);
+            new view.main.FormLogin().setVisible(true);
+            this.dispose(); 
+            return;  
+        }
         
         this.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
