@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="963c9301-3efc-4890-a8a7-6c84a4f3f01d">
-	<property name="ireport.zoom" value="1.771561000000002"/>
-	<property name="ireport.x" value="201"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.zoom" value="1.771561000000003"/>
+	<property name="ireport.x" value="3"/>
+	<property name="ireport.y" value="52"/>
 	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
 	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
 	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
@@ -29,41 +29,44 @@
 	<background>
 		<band splitType="Stretch"/>
 	</background>
-	<title>
-		<band height="105" splitType="Stretch">
+	<pageHeader>
+		<band height="125" splitType="Stretch">
 			<staticText>
-				<reportElement x="100" y="50" width="353" height="35" uuid="6e3001ac-3746-446b-95b3-7cd47c01895a"/>
+				<reportElement x="100" y="32" width="355" height="35" uuid="d7e73f38-7d15-440c-a43c-e48797d5033c"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10" isBold="true"/>
+					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Jl. H. Sena, Ragajaya Citayam, Kecamatan Bojonggede, Kabupaten Bogor, Jawa Barat 16920 | Telp: 0852-1010-0139]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="Title" x="100" y="2" width="353" height="25" forecolor="#000000" uuid="2056531b-d799-4d16-885e-0d9b43f3be06"/>
+				<reportElement style="Title" x="100" y="2" width="355" height="30" forecolor="#000000" uuid="a4e8d931-f766-4e2b-8db5-61285c729997"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="16" isBold="true"/>
-				</textElement>
-				<text><![CDATA[LAPORAN DATA ADMINISTRATOR SISTEM]]></text>
-			</staticText>
-			<staticText>
-				<reportElement style="Title" x="100" y="27" width="353" height="23" forecolor="#000000" uuid="4782fa0d-3596-47b9-ad15-49892903feae"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="14" isBold="true"/>
+					<font size="20" isBold="true"/>
 				</textElement>
 				<text><![CDATA[DZAWIL GARDEN OFFICE FARM]]></text>
 			</staticText>
 			<image>
-				<reportElement x="453" y="0" width="100" height="100" uuid="0c3804a9-f854-4bc5-84ae-de6dff220e6a"/>
+				<reportElement x="455" y="0" width="100" height="100" uuid="e3090a6a-54c6-441b-8c2c-c4f061b18284"/>
 				<imageExpression><![CDATA["C:\\Users\\NAUFAL\\OneDrive\\Dokumen\\NetBeansProjects\\SistemPakarIkanNila\\src/icon/Logo3.png"]]></imageExpression>
 			</image>
 			<image>
-				<reportElement x="0" y="2" width="100" height="100" uuid="e82012a1-2640-480d-bd17-15652ebdcc16"/>
+				<reportElement x="0" y="2" width="100" height="100" uuid="86a7fe43-2640-4e88-901e-1506108f922d"/>
 				<imageExpression><![CDATA["C:\\Users\\NAUFAL\\OneDrive\\Dokumen\\NetBeansProjects\\SistemPakarIkanNila\\src\\icon\\logo2.png"]]></imageExpression>
 			</image>
+			<staticText>
+				<reportElement x="120" y="103" width="313" height="22" uuid="728d6afd-549b-4f20-b3d1-1f2ed1b9b6da"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[LAPORAN DATA ADMINISTRATOR SISTEM]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="102" width="555" height="1" uuid="8f993c1e-9d6a-4d4a-bb07-32bc0de77332"/>
+				<graphicElement>
+					<pen lineWidth="2.0" lineStyle="Double"/>
+				</graphicElement>
+			</line>
 		</band>
-	</title>
-	<pageHeader>
-		<band splitType="Stretch"/>
 	</pageHeader>
 	<columnHeader>
 		<band height="26" splitType="Stretch">

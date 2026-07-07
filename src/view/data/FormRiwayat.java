@@ -40,12 +40,12 @@ public class FormRiwayat extends javax.swing.JFrame {
         }
         
         aturFormatTabel();
-        if (koneksi.Session.namaAdmin == null || koneksi.Session.namaAdmin.equals("")) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Akses Ditolak! Hayo, Anda harus Login terlebih dahulu.", "Peringatan", javax.swing.JOptionPane.WARNING_MESSAGE);
-            new view.main.FormLogin().setVisible(true);
-            this.dispose(); 
-            return;  
-        }
+//        if (koneksi.Session.namaAdmin == null || koneksi.Session.namaAdmin.equals("")) {
+//            javax.swing.JOptionPane.showMessageDialog(this, "Akses Ditolak! Hayo, Anda harus Login terlebih dahulu.", "Peringatan", javax.swing.JOptionPane.WARNING_MESSAGE);
+//            new view.main.FormLogin().setVisible(true);
+//            this.dispose(); 
+//            return;  
+//        }
         
         this.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
@@ -200,10 +200,6 @@ public class FormRiwayat extends javax.swing.JFrame {
         lblKeluar = new javax.swing.JLabel();
         pn_kanan = new javax.swing.JPanel();
         mainContent = new javax.swing.JPanel();
-        jPanel1 = new javax.swing.JPanel();
-        lblJam = new javax.swing.JLabel();
-        lblAdmin = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         pnInputCari = new javax.swing.JPanel();
         dtCari = new com.toedter.calendar.JDateChooser();
@@ -215,8 +211,15 @@ public class FormRiwayat extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         tblRiwayat = new javax.swing.JTable();
         cbKategoriCari = new javax.swing.JComboBox<>();
-        jButton1 = new javax.swing.JButton();
+        btnCetakStruk = new javax.swing.JButton();
         jLabel15 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        lblJam = new javax.swing.JLabel();
+        lblAdmin = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -693,52 +696,8 @@ public class FormRiwayat extends javax.swing.JFrame {
 
         mainContent.setBackground(new java.awt.Color(251, 248, 204));
 
-        jPanel1.setBackground(new java.awt.Color(165, 255, 214));
-        jPanel1.setPreferredSize(new java.awt.Dimension(1166, 80));
-
-        lblJam.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        lblJam.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/calendar.png"))); // NOI18N
-
-        lblAdmin.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        lblAdmin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/user.png"))); // NOI18N
-        lblAdmin.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        lblAdmin.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lblAdminMouseClicked(evt);
-            }
-        });
-
-        jLabel11.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
-        jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel11.setText("DATA RIWAYAT DIAGNOSA");
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addComponent(lblJam)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, 727, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
-                .addComponent(lblAdmin)
-                .addGap(23, 23, 23))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lblJam, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel11)
-                        .addComponent(lblAdmin)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
         jPanel4.setBackground(new java.awt.Color(224, 251, 252));
-        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createMatteBorder(2, 1, 2, 1, new java.awt.Color(0, 0, 0)), "TABEL DATA RIWAYAT", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 3, 18))); // NOI18N
+        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createMatteBorder(2, 1, 2, 1, new java.awt.Color(0, 0, 0)), "Riwayat Laporan Sistem Pakar Diagnosa Penyakit Ikan Nila", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 18))); // NOI18N
 
         pnInputCari.setBackground(new java.awt.Color(224, 251, 252));
         pnInputCari.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -832,13 +791,13 @@ public class FormRiwayat extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setBackground(new java.awt.Color(253, 252, 220));
-        jButton1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/printer.png"))); // NOI18N
-        jButton1.setText("CETAK STRUK DETAIL");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnCetakStruk.setBackground(new java.awt.Color(253, 252, 220));
+        btnCetakStruk.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnCetakStruk.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/printer.png"))); // NOI18N
+        btnCetakStruk.setText("CETAK STRUK DETAIL");
+        btnCetakStruk.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnCetakStrukActionPerformed(evt);
             }
         });
 
@@ -856,7 +815,7 @@ public class FormRiwayat extends javax.swing.JFrame {
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(btnCari)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1))
+                        .addComponent(btnCetakStruk))
                     .addComponent(btnCetak))
                 .addGap(12, 12, 12)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -882,7 +841,7 @@ public class FormRiwayat extends javax.swing.JFrame {
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(btnDetail, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(btnCetakStruk, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addGap(18, 18, 18)
@@ -891,7 +850,7 @@ public class FormRiwayat extends javax.swing.JFrame {
                                 .addGap(9, 9, 9)
                                 .addComponent(btnCetak)))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 518, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 495, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -899,23 +858,96 @@ public class FormRiwayat extends javax.swing.JFrame {
         jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel15.setText("copyright © Skripsi Teknik Informatika | Naufal Rafif (202243501684)");
 
+        jPanel1.setBackground(new java.awt.Color(165, 255, 214));
+        jPanel1.setPreferredSize(new java.awt.Dimension(1166, 95));
+
+        lblJam.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        lblJam.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/calendar.png"))); // NOI18N
+
+        lblAdmin.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        lblAdmin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/user.png"))); // NOI18N
+        lblAdmin.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblAdmin.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblAdminMouseClicked(evt);
+            }
+        });
+
+        jPanel3.setBackground(new java.awt.Color(165, 255, 214));
+        jPanel3.setPreferredSize(new java.awt.Dimension(496, 95));
+
+        jLabel11.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
+        jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel11.setText("SISTEM PAKAR IKAN NILA DZAWIL FARM");
+
+        jLabel12.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
+        jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel12.setText("DZAWIL GARDEN OFFICE FARM");
+
+        jLabel13.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
+        jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel13.setText("Metode Certainty Factor");
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 925, Short.MAX_VALUE)
+            .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addComponent(jLabel11)
+                .addGap(1, 1, 1)
+                .addComponent(jLabel12)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel13)
+                .addContainerGap())
+        );
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addComponent(lblJam, javax.swing.GroupLayout.DEFAULT_SIZE, 39, Short.MAX_VALUE)
+                .addGap(74, 74, 74)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 925, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(49, 49, 49)
+                .addComponent(lblAdmin)
+                .addGap(20, 20, 20))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblAdmin, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblJam, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(25, 25, 25))
+            .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout mainContentLayout = new javax.swing.GroupLayout(mainContent);
         mainContent.setLayout(mainContentLayout);
         mainContentLayout.setHorizontalGroup(
             mainContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 871, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainContentLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addGroup(mainContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(20, 20, 20))
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1160, Short.MAX_VALUE)
         );
         mainContentLayout.setVerticalGroup(
             mainContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainContentLayout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(11, 11, 11)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(16, 16, 16)
                 .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel15))
@@ -1230,18 +1262,73 @@ public class FormRiwayat extends javax.swing.JFrame {
 
     private void btnCetakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCetakActionPerformed
         if (koneksi.Session.namaAdmin == null || koneksi.Session.namaAdmin.isEmpty()) {
-        javax.swing.JOptionPane.showMessageDialog(this, "Akses Ditolak! Anda harus Login terlebih dahulu.", "Peringatan", javax.swing.JOptionPane.WARNING_MESSAGE);
-        new view.main.FormLogin().setVisible(true);
-        this.dispose(); 
-        return; 
-    }
+            javax.swing.JOptionPane.showMessageDialog(this, "Akses Ditolak! Anda harus Login terlebih dahulu.", "Peringatan", javax.swing.JOptionPane.WARNING_MESSAGE);
+            new view.main.FormLogin().setVisible(true);
+            this.dispose(); 
+            return; 
+        }
+        
+        String[] pilihan = {"Semua Data", "7 Hari Terakhir", "1 Bulan Terakhir", "1 Tahun Terakhir"};
+        String periode = (String) javax.swing.JOptionPane.showInputDialog(
+                this,
+                "Pilih periode laporan riwayat diagnosa:",
+                "Cetak Riwayat Diagnosa",
+                javax.swing.JOptionPane.QUESTION_MESSAGE,
+                null,
+                pilihan,
+                pilihan[0] 
+        );
+
+        if (periode == null) {
+            return;
+        }
+
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd MMMM yyyy", new java.util.Locale("id", "ID"));
+        java.util.Calendar cal = java.util.Calendar.getInstance();
+        
+        java.util.Date tglAkhirDate = cal.getTime();
+        java.util.Date tglAwalDate = cal.getTime();
+        
+        String tglSekarang = sdf.format(cal.getTime());
+        String teksTanggal = "";
+
+        switch (periode) {
+            case "7 Hari Terakhir":
+                cal.add(java.util.Calendar.DAY_OF_MONTH, -7);
+                tglAwalDate = cal.getTime();
+                teksTanggal = sdf.format(cal.getTime()) + " s/d " + tglSekarang;
+                break;
+            case "1 Bulan Terakhir":
+                cal.add(java.util.Calendar.MONTH, -1);
+                tglAwalDate = cal.getTime();
+                teksTanggal = sdf.format(cal.getTime()) + " s/d " + tglSekarang;
+                break;
+            case "1 Tahun Terakhir":
+                cal.add(java.util.Calendar.YEAR, -1);
+                tglAwalDate = cal.getTime();
+                teksTanggal = sdf.format(cal.getTime()) + " s/d " + tglSekarang;
+                break;
+            default:
+                teksTanggal = "Semua Riwayat Diagnosa";
+                cal.set(2000, java.util.Calendar.JANUARY, 1);
+                tglAwalDate = cal.getTime();
+                
+                cal.set(2030, java.util.Calendar.DECEMBER, 31);
+                tglAkhirDate = cal.getTime();
+                break;
+        }
 
         try {
             String path = "src/report/LaporanRiwayat.jasper"; 
             java.io.File file = new java.io.File(path);
 
             java.util.HashMap<String, Object> parameter = new java.util.HashMap<>();
-            parameter.put("ADMIN", koneksi.Session.namaAdmin); 
+            parameter.put("ADMIN", koneksi.Session.namaAdmin);
+            parameter.put("PERIODE", periode);   
+            parameter.put("TANGGAL", teksTanggal);  
+            
+            parameter.put("TGL_AWAL", tglAwalDate);
+            parameter.put("TGL_AKHIR", tglAkhirDate);
 
             net.sf.jasperreports.engine.JasperPrint print = net.sf.jasperreports.engine.JasperFillManager.fillReport(
                 file.getPath(), 
@@ -1249,14 +1336,16 @@ public class FormRiwayat extends javax.swing.JFrame {
                 koneksi.KoneksiDB.getKoneksi()
             );
 
-            net.sf.jasperreports.view.JasperViewer.viewReport(print, false);
+            net.sf.jasperreports.view.JasperViewer viewer = new net.sf.jasperreports.view.JasperViewer(print, false);
+            viewer.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
+            viewer.setVisible(true);
 
         } catch (Exception e) {
             javax.swing.JOptionPane.showMessageDialog(this, "Gagal mencetak Laporan Riwayat: " + e.getMessage());
         }
     }//GEN-LAST:event_btnCetakActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnCetakStrukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCetakStrukActionPerformed
         if (koneksi.Session.namaAdmin == null || koneksi.Session.namaAdmin.isEmpty()) {
             javax.swing.JOptionPane.showMessageDialog(this, "Akses Ditolak! Anda harus Login terlebih dahulu.", "Peringatan", javax.swing.JOptionPane.WARNING_MESSAGE);
             return; 
@@ -1296,13 +1385,15 @@ public class FormRiwayat extends javax.swing.JFrame {
                 con
             );
 
-            net.sf.jasperreports.view.JasperViewer.viewReport(print, false);
+            net.sf.jasperreports.view.JasperViewer viewer = new net.sf.jasperreports.view.JasperViewer(print, false);
+            viewer.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
+            viewer.setVisible(true);
 
         } catch (Exception e) {
             javax.swing.JOptionPane.showMessageDialog(this, "Gagal mencetak Laporan Hasil Diagnosa: " + e.getMessage());
             e.printStackTrace();
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnCetakStrukActionPerformed
 
     private void btnDataAdminMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDataAdminMouseEntered
         if (btnDataAdmin.getBackground().equals(colorNormal)) {
@@ -1392,6 +1483,7 @@ public class FormRiwayat extends javax.swing.JFrame {
     private javax.swing.JPanel btnAturan;
     private javax.swing.JButton btnCari;
     private javax.swing.JButton btnCetak;
+    private javax.swing.JButton btnCetakStruk;
     private javax.swing.JPanel btnDashboard;
     private javax.swing.JPanel btnDataAdmin;
     private javax.swing.JButton btnDetail;
@@ -1404,8 +1496,9 @@ public class FormRiwayat extends javax.swing.JFrame {
     private javax.swing.JPanel btnRiwayat;
     private javax.swing.JComboBox<String> cbKategoriCari;
     private com.toedter.calendar.JDateChooser dtCari;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JPanel jPanel1;
@@ -1414,6 +1507,7 @@ public class FormRiwayat extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane2;

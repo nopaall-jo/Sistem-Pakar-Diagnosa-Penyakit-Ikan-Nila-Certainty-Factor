@@ -148,7 +148,10 @@ public class FormLaporan extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         lblJam = new javax.swing.JLabel();
         lblAdmin = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
         pnCetakMaster = new javax.swing.JPanel();
@@ -637,7 +640,7 @@ public class FormLaporan extends javax.swing.JFrame {
         pn_kanan.setLayout(new java.awt.BorderLayout());
 
         jPanel1.setBackground(new java.awt.Color(255, 237, 216));
-        jPanel1.setPreferredSize(new java.awt.Dimension(1166, 80));
+        jPanel1.setPreferredSize(new java.awt.Dimension(1166, 100));
 
         lblJam.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         lblJam.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/calendar.png"))); // NOI18N
@@ -651,9 +654,38 @@ public class FormLaporan extends javax.swing.JFrame {
             }
         });
 
+        jPanel4.setBackground(new java.awt.Color(255, 237, 216));
+
         jLabel11.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
         jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel11.setText("CETAK LAPORAN");
+        jLabel11.setText("SISTEM PAKAR IKAN NILA DZAWIL FARM");
+
+        jLabel12.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
+        jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel12.setText("DZAWIL GARDEN OFFICE FARM");
+
+        jLabel13.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
+        jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel13.setText("Metode Certainty Factor");
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 880, Short.MAX_VALUE)
+            .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addComponent(jLabel11)
+                .addGap(1, 1, 1)
+                .addComponent(jLabel12)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel13)
+                .addContainerGap())
+        );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -661,25 +693,23 @@ public class FormLaporan extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(21, 21, 21)
-                .addComponent(lblJam)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, 937, Short.MAX_VALUE)
-                .addGap(28, 28, 28)
+                .addComponent(lblJam, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(56, 56, 56)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(47, 47, 47)
                 .addComponent(lblAdmin)
                 .addGap(20, 20, 20))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(2, 2, 2)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblAdmin)
-                            .addComponent(jLabel11)))
-                    .addComponent(lblJam, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(lblAdmin)
                 .addGap(23, 23, 23))
+            .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(31, 31, 31)
+                .addComponent(lblJam, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pn_kanan.add(jPanel1, java.awt.BorderLayout.PAGE_START);
@@ -687,7 +717,7 @@ public class FormLaporan extends javax.swing.JFrame {
         jPanel3.setBackground(new java.awt.Color(224, 251, 252));
 
         jPanel7.setBackground(new java.awt.Color(253, 255, 182));
-        jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.MatteBorder(null), "Cetak Laporan Data", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("SansSerif", 3, 18))); // NOI18N
+        jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.MatteBorder(null), "Pusat Laporan Lengkap Sistem Pakar Ikan Nila", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("SansSerif", 3, 16))); // NOI18N
 
         pnCetakMaster.setBackground(new java.awt.Color(255, 255, 225));
         pnCetakMaster.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -1016,7 +1046,7 @@ public class FormLaporan extends javax.swing.JFrame {
                         .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnKembali, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 298, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 281, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel15))
         );
@@ -1238,8 +1268,35 @@ public class FormLaporan extends javax.swing.JFrame {
     }//GEN-LAST:event_cbLaporanActionPerformed
 
     private void btnCetakRiwayatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCetakRiwayatActionPerformed
-        tampilkanLaporanKePanel("LaporanRiwayat.jasper");
+        String namaAdmin = koneksi.Session.namaAdmin;
+        if (namaAdmin == null || namaAdmin.isEmpty()) {
+            namaAdmin = "Admin Dzawil Farm"; 
+        }
 
+        if (jDateChooser.getDate() == null || jDateChooser1.getDate() == null) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Silahkan pilih Tanggal Awal dan Tanggal Akhir terlebih dahulu!", "Peringatan", javax.swing.JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        try {
+            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd MMMM yyyy", new java.util.Locale("id", "ID"));
+            String tglAwal = sdf.format(jDateChooser.getDate());
+            String tglAkhir = sdf.format(jDateChooser1.getDate());
+            
+            String teksPeriodeTanggal = tglAwal + " s/d " + tglAkhir;
+
+            java.util.HashMap<String, Object> param = new java.util.HashMap<>();
+            param.put("ADMIN", namaAdmin);
+            param.put("TANGGAL", teksPeriodeTanggal);
+            param.put("PERIODE", teksPeriodeTanggal);
+            param.put("TGL_AWAL", jDateChooser.getDate());
+            param.put("TGL_AKHIR", jDateChooser1.getDate());
+
+            tampilkanLaporanParameterKePanel("LaporanRiwayat.jasper", param);
+
+        } catch (Exception e) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Gagal mencetak Laporan Riwayat: " + e.getMessage());
+        }
     }//GEN-LAST:event_btnCetakRiwayatActionPerformed
 
     private void btnKembaliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKembaliActionPerformed
@@ -1272,48 +1329,99 @@ public class FormLaporan extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnDataAdminMousePressed
 
-    private void lblAdminMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAdminMouseClicked
-        view.main.FormAdmin formA = new view.main.FormAdmin();
-        formA.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_lblAdminMouseClicked
-
     private void btnCetakHasilDiagnosaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCetakHasilDiagnosaActionPerformed
-        String id = javax.swing.JOptionPane.showInputDialog(this, "Masukkan ID Diagnosa / Kode Sampel (Contoh: 1 atau SPL-001):", "Cetak Hasil Diagnosa", javax.swing.JOptionPane.QUESTION_MESSAGE);
-        
-        if (id != null && !id.trim().isEmpty()) {
-            try {
-                java.util.HashMap<String, Object> param = new java.util.HashMap<>();
-                try {
-                    int idAngka = Integer.parseInt(id.trim());
-                    param.put("ID_DIAGNOSA", idAngka); 
-                } catch (NumberFormatException e) {
-                    param.put("ID_DIAGNOSA", id.trim()); 
-                }
-                String namaAdmin = koneksi.Session.namaAdmin;
-                if (namaAdmin == null || namaAdmin.isEmpty()) {
-                    namaAdmin = "Admin Dzawil Farm"; 
-                }
-                param.put("ADMIN", namaAdmin);
-                java.sql.Connection con = koneksi.KoneksiDB.getKoneksi();
-                String sql = "SELECT kemungkinan_lain FROM tbl_diagnosa WHERE id_diagnosa = '" + id.trim() + "' OR kode_sampel = '" + id.trim() + "'"; 
-                java.sql.Statement st = con.createStatement();
-                java.sql.ResultSet rs = st.executeQuery(sql);
-                String teksKemungkinan = "-"; 
-                if(rs.next()){
-                    teksKemungkinan = rs.getString("kemungkinan_lain"); 
-                }
-                param.put("KEMUNGKINAN_LAIN", teksKemungkinan);
-                tampilkanLaporanParameterKePanel("LaporanHasilDiagnosa.jasper", param);
-            } catch (Exception e) {
-                javax.swing.JOptionPane.showMessageDialog(this, "Gagal memuat laporan: " + e.getMessage());
+        try {
+            String namaAdmin = koneksi.Session.namaAdmin;
+            if (namaAdmin == null || namaAdmin.isEmpty()) {
+                namaAdmin = "Admin Dzawil Farm"; 
             }
+
+            java.util.ArrayList<String> daftarPilihan = new java.util.ArrayList<>();
+            java.sql.Connection con = koneksi.KoneksiDB.getKoneksi();
+            java.sql.Statement stm = con.createStatement();
+            
+            String sqlSelect = "SELECT * FROM tbl_diagnosa ORDER BY id_diagnosa DESC"; 
+            java.sql.ResultSet rsSelect = stm.executeQuery(sqlSelect);
+
+            while (rsSelect.next()) {
+                String idDiag = rsSelect.getString("id_diagnosa");
+                String kode = "-";
+
+                try {
+                    kode = rsSelect.getString("kode_sampel");
+                } catch (Exception e) {
+                    kode = "ID-" + idDiag;
+                }
+
+                if (kode == null || kode.trim().isEmpty()) {
+                    kode = "ID-" + idDiag; 
+                }
+
+                String item = kode + "  [ID Diagnosa: " + idDiag + "]";
+                daftarPilihan.add(item);
+            }
+            
+            if (daftarPilihan.isEmpty()) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Belum ada data riwayat diagnosa untuk dicetak!", "Info", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+
+            String[] pilihan = daftarPilihan.toArray(new String[0]);
+
+            String terpilih = (String) javax.swing.JOptionPane.showInputDialog(
+                    this,
+                    "Pilih Data Riwayat Diagnosa yang ingin dicetak:",
+                    "Cetak Hasil Diagnosa",
+                    javax.swing.JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    pilihan,
+                    pilihan[0] 
+            );
+
+            if (terpilih == null) {
+                return;
+            }
+
+            String kodeSampel = terpilih.split("  \\[")[0].trim();
+            
+            String idAngkaStr = terpilih.substring(terpilih.indexOf("ID Diagnosa: ") + 13, terpilih.indexOf("]")).trim();
+            int idAngka = Integer.parseInt(idAngkaStr);
+
+            java.util.HashMap<String, Object> param = new java.util.HashMap<>();
+            
+            param.put("ID_DIAGNOSA", idAngka);      
+            param.put("KODE_SAMPEL", kodeSampel); 
+            param.put("ADMIN", namaAdmin);
+
+            String sql = "SELECT kemungkinan_lain FROM tbl_diagnosa WHERE id_diagnosa = " + idAngka + " OR kode_sampel = '" + kodeSampel + "'"; 
+            java.sql.Statement st = con.createStatement();
+            java.sql.ResultSet rs = st.executeQuery(sql);
+            
+            String teksKemungkinan = "-"; 
+            if(rs.next()){
+                teksKemungkinan = rs.getString("kemungkinan_lain"); 
+                if (teksKemungkinan == null || teksKemungkinan.trim().isEmpty()) {
+                    teksKemungkinan = "-";
+                }
+            }
+            param.put("KEMUNGKINAN_LAIN", teksKemungkinan);
+            
+            tampilkanLaporanParameterKePanel("LaporanHasilDiagnosa.jasper", param);
+
+        } catch (Exception e) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Gagal memuat laporan: " + e.getMessage());
         }
     }//GEN-LAST:event_btnCetakHasilDiagnosaActionPerformed
 
     private void btnCetakAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCetakAdminActionPerformed
         tampilkanLaporanKePanel("LaporanAdmin.jasper");
     }//GEN-LAST:event_btnCetakAdminActionPerformed
+
+    private void lblAdminMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAdminMouseClicked
+        view.main.FormAdmin formA = new view.main.FormAdmin();
+        formA.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_lblAdminMouseClicked
 
     /**
      * @param args the command line arguments
@@ -1400,6 +1508,8 @@ public class FormLaporan extends javax.swing.JFrame {
     private com.toedter.calendar.JDateChooser jDateChooser;
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel3;
@@ -1411,6 +1521,7 @@ public class FormLaporan extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JLabel lblAdmin;

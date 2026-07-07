@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="963c9301-3efc-4890-a8a7-6c84a4f3f01d">
-	<property name="ireport.zoom" value="1.3310000000000062"/>
-	<property name="ireport.x" value="67"/>
+	<property name="ireport.zoom" value="1.7715610000000117"/>
+	<property name="ireport.x" value="529"/>
 	<property name="ireport.y" value="0"/>
 	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
 	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
@@ -16,6 +16,10 @@
 	<parameter name="ADMIN" class="java.lang.String"/>
 	<parameter name="ID_DIAGNOSA" class="java.lang.Integer"/>
 	<parameter name="KEMUNGKINAN_LAIN" class="java.lang.String"/>
+	<parameter name="PERIODE" class="java.lang.String"/>
+	<parameter name="TANGGAL" class="java.lang.String"/>
+	<parameter name="TGL_AWAL" class="java.util.Date"/>
+	<parameter name="TGL_AKHIR" class="java.util.Date"/>
 	<queryString>
 		<![CDATA[SELECT 
     d.id_diagnosa, 
@@ -25,6 +29,7 @@
     d.confidence 
 FROM tbl_diagnosa d 
 LEFT JOIN tbl_penyakit p ON d.hasil_penyakit = p.kode_penyakit 
+WHERE d.tanggal_diagnosa >= $P{TGL_AWAL} AND d.tanggal_diagnosa <= $P{TGL_AKHIR} 
 ORDER BY d.id_diagnosa DESC]]>
 	</queryString>
 	<field name="id_diagnosa" class="java.lang.Integer">
@@ -45,39 +50,53 @@ ORDER BY d.id_diagnosa DESC]]>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
-	<title>
-		<band height="104" splitType="Stretch">
+	<pageHeader>
+		<band height="149">
 			<staticText>
-				<reportElement x="100" y="59" width="602" height="30" uuid="6e3001ac-3746-446b-95b3-7cd47c01895a"/>
+				<reportElement style="Title" x="100" y="1" width="602" height="36" forecolor="#000000" uuid="80aed78e-755e-4c3b-98c3-34c514d3b4ef"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Jl. H. Sena, Ragajaya Citayam, Kecamatan Bojonggede, Kabupaten Bogor, Jawa Barat 16920 | Telp: 0852-1010-0139]]></text>
-			</staticText>
-			<staticText>
-				<reportElement style="Title" x="100" y="2" width="602" height="32" forecolor="#000000" uuid="2056531b-d799-4d16-885e-0d9b43f3be06"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="19" isBold="true"/>
-				</textElement>
-				<text><![CDATA[LAPORAN REKAP RIWAYAT DIAGNOSA PENYAKIT IKAN NILA]]></text>
-			</staticText>
-			<staticText>
-				<reportElement style="Title" x="100" y="34" width="602" height="25" forecolor="#000000" uuid="4782fa0d-3596-47b9-ad15-49892903feae"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="17" isBold="true"/>
+					<font size="20" isBold="true"/>
 				</textElement>
 				<text><![CDATA[DZAWIL GARDEN OFFICE FARM]]></text>
 			</staticText>
 			<image>
-				<reportElement x="702" y="0" width="100" height="100" uuid="0c3804a9-f854-4bc5-84ae-de6dff220e6a"/>
+				<reportElement x="702" y="-1" width="100" height="100" uuid="f90de2d7-1e84-4c60-a8bd-86d7ad86a89d"/>
 				<imageExpression><![CDATA["C:\\Users\\NAUFAL\\OneDrive\\Dokumen\\NetBeansProjects\\SistemPakarIkanNila\\src/icon/Logo3.png"]]></imageExpression>
 			</image>
 			<image>
-				<reportElement x="0" y="2" width="100" height="100" uuid="e82012a1-2640-480d-bd17-15652ebdcc16"/>
+				<reportElement x="0" y="0" width="100" height="100" uuid="df227eba-87d8-4531-967b-3b8a327d6e23"/>
 				<imageExpression><![CDATA["C:\\Users\\NAUFAL\\OneDrive\\Dokumen\\NetBeansProjects\\SistemPakarIkanNila\\src\\icon\\logo2.png"]]></imageExpression>
 			</image>
+			<line>
+				<reportElement x="0" y="100" width="802" height="1" uuid="bd582367-85b9-4f11-a38a-3d90eb0fc358"/>
+				<graphicElement>
+					<pen lineWidth="2.0" lineStyle="Double"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="195" y="101" width="476" height="27" uuid="5383dde4-4ba1-4fa8-a82d-799c1f4a90bc"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16"/>
+				</textElement>
+				<text><![CDATA[LAPORAN REKAP RIWAYAT DIAGNOSA PENYAKIT IKAN NILA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="37" width="602" height="46" uuid="f2e1b5eb-4dca-448b-9941-52927a829509"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Jl. H. Sena, Ragajaya Citayam, Kecamatan Bojonggede, Kabupaten Bogor, Jawa Barat 16920 | Telp: 0852-1010-0139]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="128" width="195" height="20" uuid="4c756f8b-4c6e-4ed8-9296-fb6f43348026"/>
+				<textFieldExpression><![CDATA["Tanggal : " + $P{TANGGAL}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="701" y="128" width="100" height="20" uuid="b0c803f2-493a-4642-bf9e-d0fae529b8ab"/>
+				<textFieldExpression><![CDATA["Periode : " + $P{PERIODE}]]></textFieldExpression>
+			</textField>
 		</band>
-	</title>
+	</pageHeader>
 	<columnHeader>
 		<band height="30" splitType="Stretch">
 			<line>
@@ -176,7 +195,7 @@ ORDER BY d.id_diagnosa DESC]]>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="24" splitType="Stretch">
+		<band height="23" splitType="Stretch">
 			<frame>
 				<reportElement style="Row" mode="Opaque" x="0" y="0" width="802" height="23" uuid="615b7e19-eb25-44f1-9bc5-3a591f2db629"/>
 				<textField>
@@ -254,43 +273,52 @@ ORDER BY d.id_diagnosa DESC]]>
 			</frame>
 		</band>
 	</detail>
-	<summary>
-		<band height="133" splitType="Stretch">
+	<lastPageFooter>
+		<band height="135">
 			<line>
-				<reportElement x="0" y="2" width="801" height="1" uuid="c245aef2-6299-4121-8dbd-36359c006883"/>
+				<reportElement x="0" y="0" width="801" height="1" uuid="c245aef2-6299-4121-8dbd-36359c006883"/>
 				<graphicElement>
 					<pen lineWidth="2.0" lineStyle="Double"/>
 				</graphicElement>
 			</line>
 			<line>
-				<reportElement positionType="Float" x="630" y="112" width="172" height="1" uuid="c6be53d0-7124-4469-81f9-773f723e938e"/>
+				<reportElement positionType="Float" x="630" y="93" width="172" height="1" uuid="c6be53d0-7124-4469-81f9-773f723e938e"/>
 			</line>
 			<staticText>
-				<reportElement positionType="Float" x="631" y="111" width="171" height="20" uuid="c56a7186-ac5b-4255-b14c-50a0974d3960"/>
+				<reportElement positionType="Float" x="631" y="92" width="171" height="20" uuid="c56a7186-ac5b-4255-b14c-50a0974d3960"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Admin Dzawil Farm]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="Float" x="631" y="27" width="171" height="20" uuid="950cad36-2a63-4256-8129-1e8f334e90b0"/>
+				<reportElement positionType="Float" x="631" y="21" width="171" height="20" uuid="950cad36-2a63-4256-8129-1e8f334e90b0"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Dikeluarkan Oleh,]]></text>
 			</staticText>
 			<textField pattern="EEEEE dd MMMMM yyyy">
-				<reportElement style="Column header" positionType="Float" x="631" y="3" width="171" height="20" forecolor="#000000" uuid="6f053624-b345-40a3-96b6-f1b007f4d044"/>
+				<reportElement style="Column header" positionType="Float" x="631" y="2" width="171" height="20" forecolor="#000000" uuid="6f053624-b345-40a3-96b6-f1b007f4d044"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="10" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Bojong Gede, " + new java.text.SimpleDateFormat("EEEE, dd MMMM yyyy", new java.util.Locale("id", "ID")).format(new java.util.Date())]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement positionType="Float" x="631" y="91" width="171" height="20" uuid="04d178cf-3139-4c2a-9d4c-5760b070f021"/>
+				<reportElement positionType="Float" x="631" y="72" width="171" height="20" uuid="04d178cf-3139-4c2a-9d4c-5760b070f021"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$P{ADMIN}]]></textFieldExpression>
 			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="711" y="115" width="40" height="20" uuid="39eba6af-0e2e-4272-a203-bd815450cf4c"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="631" y="115" width="80" height="20" uuid="1bc380ad-03aa-49b8-86e0-507080435c3c"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER} + " / "]]></textFieldExpression>
+			</textField>
 		</band>
-	</summary>
+	</lastPageFooter>
 </jasperReport>

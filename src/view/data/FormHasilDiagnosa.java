@@ -36,6 +36,7 @@ public class FormHasilDiagnosa extends javax.swing.JFrame {
     
     public FormHasilDiagnosa() {
         initComponents();
+        setJamRealTime();
         try {
             java.awt.Image icon = javax.imageio.ImageIO.read(getClass().getResource("/icon/logo2.png"));
             setIconImage(icon);
@@ -59,8 +60,11 @@ public class FormHasilDiagnosa extends javax.swing.JFrame {
                 comp.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
             }
         }
+        
+        switchWarna(btnDiagnosa);
         String nama = koneksi.Session.namaAdmin;
         String role = koneksi.Session.role;
+        lblAdmin.setText(role + " | " + nama);
         txtKodeSampel.setEditable(false);
         txtPenyakit.setEditable(false);
     }
@@ -220,17 +224,22 @@ public class FormHasilDiagnosa extends javax.swing.JFrame {
     }
     
     private void setJamRealTime() {
+        java.text.SimpleDateFormat format =
+                new java.text.SimpleDateFormat("dd MMMM yyyy HH:mm:ss");
+
+        // Menampilkan jam langsung saat form dibuka
+        lblJam.setText(format.format(new java.util.Date()));
+
         javax.swing.Timer timer = new javax.swing.Timer(1000, new java.awt.event.ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent e) {
-                java.util.Date tanggal = new java.util.Date();
-                SimpleDateFormat format = new SimpleDateFormat("dd MMMM yyyy HH:mm:ss");
-                lblJam.setText(format.format(tanggal));
+                lblJam.setText(format.format(new java.util.Date()));
             }
         });
+
         timer.start();
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -270,7 +279,10 @@ public class FormHasilDiagnosa extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         lblJam = new javax.swing.JLabel();
         lblAdmin = new javax.swing.JLabel();
+        jPanel5 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
         pn_dasar = new javax.swing.JPanel();
         mainContent = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -770,7 +782,7 @@ public class FormHasilDiagnosa extends javax.swing.JFrame {
         pn_kanan.setLayout(new java.awt.BorderLayout());
 
         jPanel1.setBackground(new java.awt.Color(202, 240, 248));
-        jPanel1.setPreferredSize(new java.awt.Dimension(1166, 80));
+        jPanel1.setPreferredSize(new java.awt.Dimension(1166, 95));
 
         lblJam.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         lblJam.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/calendar.png"))); // NOI18N
@@ -784,9 +796,39 @@ public class FormHasilDiagnosa extends javax.swing.JFrame {
             }
         });
 
+        jPanel5.setBackground(new java.awt.Color(202, 240, 248));
+        jPanel5.setPreferredSize(new java.awt.Dimension(496, 95));
+
         jLabel11.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
         jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel11.setText("DETAIL RIWAYAT DIAGNOSA");
+        jLabel11.setText("SISTEM PAKAR IKAN NILA DZAWIL FARM");
+
+        jLabel12.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
+        jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel12.setText("DZAWIL GARDEN OFFICE FARM");
+
+        jLabel13.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
+        jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel13.setText("Metode Certainty Factor");
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 925, Short.MAX_VALUE)
+            .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addComponent(jLabel11)
+                .addGap(1, 1, 1)
+                .addComponent(jLabel12)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel13)
+                .addContainerGap())
+        );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -794,25 +836,22 @@ public class FormHasilDiagnosa extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(21, 21, 21)
-                .addComponent(lblJam)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, 1038, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
+                .addComponent(lblJam, javax.swing.GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE)
+                .addGap(74, 74, 74)
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 925, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(49, 49, 49)
                 .addComponent(lblAdmin)
-                .addGap(22, 22, 22))
+                .addGap(20, 20, 20))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(23, 23, 23)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(2, 2, 2)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblAdmin)
-                            .addComponent(jLabel11)))
+                    .addComponent(lblAdmin, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(lblJam, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(23, 23, 23))
+                .addGap(25, 25, 25))
+            .addComponent(jPanel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE)
         );
 
         pn_kanan.add(jPanel1, java.awt.BorderLayout.PAGE_START);
@@ -864,6 +903,7 @@ public class FormHasilDiagnosa extends javax.swing.JFrame {
         });
 
         jPanel3.setBackground(new java.awt.Color(253, 252, 220));
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.MatteBorder(null), "Detail Riwayat Diagnosa", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("SansSerif", 1, 18))); // NOI18N
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel3.setText("Kode Sampel:");
@@ -921,7 +961,7 @@ public class FormHasilDiagnosa extends javax.swing.JFrame {
                         .addGap(42, 42, 42)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(pbAkurasiDetail, javax.swing.GroupLayout.DEFAULT_SIZE, 603, Short.MAX_VALUE))
+                            .addComponent(pbAkurasiDetail, javax.swing.GroupLayout.DEFAULT_SIZE, 594, Short.MAX_VALUE))
                         .addContainerGap())))
         );
         jPanel3Layout.setVerticalGroup(
@@ -1038,7 +1078,7 @@ public class FormHasilDiagnosa extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 182, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(mainContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(mainContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1302,7 +1342,9 @@ public class FormHasilDiagnosa extends javax.swing.JFrame {
                 file.getPath(), parameter, koneksi.KoneksiDB.getKoneksi()
             );
 
-            net.sf.jasperreports.view.JasperViewer.viewReport(print, false);
+            net.sf.jasperreports.view.JasperViewer viewer = new net.sf.jasperreports.view.JasperViewer(print, false);
+            viewer.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
+            viewer.setVisible(true);
 
         } catch (Exception e) {
             javax.swing.JOptionPane.showMessageDialog(this, "Gagal mencetak Hasil Diagnosa: " + e.getMessage());
@@ -1406,6 +1448,8 @@ public class FormHasilDiagnosa extends javax.swing.JFrame {
     private javax.swing.JPanel btnRiwayat;
     private javax.swing.JButton btnTutup;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel3;
@@ -1422,6 +1466,7 @@ public class FormHasilDiagnosa extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
