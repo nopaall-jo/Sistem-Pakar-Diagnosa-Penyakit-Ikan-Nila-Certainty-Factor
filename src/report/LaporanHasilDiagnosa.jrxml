@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="963c9301-3efc-4890-a8a7-6c84a4f3f01d">
 	<property name="ireport.zoom" value="1.3310000000000064"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="15"/>
 	<property name="ireport.y" value="0"/>
 	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
 	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
@@ -274,7 +274,7 @@ WHERE d.id_diagnosa = $P{ID_DIAGNOSA}]]>
 					<textFieldExpression><![CDATA[$F{nama_penyakit} + " (Akurasi: " + $F{confidence} + "%)"]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
-					<reportElement isPrintRepeatedValues="false" x="632" y="0" width="169" height="20" uuid="58d85466-9441-4605-b018-2ebd65cee004"/>
+					<reportElement isPrintRepeatedValues="false" x="630" y="0" width="169" height="20" uuid="58d85466-9441-4605-b018-2ebd65cee004"/>
 					<box>
 						<pen lineWidth="0.0"/>
 						<topPen lineWidth="0.0"/>
@@ -335,14 +335,14 @@ WHERE d.id_diagnosa = $P{ID_DIAGNOSA}]]>
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="1" y="21" width="465" height="19" uuid="3beca560-2ac9-43a4-991e-93f03113baa2"/>
+				<reportElement x="3" y="41" width="465" height="19" uuid="3beca560-2ac9-43a4-991e-93f03113baa2"/>
 				<textElement textAlignment="Justified" verticalAlignment="Middle">
 					<font size="14"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{KEMUNGKINAN_LAIN}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="1" y="1" width="234" height="20" uuid="914a19ba-e664-4969-910e-d11c2f34c66a"/>
+				<reportElement x="1" y="21" width="234" height="20" uuid="914a19ba-e664-4969-910e-d11c2f34c66a"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="14" isBold="true"/>
 				</textElement>
