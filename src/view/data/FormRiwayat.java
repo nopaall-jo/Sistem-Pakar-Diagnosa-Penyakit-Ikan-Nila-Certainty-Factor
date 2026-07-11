@@ -36,7 +36,7 @@ public class FormRiwayat extends javax.swing.JFrame {
     
     public FormRiwayat() {
         initComponents();   
-        tampilkanGrafik("");
+        tampilkanGrafik("", "Semua Data");
         try {
             java.awt.Image icon = javax.imageio.ImageIO.read(getClass().getResource("/icon/logo2.png"));
             setIconImage(icon);
@@ -172,15 +172,15 @@ public class FormRiwayat extends javax.swing.JFrame {
         }
     }
     
-    private void tampilkanGrafik(String whereClause) {
+    private void tampilkanGrafik(String whereClause, String judulTambahan) {
         try {
             DefaultPieDataset dataset = new DefaultPieDataset();
             
             String sql = "SELECT p.nama_penyakit, COUNT(d.hasil_penyakit) AS jumlah "
                        + "FROM tbl_diagnosa d "
                        + "JOIN tbl_penyakit p ON d.hasil_penyakit = p.kode_penyakit "
-                       + whereClause + " " 
-                       + "GROUP BY p.nama_penyakit"; 
+                       + whereClause
+                       + " GROUP BY p.nama_penyakit";
             
             java.sql.Connection conn = (java.sql.Connection) koneksi.KoneksiDB.getKoneksi();
             java.sql.Statement stm = conn.createStatement();
@@ -193,18 +193,18 @@ public class FormRiwayat extends javax.swing.JFrame {
             }
             
             JFreeChart chart = ChartFactory.createPieChart(
-                "Statistik Penyakit Ikan Nila Dzawil Farm", 
+                "Statistik Penyakit Ikan Nila Dzawil Farm (" + judulTambahan + ")", 
                 dataset, true, true, false                                     
             );
             
             chart.setBackgroundPaint(java.awt.Color.WHITE); 
             org.jfree.chart.plot.PiePlot plot = (org.jfree.chart.plot.PiePlot) chart.getPlot();
-            plot.setBackgroundPaint(new Color(245, 255, 250)); 
+            plot.setBackgroundPaint(java.awt.Color.WHITE); 
             plot.setOutlineVisible(false);
 //          plot.setLabelGenerator(null); // Mematikan label garis panah di pie chart biar nggak sumpek 
             
             ChartPanel chartPanel = new ChartPanel(chart);
-            chartPanel.setPreferredSize(new java.awt.Dimension(400, 350)); 
+            chartPanel.setPreferredSize(new java.awt.Dimension(400, 350));
             
             panelGrafik.removeAll();
             panelGrafik.setLayout(new java.awt.BorderLayout());
@@ -839,7 +839,7 @@ public class FormRiwayat extends javax.swing.JFrame {
         jScrollPane2.setViewportView(tblRiwayat);
 
         cbKategoriCari.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
-        cbKategoriCari.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Kode Sampel", "Tanggal Diagnosa" }));
+        cbKategoriCari.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Kode Sampel", "Tanggal Diagnosa", "7 Hari Terakhir", "14 Hari Terakhir", "1 Bulan Terakhir", "3 Bulan Terakhir", "6 Bulan Terakhir", "1 Tahun Terakhir" }));
         cbKategoriCari.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         cbKategoriCari.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -938,8 +938,8 @@ public class FormRiwayat extends javax.swing.JFrame {
                                     .addComponent(btnRefresh))))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panelGrafik, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 489, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 489, Short.MAX_VALUE)
+                    .addComponent(panelGrafik, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -1061,6 +1061,7 @@ public class FormRiwayat extends javax.swing.JFrame {
         try {
             String kategori = cbKategoriCari.getSelectedItem().toString().trim();
             String whereClause = ""; 
+            
             if (kategori.equals("Kode Sampel")) {
                 String cari = txtCari.getText().trim();
                 whereClause = "WHERE d.kode_sampel LIKE '%" + cari + "%' ";
@@ -1070,10 +1071,27 @@ public class FormRiwayat extends javax.swing.JFrame {
                     javax.swing.JOptionPane.showMessageDialog(this, "Pilih tanggal di kalender dulu!", "Peringatan", javax.swing.JOptionPane.WARNING_MESSAGE);
                     return;
                 }
-                
                 java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
                 String tgl = sdf.format(dtCari.getDate());
                 whereClause = "WHERE DATE(d.tanggal_diagnosa) = '" + tgl + "' ";
+                
+            } else if (kategori.equals("7 Hari Terakhir")) {
+                whereClause = "WHERE DATE(d.tanggal_diagnosa) >= DATE_SUB(CURDATE(), INTERVAL 7 DAY) ";
+                
+            } else if (kategori.equals("14 Hari Terakhir")) {
+                whereClause = "WHERE DATE(d.tanggal_diagnosa) >= DATE_SUB(CURDATE(), INTERVAL 14 DAY) ";
+                
+            } else if (kategori.equals("1 Bulan Terakhir")) {
+                whereClause = "WHERE DATE(d.tanggal_diagnosa) >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH) ";
+                
+            } else if (kategori.equals("3 Bulan Terakhir")) {
+                whereClause = "WHERE DATE(d.tanggal_diagnosa) >= DATE_SUB(CURDATE(), INTERVAL 3 MONTH) ";
+                
+            } else if (kategori.equals("6 Bulan Terakhir")) {
+                whereClause = "WHERE DATE(d.tanggal_diagnosa) >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH) ";
+                
+            } else if (kategori.equals("1 Tahun Terakhir")) {
+                whereClause = "WHERE DATE(d.tanggal_diagnosa) >= DATE_SUB(CURDATE(), INTERVAL 1 YEAR) ";
             }
 
             String baseQuery = "SELECT d.id_diagnosa, d.tanggal_diagnosa, d.kode_sampel, "
@@ -1105,7 +1123,8 @@ public class FormRiwayat extends javax.swing.JFrame {
             
             tblRiwayat.setModel(model);
             aturFormatTabel(); 
-            tampilkanGrafik(whereClause);
+            tampilkanGrafik(whereClause, kategori);
+            
             if (model.getRowCount() == 0) {
                 javax.swing.JOptionPane.showMessageDialog(this, "Data tidak ditemukan untuk pencarian tersebut!", "Info", javax.swing.JOptionPane.INFORMATION_MESSAGE);
             }
@@ -1164,7 +1183,7 @@ public class FormRiwayat extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Riwayat berhasil dihapus bersih!");
                 
                 tampilData("");
-                tampilkanGrafik(""); 
+                tampilkanGrafik("", "Semua Data");
                 
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, "Gagal hapus: " + e.getMessage());
@@ -1315,7 +1334,7 @@ public class FormRiwayat extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLogoutMouseExited
 
     private void btnLogoutMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLogoutMousePressed
-        btnLogout.setBackground(new java.awt.Color(192, 57, 43)); // Merah gelap saat diklik
+        btnLogout.setBackground(new java.awt.Color(192, 57, 43));
 
         int konfirmasi = javax.swing.JOptionPane.showConfirmDialog(this,
             "Apakah Anda yakin ingin keluar dari aplikasi?", "Konfirmasi Logout",
@@ -1339,20 +1358,32 @@ public class FormRiwayat extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLogoutMousePressed
 
     private void cbKategoriCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbKategoriCariActionPerformed
-        String kategori = cbKategoriCari.getSelectedItem().toString().trim();
-        
-        if (kategori.equals("Kode Sampel")) {
-            txtCari.setVisible(true);
-            dtCari.setVisible(false);
-            txtCari.setText(""); 
+        try {
+            String kategori = cbKategoriCari.getSelectedItem().toString().trim();
             
-        } else if (kategori.equals("Tanggal Diagnosa")) {
-            txtCari.setVisible(false);
-            dtCari.setVisible(true);
-            dtCari.setDate(new java.util.Date()); 
+            if (kategori.equals("Kode Sampel")) {
+                txtCari.setVisible(true);
+                dtCari.setVisible(false);
+                txtCari.setText(""); 
+                txtCari.requestFocus(); 
+                
+            } else if (kategori.equals("Tanggal Diagnosa")) {
+                txtCari.setVisible(false);
+                dtCari.setVisible(true);
+                dtCari.setDate(new java.util.Date()); 
+                
+            } else {
+                txtCari.setVisible(false);
+                dtCari.setVisible(false);
+                
+                btnCariActionPerformed(null); 
+            }
+            
+            pnInputCari.revalidate();
+            pnInputCari.repaint();
+            
+        } catch (Exception e) {
         }
-        pnInputCari.revalidate();
-        pnInputCari.repaint();
     }//GEN-LAST:event_cbKategoriCariActionPerformed
 
     private void btnCetakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCetakActionPerformed
@@ -1517,11 +1548,11 @@ public class FormRiwayat extends javax.swing.JFrame {
 
     private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
         txtCari.setText("");              
-        dtCari.setDate(null);            
+        dtCari.setDate(null);             
         cbKategoriCari.setSelectedIndex(0);
         
         tampilData("");      
-        tampilkanGrafik(""); 
+        tampilkanGrafik("", "Semua Data"); 
         txtCari.requestFocus();
     }//GEN-LAST:event_btnRefreshActionPerformed
 
