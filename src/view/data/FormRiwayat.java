@@ -16,6 +16,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 import koneksi.KoneksiDB;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.data.general.DefaultPieDataset;
 
 /**
  *
@@ -31,7 +35,8 @@ public class FormRiwayat extends javax.swing.JFrame {
      */
     
     public FormRiwayat() {
-        initComponents();
+        initComponents();   
+        tampilkanGrafik("");
         try {
             java.awt.Image icon = javax.imageio.ImageIO.read(getClass().getResource("/icon/logo2.png"));
             setIconImage(icon);
@@ -40,12 +45,12 @@ public class FormRiwayat extends javax.swing.JFrame {
         }
         
         aturFormatTabel();
-//        if (koneksi.Session.namaAdmin == null || koneksi.Session.namaAdmin.equals("")) {
-//            javax.swing.JOptionPane.showMessageDialog(this, "Akses Ditolak! Hayo, Anda harus Login terlebih dahulu.", "Peringatan", javax.swing.JOptionPane.WARNING_MESSAGE);
-//            new view.main.FormLogin().setVisible(true);
-//            this.dispose(); 
-//            return;  
-//        }
+        if (koneksi.Session.namaAdmin == null || koneksi.Session.namaAdmin.equals("")) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Akses Ditolak! Hayo, Anda harus Login terlebih dahulu.", "Peringatan", javax.swing.JOptionPane.WARNING_MESSAGE);
+            new view.main.FormLogin().setVisible(true);
+            this.dispose(); 
+            return;  
+        }
         
         this.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
@@ -68,22 +73,25 @@ public class FormRiwayat extends javax.swing.JFrame {
     }
     
     private void aturFormatTabel() {
-        tblRiwayat.setRowHeight(45); 
+        tblRiwayat.setRowHeight(50);
         tblRiwayat.setShowGrid(true); 
         tblRiwayat.setShowVerticalLines(true);   
         tblRiwayat.setShowHorizontalLines(true); 
-        tblRiwayat.setGridColor(new java.awt.Color(153, 153, 153)); 
+        tblRiwayat.setGridColor(new java.awt.Color(200, 200, 200)); 
         tblRiwayat.setIntercellSpacing(new java.awt.Dimension(1, 1)); 
+        
+        tblRiwayat.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_LAST_COLUMN);
 
         if (tblRiwayat.getColumnCount() >= 6) { 
             javax.swing.table.TableColumnModel cm = tblRiwayat.getColumnModel();
             
-            cm.getColumn(0).setPreferredWidth(45);
-            cm.getColumn(1).setPreferredWidth(60);
-            cm.getColumn(2).setPreferredWidth(140);
-            cm.getColumn(3).setPreferredWidth(200); 
-            cm.getColumn(4).setPreferredWidth(280);
-            cm.getColumn(5).setPreferredWidth(100);
+            cm.getColumn(0).setPreferredWidth(40);
+            cm.getColumn(1).setPreferredWidth(40); 
+            cm.getColumn(2).setPreferredWidth(100);
+            cm.getColumn(3).setPreferredWidth(100);
+            cm.getColumn(4).setPreferredWidth(400); 
+            cm.getColumn(5).setPreferredWidth(90);
+            
             cm.getColumn(3).setCellRenderer(new MultiLineCellRenderer()); 
             cm.getColumn(4).setCellRenderer(new MultiLineCellRenderer()); 
             
@@ -92,6 +100,7 @@ public class FormRiwayat extends javax.swing.JFrame {
             cm.getColumn(0).setCellRenderer(centerRenderer);
             cm.getColumn(1).setCellRenderer(centerRenderer);
             cm.getColumn(2).setCellRenderer(centerRenderer);
+            cm.getColumn(3).setCellRenderer(centerRenderer);
             cm.getColumn(5).setCellRenderer(centerRenderer);
         }
     }
@@ -163,6 +172,51 @@ public class FormRiwayat extends javax.swing.JFrame {
         }
     }
     
+    private void tampilkanGrafik(String whereClause) {
+        try {
+            DefaultPieDataset dataset = new DefaultPieDataset();
+            
+            String sql = "SELECT p.nama_penyakit, COUNT(d.hasil_penyakit) AS jumlah "
+                       + "FROM tbl_diagnosa d "
+                       + "JOIN tbl_penyakit p ON d.hasil_penyakit = p.kode_penyakit "
+                       + whereClause + " " 
+                       + "GROUP BY p.nama_penyakit"; 
+            
+            java.sql.Connection conn = (java.sql.Connection) koneksi.KoneksiDB.getKoneksi();
+            java.sql.Statement stm = conn.createStatement();
+            java.sql.ResultSet res = stm.executeQuery(sql);
+            
+            while (res.next()) {
+                String namaPenyakit = res.getString("nama_penyakit");
+                int jumlah = res.getInt("jumlah");
+                dataset.setValue(namaPenyakit + " (" + jumlah + ")", jumlah);
+            }
+            
+            JFreeChart chart = ChartFactory.createPieChart(
+                "Statistik Penyakit Ikan Nila Dzawil Farm", 
+                dataset, true, true, false                                     
+            );
+            
+            chart.setBackgroundPaint(java.awt.Color.WHITE); 
+            org.jfree.chart.plot.PiePlot plot = (org.jfree.chart.plot.PiePlot) chart.getPlot();
+            plot.setBackgroundPaint(new Color(245, 255, 250)); 
+            plot.setOutlineVisible(false);
+//          plot.setLabelGenerator(null); // Mematikan label garis panah di pie chart biar nggak sumpek 
+            
+            ChartPanel chartPanel = new ChartPanel(chart);
+            chartPanel.setPreferredSize(new java.awt.Dimension(400, 350)); 
+            
+            panelGrafik.removeAll();
+            panelGrafik.setLayout(new java.awt.BorderLayout());
+            panelGrafik.add(chartPanel, java.awt.BorderLayout.CENTER);
+            panelGrafik.validate();
+            
+        } catch (Exception e) {
+            System.out.println("Gagal menampilkan grafik: " + e.getMessage());
+        }
+    }
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -212,6 +266,8 @@ public class FormRiwayat extends javax.swing.JFrame {
         tblRiwayat = new javax.swing.JTable();
         cbKategoriCari = new javax.swing.JComboBox<>();
         btnCetakStruk = new javax.swing.JButton();
+        panelGrafik = new javax.swing.JPanel();
+        btnRefresh = new javax.swing.JButton();
         jLabel15 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         lblJam = new javax.swing.JLabel();
@@ -801,31 +857,60 @@ public class FormRiwayat extends javax.swing.JFrame {
             }
         });
 
+        panelGrafik.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        javax.swing.GroupLayout panelGrafikLayout = new javax.swing.GroupLayout(panelGrafik);
+        panelGrafik.setLayout(panelGrafikLayout);
+        panelGrafikLayout.setHorizontalGroup(
+            panelGrafikLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        panelGrafikLayout.setVerticalGroup(
+            panelGrafikLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        btnRefresh.setBackground(new java.awt.Color(245, 255, 240));
+        btnRefresh.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        btnRefresh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/refresh.png"))); // NOI18N
+        btnRefresh.setText("REFRESH");
+        btnRefresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRefreshActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(cbKategoriCari, 0, 215, Short.MAX_VALUE)
-                    .addComponent(pnInputCari, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(btnCari)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnCetakStruk))
-                    .addComponent(btnCetak))
-                .addGap(12, 12, 12)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnDetail, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnHapus, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(20, 20, 20))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane2)
-                .addContainerGap())
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(panelGrafik, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane2))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(cbKategoriCari, 0, 215, Short.MAX_VALUE)
+                            .addComponent(pnInputCari, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addComponent(btnCari)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 296, Short.MAX_VALUE)
+                                .addComponent(btnCetakStruk))
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addComponent(btnCetak)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnRefresh)))
+                        .addGap(12, 12, 12)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnDetail, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnHapus, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(20, 20, 20))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -848,9 +933,13 @@ public class FormRiwayat extends javax.swing.JFrame {
                                 .addComponent(btnHapus, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addGap(9, 9, 9)
-                                .addComponent(btnCetak)))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 495, Short.MAX_VALUE)
+                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(btnCetak)
+                                    .addComponent(btnRefresh))))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(panelGrafik, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 489, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -961,7 +1050,6 @@ public class FormRiwayat extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCariActionPerformed
-        // 1. Persiapan Header Tabel di UI
         javax.swing.table.DefaultTableModel model = new javax.swing.table.DefaultTableModel();
         model.addColumn("No");
         model.addColumn("ID Diagnosa");
@@ -972,27 +1060,28 @@ public class FormRiwayat extends javax.swing.JFrame {
 
         try {
             String kategori = cbKategoriCari.getSelectedItem().toString().trim();
-            String sql = "";
-            String baseQuery = "SELECT d.id_diagnosa, d.tanggal_diagnosa, d.kode_sampel, "
-                 + "p.nama_penyakit, d.confidence "
-                 + "FROM tbl_diagnosa d "
-                 + "LEFT JOIN tbl_penyakit p ON d.hasil_penyakit = p.kode_penyakit ";
-
+            String whereClause = ""; 
             if (kategori.equals("Kode Sampel")) {
-                String cari = txtCari.getText();
-                sql = baseQuery + "WHERE d.kode_sampel LIKE '%" + cari + "%' ORDER BY d.id_diagnosa DESC";
+                String cari = txtCari.getText().trim();
+                whereClause = "WHERE d.kode_sampel LIKE '%" + cari + "%' ";
                 
             } else if (kategori.equals("Tanggal Diagnosa")) {
                 if (dtCari.getDate() == null) {
-                    javax.swing.JOptionPane.showMessageDialog(this, "Pilih tanggal di kalender dulu!");
+                    javax.swing.JOptionPane.showMessageDialog(this, "Pilih tanggal di kalender dulu!", "Peringatan", javax.swing.JOptionPane.WARNING_MESSAGE);
                     return;
                 }
                 
                 java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
                 String tgl = sdf.format(dtCari.getDate());
-                sql = baseQuery + "WHERE DATE(d.tanggal_diagnosa) = '" + tgl + "' ORDER BY d.id_diagnosa DESC";
+                whereClause = "WHERE DATE(d.tanggal_diagnosa) = '" + tgl + "' ";
             }
 
+            String baseQuery = "SELECT d.id_diagnosa, d.tanggal_diagnosa, d.kode_sampel, "
+                             + "p.nama_penyakit, d.confidence "
+                             + "FROM tbl_diagnosa d "
+                             + "LEFT JOIN tbl_penyakit p ON d.hasil_penyakit = p.kode_penyakit ";
+            
+            String sql = baseQuery + whereClause + "ORDER BY d.id_diagnosa DESC";
             java.sql.Connection conn = (java.sql.Connection) koneksi.KoneksiDB.getKoneksi();
             java.sql.Statement stm = conn.createStatement();
             java.sql.ResultSet res = stm.executeQuery(sql);
@@ -1000,27 +1089,29 @@ public class FormRiwayat extends javax.swing.JFrame {
             int no = 1;
             while (res.next()) {
                 float cf = res.getFloat("confidence");
-                float persentase = cf * 100;
-                String tglDiagnosa = res.getString("tanggal_diagnosa").substring(0, 10);
-
+                
+                String tglRaw = res.getString("tanggal_diagnosa");
+                String tglDiagnosa = (tglRaw != null && tglRaw.length() >= 10) ? tglRaw.substring(0, 10) : tglRaw;
+                
                 model.addRow(new Object[]{
                     no++,
                     res.getString("id_diagnosa"),
                     tglDiagnosa,
                     res.getString("kode_sampel"),
                     res.getString("nama_penyakit") == null ? "Belum Terdeteksi" : res.getString("nama_penyakit"),
-                    String.format("%.2f", persentase) + " %" 
+                    String.format("%.2f", cf) + " %"  
                 });
             }
             
             tblRiwayat.setModel(model);
-
+            aturFormatTabel(); 
+            tampilkanGrafik(whereClause);
             if (model.getRowCount() == 0) {
-                javax.swing.JOptionPane.showMessageDialog(this, "Data tidak ditemukan untuk pencarian tersebut!");
+                javax.swing.JOptionPane.showMessageDialog(this, "Data tidak ditemukan untuk pencarian tersebut!", "Info", javax.swing.JOptionPane.INFORMATION_MESSAGE);
             }
 
         } catch (Exception e) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Error Pencarian: " + e.getMessage());
+            javax.swing.JOptionPane.showMessageDialog(this, "Error Pencarian: " + e.getMessage(), "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }
     }//GEN-LAST:event_btnCariActionPerformed
@@ -1069,8 +1160,12 @@ public class FormRiwayat extends javax.swing.JFrame {
                 PreparedStatement pstHeader = con.prepareStatement("DELETE FROM tbl_diagnosa WHERE id_diagnosa=?");
                 pstHeader.setString(1, idDiagnosa);
                 pstHeader.execute();
+                
                 JOptionPane.showMessageDialog(this, "Riwayat berhasil dihapus bersih!");
-                tampilData(""); 
+                
+                tampilData("");
+                tampilkanGrafik(""); 
+                
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, "Gagal hapus: " + e.getMessage());
             }
@@ -1420,6 +1515,16 @@ public class FormRiwayat extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_lblAdminMouseClicked
 
+    private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
+        txtCari.setText("");              
+        dtCari.setDate(null);            
+        cbKategoriCari.setSelectedIndex(0);
+        
+        tampilData("");      
+        tampilkanGrafik(""); 
+        txtCari.requestFocus();
+    }//GEN-LAST:event_btnRefreshActionPerformed
+
         class MultiLineCellRenderer extends javax.swing.JTextArea implements javax.swing.table.TableCellRenderer {
         public MultiLineCellRenderer() {
             setLineWrap(true);
@@ -1493,6 +1598,7 @@ public class FormRiwayat extends javax.swing.JFrame {
     private javax.swing.JPanel btnLaporan;
     private javax.swing.JPanel btnLogout;
     private javax.swing.JPanel btnPenyakit;
+    private javax.swing.JButton btnRefresh;
     private javax.swing.JPanel btnRiwayat;
     private javax.swing.JComboBox<String> cbKategoriCari;
     private com.toedter.calendar.JDateChooser dtCari;
@@ -1523,6 +1629,7 @@ public class FormRiwayat extends javax.swing.JFrame {
     private javax.swing.JLabel lblPenyakit;
     private javax.swing.JLabel lblRiwayat;
     private javax.swing.JPanel mainContent;
+    private javax.swing.JPanel panelGrafik;
     private javax.swing.JPanel pnInputCari;
     private javax.swing.JPanel pn_kanan;
     private javax.swing.JPanel sidebar;

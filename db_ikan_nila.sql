@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3307
--- Waktu pembuatan: 02 Jul 2026 pada 11.46
+-- Waktu pembuatan: 11 Jul 2026 pada 00.39
 -- Versi server: 8.0.30
 -- Versi PHP: 8.0.30
 
@@ -125,7 +125,7 @@ INSERT INTO `tbl_aturan` (`id_aturan`, `kode_penyakit`, `kode_gejala`, `nilai_mb
 (60, 'P12', 'G12', 0.9, 0.1),
 (61, 'P12', 'G18', 0.9, 0.1),
 (62, 'P12', 'G29', 0.8, 0.1),
-(63, 'P12', 'G34', 1, 0.1),
+(63, 'P12', 'G33', 1, 0.1),
 (64, 'P13', 'G25', 0.9, 0.1),
 (65, 'P13', 'G28', 0.8, 0.1),
 (66, 'P13', 'G32', 1, 0.1),
@@ -152,12 +152,16 @@ CREATE TABLE `tbl_diagnosa` (
 --
 
 INSERT INTO `tbl_diagnosa` (`id_diagnosa`, `id_admin`, `kode_sampel`, `tanggal_diagnosa`, `hasil_penyakit`, `confidence`, `kemungkinan_lain`) VALUES
-(1, 4, 'SPL-001', '2026-07-02 17:47:52', 'P01', 98.2, '- Cacing Kulit Gyrodactylosis (Skin Fluke Disease) (Akurasi: 94.00 %)\n- Cacing Insang Dactylogyriasis (Gill Fluke Disease) (Akurasi: 90.00 %)\n- Cacing Jangkar (Lerneosis) (Akurasi: 88.00 %)'),
-(2, 4, 'SPL-002', '2026-07-02 17:48:59', 'P05', 99.74, '- Luka Merah (Aeromoniasis) (Akurasi: 88.00 %)'),
-(3, 4, 'SPL-003', '2026-07-02 17:49:39', 'P11', 99.82, '- Penyakit Pseudomonas (Pseudomoniasis) (Akurasi: 98.20 %)\n- Virus Tilapia Lake (TiLV Disease) (Akurasi: 72.00 %)\n- Penyakit Columnaris (Columnariasis) (Akurasi: 60.00 %)'),
-(4, 4, 'SPL-004', '2026-07-02 17:50:07', 'P04', 97.92, '- Cacing Jangkar (Lerneosis) (Akurasi: 97.00 %)\n- Penyakit Trichodina (Trichodiniasis) (Akurasi: 70.00 %)\n- Bintik Putih (White Spot Disease / Ichthyophthiriasis) (Akurasi: 60.00 %)'),
-(5, 4, 'SPL-005', '2026-07-02 17:50:45', 'P06', 99.12, '- Penyakit Pseudomonas (Pseudomoniasis) (Akurasi: 64.00 %)\n- Penyakit Columnaris (Columnariasis) (Akurasi: 56.00 %)'),
-(6, 4, 'SPL-006', '2026-07-02 17:51:36', 'P08', 99.97, '- Penyakit Streptococcus (Streptococcal Disease) (Akurasi: 94.00 %)\n- Branchiomycosis (Busuk Insang) (Akurasi: 75.00 %)\n- Luka Merah (Aeromoniasis) (Akurasi: 70.00 %)');
+(1, 4, 'SPL-001', '2026-07-07 10:22:57', 'P01', 98.2, '- Cacing Kulit Gyrodactylosis (Skin Fluke Disease) (Akurasi: 94.00 %)\n- Cacing Insang Dactylogyriasis (Gill Fluke Disease) (Akurasi: 90.00 %)\n- Cacing Jangkar (Lerneosis) (Akurasi: 88.00 %)'),
+(2, 4, 'SPL-002', '2026-07-07 10:23:41', 'P05', 99.74, '- Luka Merah (Aeromoniasis) (Akurasi: 88.00 %)'),
+(3, 4, 'SPL-003', '2026-07-07 10:24:21', 'P11', 99.82, '- Penyakit Pseudomonas (Pseudomoniasis) (Akurasi: 98.20 %)\n- Virus Tilapia Lake (TiLV Disease) (Akurasi: 72.00 %)\n- Penyakit Columnaris (Columnariasis) (Akurasi: 60.00 %)'),
+(4, 4, 'SPL-004', '2026-07-07 10:25:49', 'P04', 97.92, '- Cacing Jangkar (Lerneosis) (Akurasi: 97.00 %)\n- Penyakit Trichodina (Trichodiniasis) (Akurasi: 70.00 %)\n- Bintik Putih (White Spot Disease / Ichthyophthiriasis) (Akurasi: 60.00 %)'),
+(5, 4, 'SPL-005', '2026-07-07 10:26:13', 'P06', 99.12, '- Penyakit Pseudomonas (Pseudomoniasis) (Akurasi: 64.00 %)\n- Penyakit Columnaris (Columnariasis) (Akurasi: 56.00 %)'),
+(6, 4, 'SPL-006', '2026-07-07 10:27:51', 'P10', 97.2, '- Cacing Kulit Gyrodactylosis (Skin Fluke Disease) (Akurasi: 80.00 %)\n- Penyakit Trichodina (Trichodiniasis) (Akurasi: 70.00 %)\n- Cacing Jangkar (Lerneosis) (Akurasi: 70.00 %)'),
+(7, 4, 'SPL-007', '2026-07-07 10:28:50', 'P08', 99.97, '- Penyakit Streptococcus (Streptococcal Disease) (Akurasi: 94.00 %)\n- Branchiomycosis (Busuk Insang) (Akurasi: 75.00 %)\n- Luka Merah (Aeromoniasis) (Akurasi: 70.00 %)'),
+(8, 4, 'SPL-008', '2026-07-07 10:30:00', 'P11', 99.6, '- Penyakit Pseudomonas (Pseudomoniasis) (Akurasi: 99.35 %)\n- Penyakit Columnaris (Columnariasis) (Akurasi: 82.40 %)\n- Jamur Kapas (Saprolegniasis) (Akurasi: 56.00 %)'),
+(9, 4, 'SPL-009', '2026-07-07 10:30:44', 'P13', 99.49, '- Cacing Kulit Gyrodactylosis (Skin Fluke Disease) (Akurasi: 84.40 %)\n- Penyakit Trichodina (Trichodiniasis) (Akurasi: 60.00 %)\n- Cacing Jangkar (Lerneosis) (Akurasi: 60.00 %)'),
+(10, 4, 'SPL-010', '2026-07-11 07:07:58', 'P10', 86, '- Penyakit Epistylis (Epistylosis) (Akurasi: 80.80 %)\n- Virus Tilapia Lake (TiLV Disease) (Akurasi: 74.40 %)\n- Cacing Kulit Gyrodactylosis (Skin Fluke Disease) (Akurasi: 60.00 %)');
 
 -- --------------------------------------------------------
 
@@ -195,13 +199,29 @@ INSERT INTO `tbl_diagnosa_detail` (`id_detail`, `id_diagnosa`, `kode_gejala`, `k
 (16, 5, 'G13', 'Pasti (1.0)'),
 (17, 5, 'G14', 'Pasti (1.0)'),
 (18, 5, 'G18', 'Sangat Yakin (0.8)'),
-(19, 6, 'G01', 'Pasti (1.0)'),
-(20, 6, 'G03', 'Sangat Yakin (0.8)'),
-(21, 6, 'G06', 'Yakin (0.6)'),
-(22, 6, 'G08', 'Sangat Yakin (0.8)'),
-(23, 6, 'G24', 'Pasti (1.0)'),
-(24, 6, 'G26', 'Yakin (0.6)'),
-(25, 6, 'G27', 'Pasti (1.0)');
+(19, 6, 'G04', 'Pasti (1.0)'),
+(20, 6, 'G06', 'Yakin (0.6)'),
+(21, 6, 'G10', 'Pasti (1.0)'),
+(22, 7, 'G01', 'Pasti (1.0)'),
+(23, 7, 'G03', 'Sangat Yakin (0.8)'),
+(24, 7, 'G06', 'Yakin (0.6)'),
+(25, 7, 'G08', 'Sangat Yakin (0.8)'),
+(26, 7, 'G24', 'Pasti (1.0)'),
+(27, 7, 'G26', 'Yakin (0.6)'),
+(28, 7, 'G27', 'Pasti (1.0)'),
+(29, 8, 'G11', 'Pasti (1.0)'),
+(30, 8, 'G12', 'Pasti (1.0)'),
+(31, 8, 'G18', 'Sangat Yakin (0.8)'),
+(32, 8, 'G29', 'Pasti (1.0)'),
+(33, 9, 'G25', 'Pasti (1.0)'),
+(34, 9, 'G28', 'Sangat Yakin (0.8)'),
+(35, 9, 'G32', 'Pasti (1.0)'),
+(36, 9, 'G33', 'Yakin (0.6)'),
+(37, 10, 'G06', 'Pasti (1.0)'),
+(38, 10, 'G10', 'Sangat Yakin (0.8)'),
+(39, 10, 'G26', 'Yakin (0.6)'),
+(40, 10, 'G28', 'Pasti (1.0)'),
+(41, 10, 'G32', 'Cukup Yakin (0.4)');
 
 -- --------------------------------------------------------
 
@@ -354,13 +374,13 @@ ALTER TABLE `tbl_aturan`
 -- AUTO_INCREMENT untuk tabel `tbl_diagnosa`
 --
 ALTER TABLE `tbl_diagnosa`
-  MODIFY `id_diagnosa` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_diagnosa` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT untuk tabel `tbl_diagnosa_detail`
 --
 ALTER TABLE `tbl_diagnosa_detail`
-  MODIFY `id_detail` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id_detail` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
