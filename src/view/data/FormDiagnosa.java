@@ -40,6 +40,7 @@ public class FormDiagnosa extends javax.swing.JFrame {
      */
     public FormDiagnosa() {
         initComponents();
+        txtHasilPenyakit.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         try {
             java.awt.Image icon = javax.imageio.ImageIO.read(getClass().getResource("/icon/logo2.png"));
             setIconImage(icon);
@@ -90,12 +91,12 @@ public class FormDiagnosa extends javax.swing.JFrame {
             cm.getColumn(1).setPreferredWidth(90);
             cm.getColumn(2).setPreferredWidth(500);
             cm.getColumn(3).setPreferredWidth(160);
-            cm.getColumn(2).setCellRenderer(new MultiLineCellRenderer()); 
             
-            javax.swing.table.DefaultTableCellRenderer centerRenderer = new javax.swing.table.DefaultTableCellRenderer();
-            centerRenderer.setHorizontalAlignment(javax.swing.JLabel.CENTER);
-            cm.getColumn(0).setCellRenderer(centerRenderer);
-            cm.getColumn(1).setCellRenderer(centerRenderer);
+            KondisiTerpilihRenderer warnaRenderer = new KondisiTerpilihRenderer();
+            cm.getColumn(0).setCellRenderer(warnaRenderer);
+            cm.getColumn(1).setCellRenderer(warnaRenderer);
+            cm.getColumn(2).setCellRenderer(warnaRenderer);
+            cm.getColumn(3).setCellRenderer(warnaRenderer);
         }
 
         if (tblPenyakitLain != null && tblPenyakitLain.getColumnCount() == 2) {
@@ -136,6 +137,7 @@ public class FormDiagnosa extends javax.swing.JFrame {
 
         TableColumn kolomKondisi = tblDiagnosa.getColumnModel().getColumn(3);
         kolomKondisi.setCellEditor(new DefaultCellEditor(cmbKondisi));
+        tblDiagnosa.setDefaultRenderer(Object.class, new KondisiTerpilihRenderer());
     }
     
     private void tampilGejala() {
@@ -234,6 +236,45 @@ public class FormDiagnosa extends javax.swing.JFrame {
         System.out.println("Gagal generate kode sampel: " + e.getMessage());
     }
 }
+    
+    private class KondisiTerpilihRenderer extends javax.swing.table.DefaultTableCellRenderer {
+        @Override
+        public Component getTableCellRendererComponent(javax.swing.JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            
+            Component c;
+            if (column == 2) {
+                MultiLineCellRenderer multiLine = new MultiLineCellRenderer();
+                c = multiLine.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+            } else {
+                c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                if (column == 0 || column == 1) {
+                    setHorizontalAlignment(javax.swing.JLabel.CENTER); // Posisi tengah untuk No & Kode
+                } else {
+                    setHorizontalAlignment(javax.swing.JLabel.LEFT);
+                }
+            }
+            
+            Object nilaiKondisi = table.getModel().getValueAt(row, 3);
+            
+            if (isSelected) {
+                c.setBackground(table.getSelectionBackground());
+                c.setForeground(table.getSelectionForeground());
+            } else {
+                if (nilaiKondisi != null && !nilaiKondisi.toString().equals("-- Pilih Kondisi --") && !nilaiKondisi.toString().equals("Tidak (0.0)") && !nilaiKondisi.toString().isEmpty()) {
+                    
+                    c.setBackground(new java.awt.Color(204, 255, 204));
+                    c.setForeground(java.awt.Color.BLACK);
+                    c.setFont(c.getFont().deriveFont(java.awt.Font.BOLD)); // Teks menjadi Tebal (Bold)
+                    
+                } else {
+                    c.setBackground(java.awt.Color.WHITE);
+                    c.setForeground(java.awt.Color.BLACK);
+                    c.setFont(c.getFont().deriveFont(java.awt.Font.PLAIN));
+                }
+            }
+            return c;
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
