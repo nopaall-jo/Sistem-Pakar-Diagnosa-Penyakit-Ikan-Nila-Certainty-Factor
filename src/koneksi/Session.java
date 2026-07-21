@@ -10,7 +10,7 @@ package koneksi;
  * @author NAUFAL
  */
 public class Session {
-    public static int idAdmin = 0; 
-    public static String namaAdmin = ""; 
-    public static String role = "";
+    public static String idAdmin; 
+    public static String namaAdmin;
+    public static String role;
 }

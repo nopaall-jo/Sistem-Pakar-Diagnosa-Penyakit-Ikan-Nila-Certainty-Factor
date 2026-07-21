@@ -45,15 +45,15 @@ public class FormRegister extends javax.swing.JFrame {
         try {
             Connection con = KoneksiDB.getKoneksi();
             Statement st = con.createStatement();
-            
             String sql = "SELECT MAX(id_admin) AS no_terakhir FROM tbl_admin";
             ResultSet rs = st.executeQuery(sql);
             
             if (rs.next() && rs.getString("no_terakhir") != null) {
-                int angka = rs.getInt("no_terakhir") + 1;
-                txtIdAdmin.setText(String.valueOf(angka));
+                String idTerakhir = rs.getString("no_terakhir");
+                int angka = Integer.parseInt(idTerakhir.substring(4)) + 1;
+                txtIdAdmin.setText(String.format("ADM-%03d", angka));
             } else {
-                txtIdAdmin.setText("1");
+                txtIdAdmin.setText("ADM-001");
             }
             
             txtIdAdmin.setEditable(false);
@@ -473,12 +473,13 @@ public class FormRegister extends javax.swing.JFrame {
 
         try {
             java.sql.Connection con = koneksi.KoneksiDB.getKoneksi();
-            String sql = "INSERT INTO tbl_admin (nama_admin, username, password) VALUES (?, ?, ?)";
+            String sql = "INSERT INTO tbl_admin (id_admin, nama_admin, username, password) VALUES (?, ?, ?, ?)";
             java.sql.PreparedStatement pst = con.prepareStatement(sql);
             
-            pst.setString(1, nama);
-            pst.setString(2, username);
-            pst.setString(3, password); 
+            pst.setString(1, txtIdAdmin.getText().trim());
+            pst.setString(2, nama);
+            pst.setString(3, username);
+            pst.setString(4, password); 
             pst.executeUpdate();
             
             javax.swing.JOptionPane.showMessageDialog(this, "Pendaftaran Admin Berhasil! Silakan masuk dengan akun baru Anda.", "Sukses", javax.swing.JOptionPane.INFORMATION_MESSAGE);

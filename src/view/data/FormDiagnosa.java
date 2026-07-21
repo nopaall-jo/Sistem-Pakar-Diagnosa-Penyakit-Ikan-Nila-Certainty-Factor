@@ -1407,7 +1407,7 @@ public class FormDiagnosa extends javax.swing.JFrame {
             java.sql.PreparedStatement pstDiag = con.prepareStatement(sqlDiagnosa, java.sql.Statement.RETURN_GENERATED_KEYS);
             java.sql.Timestamp waktuSekarang = new java.sql.Timestamp(System.currentTimeMillis());
 
-            pstDiag.setInt(1, koneksi.Session.idAdmin);
+            pstDiag.setString(1, koneksi.Session.idAdmin); 
             pstDiag.setString(2, txtKodeSampel.getText());
             pstDiag.setTimestamp(3, waktuSekarang);
             pstDiag.setString(4, kodePenyakit);

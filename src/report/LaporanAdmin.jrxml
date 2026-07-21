@@ -17,7 +17,7 @@
 	<queryString>
 		<![CDATA[SELECT id_admin, nama_admin, username FROM tbl_admin ORDER BY id_admin ASC]]>
 	</queryString>
-	<field name="id_admin" class="java.lang.Integer">
+	<field name="id_admin" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="nama_admin" class="java.lang.String">
