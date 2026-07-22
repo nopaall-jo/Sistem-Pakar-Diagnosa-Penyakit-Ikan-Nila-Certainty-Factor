@@ -26,7 +26,7 @@ public class DialogAturan extends javax.swing.JDialog {
      */
     
     public DialogAturan(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
+       super(parent, modal);
         initComponents();
         try {
             java.awt.Image icon = javax.imageio.ImageIO.read(getClass().getResource("/icon/logo2.png"));
@@ -40,6 +40,7 @@ public class DialogAturan extends javax.swing.JDialog {
         tampilTabelGejala();
         setupComboBoxDiTabel();
         rapihkanTabel();
+        setupWarnaTabel();
     }
     
     private void tampilCmbPenyakit() {
@@ -80,6 +81,7 @@ public class DialogAturan extends javax.swing.JDialog {
 
     public void modeTambah() {
         this.isEdit = false;
+        cmbPenyakit.setEnabled(true); 
         cmbPenyakit.setSelectedIndex(0);
         tampilCmbPenyakit();
         tampilTabelGejala();
@@ -119,11 +121,74 @@ public class DialogAturan extends javax.swing.JDialog {
         kolomModel.getColumn(4).setPreferredWidth(80);
         kolomModel.getColumn(4).setMaxWidth(80);
     }
+    
+    private void setupWarnaTabel() {
+        javax.swing.table.DefaultTableCellRenderer textRenderer = new javax.swing.table.DefaultTableCellRenderer() {
+            @Override
+            public java.awt.Component getTableCellRendererComponent(javax.swing.JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                java.awt.Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                Boolean isChecked = (Boolean) table.getValueAt(row, 0);
+                if (isChecked != null && isChecked) {
+                    c.setBackground(new java.awt.Color(204, 255, 204)); 
+                } else {
+                    c.setBackground(table.getBackground());
+                }
+                if (isSelected) {
+                    c.setBackground(table.getSelectionBackground());
+                }
+                return c;
+            }
+        };
+        javax.swing.table.TableCellRenderer checkBoxRenderer = new javax.swing.table.TableCellRenderer() {
+            javax.swing.JCheckBox checkBox = new javax.swing.JCheckBox();
+            {
+                checkBox.setHorizontalAlignment(javax.swing.JLabel.CENTER);
+                checkBox.setOpaque(true);
+            }
+            @Override
+            public java.awt.Component getTableCellRendererComponent(javax.swing.JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                if (value instanceof Boolean) {
+                    checkBox.setSelected((Boolean) value);
+                }
+                
+                Boolean isChecked = (Boolean) table.getValueAt(row, 0);
+                if (isChecked != null && isChecked) {
+                    checkBox.setBackground(new java.awt.Color(204, 255, 204)); 
+                } else {
+                    checkBox.setBackground(table.getBackground());
+                }
+                
+                if (isSelected) {
+                    checkBox.setBackground(table.getSelectionBackground());
+                }
+                return checkBox;
+            }
+        };
+        tabelGejala.getColumnModel().getColumn(0).setCellRenderer(checkBoxRenderer);
+        for (int i = 1; i < tabelGejala.getColumnCount(); i++) {
+            tabelGejala.getColumnModel().getColumn(i).setCellRenderer(textRenderer);
+        }
+        tabelGejala.getModel().addTableModelListener(new javax.swing.event.TableModelListener() {
+            @Override
+            public void tableChanged(javax.swing.event.TableModelEvent e) {
+                if (e.getColumn() == 0) { 
+                    tabelGejala.repaint(); 
+                }
+            }
+        });
+    }
 
     public void modeEdit(String id_aturan, String penyakit, String kodeGejala, String mb, String md) {
         this.isEdit = true;
         this.idAturanEdit = id_aturan;
-        cmbPenyakit.setSelectedItem(penyakit);
+        for (int i = 0; i < cmbPenyakit.getItemCount(); i++) {
+            String itemPenyakit = cmbPenyakit.getItemAt(i).toString();
+            if (itemPenyakit.contains(penyakit)) {
+                cmbPenyakit.setSelectedIndex(i);
+                break;
+            }
+        }
+        cmbPenyakit.setEnabled(false);
         for(int i=0; i<tabelGejala.getRowCount(); i++) {
             if(tabelGejala.getValueAt(i, 1).toString().equals(kodeGejala)) {
                 tabelGejala.setValueAt(true, i, 0);
