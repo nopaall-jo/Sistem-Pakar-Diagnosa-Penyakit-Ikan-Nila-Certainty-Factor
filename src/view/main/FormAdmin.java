@@ -1272,17 +1272,17 @@ public class FormAdmin extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLogoutMousePressed
 
     private void tabelAdminMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelAdminMouseClicked
-        int baris = tabelAdmin.rowAtPoint(evt.getPoint());
-        String idAdmin = tabelAdmin.getValueAt(baris, 1).toString();
-        String nama = tabelAdmin.getValueAt(baris, 2).toString();
-        String username = tabelAdmin.getValueAt(baris, 3).toString();
-        String password = tabelAdmin.getValueAt(baris, 4).toString(); 
-        
-        txtIdAdmin.setText(idAdmin);
-        txtNama.setText(nama);
-        txtUsername.setText(username);
-        txtPassword.setText(password); 
+        int baris = tabelAdmin.getSelectedRow();
+        if (baris != -1) {
+        txtIdAdmin.setText(tabelAdmin.getValueAt(baris, 1).toString());
+        txtNama.setText(tabelAdmin.getValueAt(baris, 2).toString());
+        txtUsername.setText(tabelAdmin.getValueAt(baris, 3).toString());
+        txtPassword.setText("");
+        btnSimpan.setEnabled(false); 
+        btnUbah.setEnabled(true);
+        btnHapus.setEnabled(true);
         txtIdAdmin.setEditable(false);
+    }
     }//GEN-LAST:event_tabelAdminMouseClicked
 
     private void txtIdAdminKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIdAdminKeyReleased
@@ -1400,22 +1400,24 @@ public class FormAdmin extends javax.swing.JFrame {
 
     private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
         if (txtIdAdmin.getText().isEmpty()) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Pilih data di tabel yang ingin dihapus!", "Validasi", javax.swing.JOptionPane.WARNING_MESSAGE);
+            javax.swing.JOptionPane.showMessageDialog(this, "Pilih data admin yang mau dihapus dari tabel!");
             return;
         }
-        int konfirmasi = javax.swing.JOptionPane.showConfirmDialog(this, "Yakin ingin menghapus Admin: " + txtNama.getText() + "?", "Konfirmasi Hapus", javax.swing.JOptionPane.YES_NO_OPTION);
+        int konfirmasi = javax.swing.JOptionPane.showConfirmDialog(this, 
+                "Yakin mau menghapus admin " + txtNama.getText() + "?", 
+                "Konfirmasi Hapus", javax.swing.JOptionPane.YES_NO_OPTION);
         if (konfirmasi == javax.swing.JOptionPane.YES_OPTION) {
             try {
                 java.sql.Connection con = koneksi.KoneksiDB.getKoneksi();
-                String sql = "DELETE FROM tbl_admin WHERE id_admin=?";
-                java.sql.PreparedStatement pst = con.prepareStatement(sql);
+                java.sql.PreparedStatement pst = con.prepareStatement("DELETE FROM tbl_admin WHERE id_admin=?");
                 pst.setString(1, txtIdAdmin.getText());
                 pst.execute();
-                javax.swing.JOptionPane.showMessageDialog(this, "Data Admin berhasil dihapus!", "Sukses", javax.swing.JOptionPane.INFORMATION_MESSAGE);
-                tampilDataAdmin();
+
+                javax.swing.JOptionPane.showMessageDialog(this, "Data admin berhasil dihapus!");
+                tampilDataAdmin(); 
                 bersihForm();
             } catch (Exception e) {
-                javax.swing.JOptionPane.showMessageDialog(this, "Gagal menghapus data: " + e.getMessage(), "Error Database", javax.swing.JOptionPane.ERROR_MESSAGE);
+                javax.swing.JOptionPane.showMessageDialog(this, "Gagal hapus data: " + e.getMessage());
             }
         }
     }//GEN-LAST:event_btnHapusActionPerformed
