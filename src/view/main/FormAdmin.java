@@ -141,7 +141,12 @@ public class FormAdmin extends javax.swing.JFrame {
         txtUsername.setText("");
         txtPassword.setText("");
         txtCari.setText("");
+        
         txtIdAdmin.setEditable(true); 
+        btnSimpan.setEnabled(true); 
+        btnUbah.setEnabled(false);
+        btnHapus.setEnabled(false); 
+        
         txtIdAdmin.requestFocus(); 
     }
     
