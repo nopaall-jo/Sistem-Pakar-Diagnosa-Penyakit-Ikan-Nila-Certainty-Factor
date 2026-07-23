@@ -30,7 +30,6 @@ public class FormAdmin extends javax.swing.JFrame {
      */
     public FormAdmin() {
         initComponents();
-        
         try {
             java.awt.Image icon = javax.imageio.ImageIO.read(getClass().getResource("/icon/logo2.png"));
             setIconImage(icon);
@@ -136,18 +135,15 @@ public class FormAdmin extends javax.swing.JFrame {
     }
    
     private void bersihForm() {
-        txtIdAdmin.setText("");
         txtNama.setText("");
         txtUsername.setText("");
         txtPassword.setText("");
         txtCari.setText("");
-        
-        txtIdAdmin.setEditable(true); 
         btnSimpan.setEnabled(true); 
-        btnUbah.setEnabled(false);
+        btnUbah.setEnabled(false);   
         btnHapus.setEnabled(false); 
-        
-        txtIdAdmin.requestFocus(); 
+        autoNumber(); 
+        txtNama.requestFocus();
     }
     
         private void switchWarna(javax.swing.JPanel activePanel) {
@@ -160,7 +156,29 @@ public class FormAdmin extends javax.swing.JFrame {
         btnLaporan.setBackground(colorNormal);
         btnDataAdmin.setBackground(colorNormal);
         activePanel.setBackground(colorActive);
-    }   
+    }
+        
+        private void autoNumber() {
+            try {
+                java.sql.Connection con = koneksi.KoneksiDB.getKoneksi();
+                java.sql.Statement st = con.createStatement();
+                String sql = "SELECT MAX(id_admin) AS max_id FROM tbl_admin";
+                java.sql.ResultSet rs = st.executeQuery(sql);
+
+                if (rs.next() && rs.getString("max_id") != null) {
+                    String idMax = rs.getString("max_id");
+                    int id = Integer.parseInt(idMax.substring(4)) + 1;
+                    String no = String.format("%03d", id);
+                    txtIdAdmin.setText("ADM-" + no);
+                } else {
+                    txtIdAdmin.setText("ADM-001");
+                }
+                txtIdAdmin.setEditable(false); 
+            } catch (Exception e) {
+                System.out.println("Error Auto Number Admin: " + e.getMessage());
+            }
+        }
+        
         private void setJamRealTime() {
         javax.swing.Timer timer = new javax.swing.Timer(1000, new java.awt.event.ActionListener() {
             @Override
